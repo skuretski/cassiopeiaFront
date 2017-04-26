@@ -3,13 +3,14 @@
 This React.js web application serves as the front-end to a project
 management API. API here: https://github.com/skuretski/cassiopeia
 
-### Authors
+## Authors
 
-Kyle Guthrie
-Susan Kuretski
-Michael Cash Stramel
+<ul>
+    <li>Kyle Guthrie</li>
+    <li>Susan Kuretski</li>
+    <li>Michael Cash Stramel</li>
 
-#### Dependencies
+## Dependencies
 
 <ul>
     <li>babel-preset-stage-1</li>
@@ -21,10 +22,10 @@ Michael Cash Stramel
     <li>redux</li>
 </ul>
 
-#### File Structure
+## File Structure
 
 
-#### License
+## License
 
 ISC
 
