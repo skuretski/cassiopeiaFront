@@ -9,6 +9,7 @@ management API. API here: https://github.com/skuretski/cassiopeia
     <li>Kyle Guthrie</li>
     <li>Susan Kuretski</li>
     <li>Michael Cash Stramel</li>
+</ul>
 
 ## Dependencies
 
