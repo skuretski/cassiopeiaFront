@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Web application for project management",
   "main": "index.js",
-  "repository": "",
+  "repository": "https://github.com/skuretski/cassiopeiaFront",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
