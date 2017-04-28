@@ -1,8 +1,17 @@
-import React from 'react';
-import ReactDom from 'react-dom';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
 
-const App = () => {
-    return <div>Cassiopeia</div>;
-}
+import App from './components/App';
+import reducers from './reducers';
+import Async from './middlewares/async';
 
-ReactDom.render(<App />, document.querySelector('.container'));
+const createStoreWithMiddleware = applyMiddleware(Async)(createStore);
+
+ReactDOM.render(
+    <Provider store = {createStoreWithMiddleware(reducers)}>
+        <App />
+    </Provider>,
+    document.querySelector('.container')
+);
