@@ -14,9 +14,15 @@ management API. API here: https://github.com/skuretski/cassiopeia
 ## Dependencies
 
 <ul>
+    <li>axios</li>
     <li>babel-preset-stage-1</li>
+    <li>chart.js@1.1.1</li>
+    <li>express</li>
     <li>lodash</li>
+    <li>path</li>
     <li>react</li>
+    <li>react-bootstrap</li>
+    <li>react-chartjs</li>
     <li>react-dom</li>
     <li>react-redux</li>
     <li>react-router</li>
@@ -24,6 +30,35 @@ management API. API here: https://github.com/skuretski/cassiopeia
 </ul>
 
 ## File Structure
+- src
+  - actions
+    * actions_employees.js
+    * actions_projects.js
+  - api
+    * index.js
+  - components  //Static components
+    * App.js
+  - containers  //Dynamic components
+    - graphs
+    * ProjectList.js
+  - middlewares
+    * async.js
+  - reducers
+    * index.js
+    * reducer_projects.js
+  * index.js
+- style
+  * style.css
+- test
+  - components
+    * app_test.js
+  * test_helper.js
+* .babelrc  //For dev.
+* bundle.js  //For production. Use webpack for dev.
+* index.html
+* package.json
+* server.js
+* webpack.config.js  //For dev.
 
 
 ## License
