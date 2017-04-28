@@ -32,35 +32,55 @@ management API. API here: https://github.com/skuretski/cassiopeia
 ## File Structure
 - src
   - actions
-    * actions_employees.js
-    * actions_projects.js
+    - actions_employees.js
+    - actions_projects.js
   - api
-    * index.js
+    - index.js
   - components  //Static components
-    * App.js
+    - App.js
   - containers  //Dynamic components
     - graphs
-    * ProjectList.js
+    - ProjectList.js
   - middlewares
-    * async.js
+    - async.js
   - reducers
-    * index.js
-    * reducer_projects.js
-  * index.js
+    - index.js
+    - reducer_projects.js
+  - index.js
 - style
-  * style.css
+  - style.css
 - test
   - components
-    * app_test.js
-  * test_helper.js
-* .babelrc  //For dev.
-* bundle.js  //For production. Use webpack for dev.
-* index.html
-* package.json
-* server.js
-* webpack.config.js  //For dev.
+    - app_test.js
+  - test_helper.js
+- .babelrc  //For dev.
+- bundle.js  //For production. Use webpack for dev.
+- index.html
+- package.json
+- server.js
+- webpack.config.js  //For dev.
 
+## How to Run
 
+- To install dependencies:
+  - npm install
+
+- To run development:
+  - npm run dev
+
+- To get bundle.js:
+  - webpack -p (Webpack must be installed globally)
+  OR
+  - npm postinstall
+
+- To start server:
+  - npm start 
+
+- To test (using Mocha and Chai):
+  - npm run test
+  OR
+  - npm run test:watch
+  
 ## License
 
 ISC
