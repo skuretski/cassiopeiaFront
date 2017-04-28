@@ -71,7 +71,7 @@ management API. API here: https://github.com/skuretski/cassiopeia
 
 - To get bundle.js:
   - webpack -p (Webpack must be installed globally)
-    OR
+  - ** OR **
   - npm postinstall
 
 - To start server:
@@ -79,7 +79,7 @@ management API. API here: https://github.com/skuretski/cassiopeia
 
 - To test (using Mocha and Chai):
   - npm run test
-    OR
+  -  ** OR **
   - npm run test:watch
 
 ## License
