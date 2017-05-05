@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import ProjectList from '../containers/ProjectList';
 
 class ProjectView extends Component{
-    constructor(props){
-        super(props);
-    }
     render(){
         return(
             <div><h1>Projects</h1>

@@ -1,11 +1,11 @@
 export default function(state = [], action){
     switch (action.type){
-        case 'GET_DISCIPLINES':
-            return action.disciplines;
+        case 'GET_DELIVERABLES':
+            return action.deliverables;
 
-        case 'SELECT_DISCIPLINE':
-            return state.filter((discipline) => {
-                if(discipline._id === action.discipline_id)
+        case 'SELECT_DELIVERABLE':
+            return state.filter((deliverable) => {
+                if(deliverable._id === action.deliverable_id)
                     return false;
                 else
                     return true;

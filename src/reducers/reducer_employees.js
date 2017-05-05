@@ -1,11 +1,11 @@
 export default function(state = [], action){
     switch (action.type){
-        case 'GET_PROJECTS':
-            return action.projects;
+        case 'GET_EMPLOYEES':
+            return action.employees;
 
-        case 'SELECT_PROJECT':
-            return state.filter((project) => {
-                if(project._id === action.project_id)
+        case 'SELECT_EMPLOYEE':
+            return state.filter((employee) => {
+                if(employee._id === action.employee_id)
                     return false;
                 else
                     return true;
@@ -14,4 +14,3 @@ export default function(state = [], action){
             return state;
     }   
 }
-

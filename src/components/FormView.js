@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import AddEmployee from '../containers/AddEmployee';
 
 class FormView extends Component{
-    constructor(props){
-        super(props);
-    }
     render(){
         return(
             <div><h1>Add or Edit</h1>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../actions/actions_disciplines';
-import * as actions_employees from '../actions/actions_employees';
+import { getDisciplines, setDiscipline } from '../actions/actions_disciplines';
+import { getEmployees, postEmployees }from '../actions/actions_employees';
 
 
 class AddEmployee extends Component {
@@ -10,10 +10,14 @@ class AddEmployee extends Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            loading: false,
+            sending: false
+        }
     }
 
     componentWillMount(){
-        this.props.getDisciplines();
+        this.props.dispatch(getDisciplines);
         this.setState({
             first: '',
             last: '',
@@ -22,17 +26,18 @@ class AddEmployee extends Component {
     }
 
     handleSubmit(event) {
-        event.preventDefault();
-
+        event.preventDefault();   
+        //TODO: Add pretty error handling before adding  
         const payload = {
             first: this.state.first,
             last: this.state.last,
             discipline_id: this.state.discipline_id
         };
-
-        actions_employees.postEmployees(payload);
+        this.setState({sending:true});
+        dispatch(postEmployees(payload)).then(() => {
+            this.setState({sending: false});
+        });
     }
-
     handleChange(event) {
         var key = event.target.name;
         var val = event.target.value;
@@ -88,4 +93,4 @@ function mapStateToProps(state){
     };
 }
 
-export default connect(mapStateToProps, actions)(AddEmployee);
+export default connect(mapStateToProps)(AddEmployee);

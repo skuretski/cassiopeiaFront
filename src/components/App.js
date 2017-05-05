@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getProjects } from '../actions/actions_projects';
+import { getDeliverables } from '../actions/actions_deliverables';
+import { getTasks } from '../actions/actions_tasks';
 
 class App extends Component{
     constructor(props){
@@ -9,15 +12,18 @@ class App extends Component{
         this.state ={
             projects: [],
             deliverables: [],
-            assignments: [],
+            tasks: [],
             selectedProject: null,
-            selectedAssign: null,
-            selectedDeliv: null
-        };
+            selectedDeliverable: null,
+            selectedTask: null,
+            fetched: false
+        }
+    }
         //This will be called to get projects, deliverables, and assignments 
-        // componentWillMount(){
-
-        // }
+    componentWillMount(){
+   //     this.props.getProjects();
+    //    this.props.getDeliverables();
+    //    this.props.getTasks();
     }
     render(){
         return(

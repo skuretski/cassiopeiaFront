@@ -35,11 +35,12 @@
     "lodash": "^3.10.1",
     "path": "^0.12.7",
     "react": "^0.14.3",
-    "react-bootstrap": "^0.31.0",
     "react-chartjs": "^0.8.0",
     "react-dom": "^0.14.3",
     "react-redux": "4.0.0",
     "react-router": "^2.0.1",
-    "redux": "^3.0.4"
+    "redux": "^3.0.4",
+    "redux-thunk": "^2.2.0",
+    "uuid": "^3.0.1"
   }
 }
