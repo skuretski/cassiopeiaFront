@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ProjectList from '../containers/ProjectList';
+import BaseChart from '../containers/BaseChart';
 
 class ProjectView extends Component{
     render(){
@@ -15,6 +16,7 @@ class ProjectView extends Component{
                 </ul>    
             </div>
                 <ProjectList />
+                <BaseChart />
             </div>
         );
     }
