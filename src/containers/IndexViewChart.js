@@ -8,7 +8,7 @@ import { Line } from "react-chartjs";
 // but .createClass() is what is used here: https://github.com/reactjs/react-chartjs
 
 // nevermind, switched to extends using this example: https://github.com/reactjs/react-chartjs/issues/35
-class BaseChart extends Component {
+class IndexViewChart extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,16 +23,10 @@ class BaseChart extends Component {
         });
     }    
 
-    renderIndexViewChart(indexViewChartData) {
-        return(
-            <Line data={sampleChartData()} width="600" height="250" />
-        );
-    }
-
     render() {
         return (
             <div>
-                {this.props.indexViewData.map(this.renderIndexViewChart)}
+                <Line data={indexViewChartData()} width="600" height="250" />
             </div>    
         );
     }
@@ -54,11 +48,22 @@ function mapStateToProps(state){
 }
 
 
-export default connect(mapStateToProps)(BaseChart);
+export default connect(mapStateToProps)(IndexViewChart);
 
 // sample from view-source:https://reactcommunity.org/react-chartjs/index.html
-function sampleChartData() {
-    return {
+function indexViewChartData() {
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    //var rawData = this.props.indexViewData;
+
+
+
+    var data = {};
+    data.labels = [];
+    data.datasets = [];
+
+
+
+    data = {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [
             {
@@ -83,4 +88,5 @@ function sampleChartData() {
             }
         ]   
     };
+    return data;
 }

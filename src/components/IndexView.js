@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import BaseChart from '../containers/BaseChart';
+import IndexViewChart from '../containers/IndexViewChart';
 import { fetchProjects } from '../actions/actions_nav';
 class IndexView extends Component{
     constructor(props){
@@ -46,7 +46,7 @@ class IndexView extends Component{
                         <p>Welcome to our project management web application!
                         </p>
                     </div>
-                        <BaseChart />
+                        <IndexViewChart />
                 </div>
             );
         }    
