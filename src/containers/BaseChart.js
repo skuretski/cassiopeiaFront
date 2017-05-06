@@ -1,18 +1,42 @@
 import React, { Component } from 'react';
-
-var LineChart = require("react-chartjs").Line;
+import { connect } from 'react-redux';
+import { getIndexViewData } from '../actions/actions_indexview';
+import { Line } from "react-chartjs";
 
 // React.createClass() is the alternative to 'class ABC extends XYZ'
 // I don't know enough about React yet to understand the difference
 // but .createClass() is what is used here: https://github.com/reactjs/react-chartjs
-var BaseChart = React.createClass({
-    render: function() {
 
-        var chartData = data1();
-        return <LineChart data={chartData} width="600" height="250"/>
-        // return <LineChart data={chartData} options={chartOptions} width="600" height="250"/>
+// nevermind, switched to extends using this example: https://github.com/reactjs/react-chartjs/issues/35
+class BaseChart extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false,
+        };
     }
-});
+
+    componentWillMount(){
+        this.setState({loading: true});
+        this.props.dispatch(getIndexViewData).then(() => {
+            this.setState({loading: false});
+        });
+    }    
+
+    renderIndexViewChart(indexViewChartData) {
+        return(
+            <Line data={sampleChartData()} width="600" height="250" />
+        );
+    }
+
+    render() {
+        return (
+            <div>
+                {this.props.indexViewData.map(this.renderIndexViewChart)}
+            </div>    
+        );
+    }
+};
 
 // sample from view-source:https://reactcommunity.org/react-chartjs/index.html
 function rand(min, max, num) {
@@ -23,8 +47,17 @@ function rand(min, max, num) {
     return rtn;
 }
 
+function mapStateToProps(state){
+    return { 
+        indexViewData: state.indexViewData 
+    };
+}
+
+
+export default connect(mapStateToProps)(BaseChart);
+
 // sample from view-source:https://reactcommunity.org/react-chartjs/index.html
-function data1() {
+function sampleChartData() {
     return {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
         datasets: [
@@ -51,5 +84,3 @@ function data1() {
         ]   
     };
 }
-
-export default BaseChart;

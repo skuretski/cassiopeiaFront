@@ -4,13 +4,15 @@ import DisciplinesReducer from './reducer_disciplines';
 import DeliverablesReducer from './reducer_deliverables';
 import TasksReducer from './reducer_tasks';
 import EmployeeReducer from './reducer_employees';
+import IndexViewReducer from './reducer_indexview';
 
 const rootReducer = combineReducers({
     projects: ProjectsReducer,
     disciplines: DisciplinesReducer,
     deliverables: DeliverablesReducer,
     tasks: TasksReducer,
-    employees: EmployeeReducer
+    employees: EmployeeReducer,
+    indexViewData: IndexViewReducer
 });
 
 export default rootReducer;

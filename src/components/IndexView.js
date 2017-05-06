@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import BaseChart from '../containers/BaseChart';
 
 class IndexView extends Component{
     render(){
@@ -18,6 +19,7 @@ class IndexView extends Component{
                 <p>Welcome to our project management web application!
                 </p>
             </div>
+                <BaseChart />
             </div>
         );
     }
