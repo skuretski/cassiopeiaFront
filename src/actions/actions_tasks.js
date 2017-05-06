@@ -13,7 +13,7 @@ export function getTasks(dispatch){
 export const setTasks = (tasks) => {
     return{
         type: 'GET_TASKS',
-        projects
+        tasks
     }
 }
 
