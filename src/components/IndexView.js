@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import IndexViewChart from '../containers/IndexViewChart';
 import { fetchProjects } from '../actions/actions_nav';
+import { getIndexViewData } from '../actions/actions_indexview';
+
 class IndexView extends Component{
     constructor(props){
         super(props);
@@ -10,7 +12,9 @@ class IndexView extends Component{
             selectedProject: '',
             fetched: false 
         }
+
     }
+
     componentDidMount(){
         fetchProjects().then((response) => {
             this.setState({
@@ -20,6 +24,8 @@ class IndexView extends Component{
         }).catch((error) => {
                 console.log(error);
         });
+        
+        this.props.dispatch(getIndexViewData);
     }
     renderTab(project){
         return(
@@ -46,7 +52,7 @@ class IndexView extends Component{
                         <p>Welcome to our project management web application!
                         </p>
                     </div>
-                        <IndexViewChart />
+                        <IndexViewChart data={this.props.indexViewData}/>
                 </div>
             );
         }    
@@ -57,9 +63,9 @@ function mapStateToProps(state){
     return{
         projects: state.projects,
         selectedProject: state.selectedProject,
-        fetched: state.fetched
+        fetched: state.fetched,
+        indexViewData: state.indexViewData,
     }
 }
-
 
 export default connect(mapStateToProps)(IndexView);

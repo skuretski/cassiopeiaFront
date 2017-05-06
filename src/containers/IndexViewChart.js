@@ -1,34 +1,21 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { getIndexViewData } from '../actions/actions_indexview';
 import { Line } from "react-chartjs";
 
-// React.createClass() is the alternative to 'class ABC extends XYZ'
-// I don't know enough about React yet to understand the difference
-// but .createClass() is what is used here: https://github.com/reactjs/react-chartjs
-
-// nevermind, switched to extends using this example: https://github.com/reactjs/react-chartjs/issues/35
-class IndexViewChart extends Component {
+export default class IndexViewChart extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            loading: false,
-        };
     }
 
-    componentWillMount(){
-        this.setState({loading: true});
-        this.props.dispatch(getIndexViewData).then(() => {
-            this.setState({loading: false});
-        });
-    }    
-
     render() {
-        return (
-            <div>
-                <Line data={indexViewChartData()} width="600" height="250" />
-            </div>    
-        );
+        if (this.props.data) {
+            return (
+                <div>
+                    <Line data={indexViewChartData()} width="600" height="250" />
+                </div>    
+            );
+        } else {
+            return <div></div>;
+        }
     }
 };
 
@@ -41,27 +28,14 @@ function rand(min, max, num) {
     return rtn;
 }
 
-function mapStateToProps(state){
-    return { 
-        indexViewData: state.indexViewData 
-    };
-}
-
-
-export default connect(mapStateToProps)(IndexViewChart);
-
 // sample from view-source:https://reactcommunity.org/react-chartjs/index.html
 function indexViewChartData() {
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     //var rawData = this.props.indexViewData;
 
-
-
     var data = {};
     data.labels = [];
     data.datasets = [];
-
-
 
     data = {
         labels: ["January", "February", "March", "April", "May", "June", "July"],
