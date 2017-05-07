@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import IndexViewChart from '../containers/IndexViewChart';
+import SummaryTable from '../components/SummaryTable';
 import { fetchProjects } from '../actions/actions_nav';
 import { getIndexViewData } from '../actions/actions_indexview';
 
@@ -53,6 +54,7 @@ class IndexView extends Component{
                         </p>
                     </div>
                         <IndexViewChart data={this.props.indexViewData}/>
+                        <SummaryTable data={this.props.indexViewData}/>
                 </div>
             );
         }    
