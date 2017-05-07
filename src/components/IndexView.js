@@ -1,30 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BaseChart from '../containers/BaseChart';
-import { fetchProjects } from '../actions/actions_nav';
+import { getProjects, selectProject } from '../actions/actions_projects';
+
 class IndexView extends Component{
     constructor(props){
         super(props);
         this.state = {
             projects: [],
-            selectedProject: '',
             fetched: false 
         }
     }
     componentDidMount(){
-        fetchProjects().then((response) => {
-            this.setState({
-                projects: response,
-                fetched: true
-            });
-        }).catch((error) => {
-                console.log(error);
-        });
+        this.props.dispatch(getProjects).then(() => {
+            this.setState({fetched: true});
+        });  
     }
-    renderTab(project){
+    onTabSelect(){
+        console.log("Click!");
+    }
+    Tab(props){
         return(
-            <li className="active" key={project.id}><a href='/project'>{project.title} </a></li>
-        )
+            <li onClick = {() => this.onTabSelect} className="active">
+                <a href=''>Tab</a>
+            </li>
+        );
+    }
+    NavTabs(props){
+        const projects = props.projects;
+        const navTabs = projects.map((project) => 
+            <Tab key={project.id} value={project.title} /> );
     }
     render(){
         if(this.state.fetched === false){
@@ -38,7 +43,8 @@ class IndexView extends Component{
                 <div><h1>Index</h1>
                     <div>
                         <ul className= "nav nav-tabs">
-                            {this.state.projects.map(this.renderTab)}
+                            {this.NavTabs}
+
                         </ul>
                     </div>
                     <div>
@@ -56,8 +62,8 @@ class IndexView extends Component{
 function mapStateToProps(state){
     return{
         projects: state.projects,
-        selectedProject: state.selectedProject,
-        fetched: state.fetched
+        fetched: state.fetched,
+        selectedProject: state.selectedProject
     }
 }
 

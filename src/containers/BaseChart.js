@@ -32,7 +32,7 @@ class BaseChart extends Component {
     render() {
         return (
             <div>
-                {this.props.indexViewData.map(this.renderIndexViewChart)}
+                {this.renderIndexViewChart(sampleChartData())}
             </div>    
         );
     }

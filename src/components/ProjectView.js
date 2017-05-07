@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
 import ProjectList from '../containers/ProjectList';
+import { connect } from 'react-redux';
+import { fetchProjects, fetchDeliverables} from '../actions/actions_nav';
 
 class ProjectView extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            fetched: false,
+            projects: [],
+            deliverables: [],
+            selectedProject: '',
+            selectedDeliverable: ''
+        }
+    }
     render(){
         return(
             <div><h1>Projects</h1>

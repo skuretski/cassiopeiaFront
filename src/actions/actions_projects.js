@@ -10,9 +10,9 @@ export function getProjects(dispatch){
     });
 }
 
-export function selectProject(dispatch){
+export function selectProject(project_id){
     return function(dispatch){
-        
+        dispatch(selectOneProject(project_id));
     }
 }
 export const setProjects = (projects) => {
