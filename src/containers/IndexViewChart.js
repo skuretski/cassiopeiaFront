@@ -10,7 +10,7 @@ export default class IndexViewChart extends Component {
         if (this.props.data) {
             return (
                 <div>
-                    <Line data={indexViewChartData(this.props.data)} width="700" height="350" />
+                    <Line data={indexViewChartData(this.props.data)} options={indexViewChartOptions()} />
                 </div>    
             );
         } else {
@@ -19,16 +19,39 @@ export default class IndexViewChart extends Component {
     }
 };
 
-// sample from view-source:https://reactcommunity.org/react-chartjs/index.html
-function rand(min, max, num) {
-    var rtn = [];
-    while (rtn.length < num) {
-        rtn.push((Math.random() * (max - min)) + min);
-    }
-    return rtn;
+
+// https://github.com/chartjs/Chart.js/blob/v1.1.1/docs/01-Line-Chart.md
+// https://github.com/houjiazong/react-chartjs2
+// https://github.com/gor181/react-chartjs-2
+function indexViewChartOptions() {
+    var chartOptions = {
+        responsive: true,
+        title: {
+            display: true,
+            text: 'whatever'
+        }
+    };
+
+/*
+    chartOptions.title = new Object();
+    chartOptions.display = true;
+    chartOptions.text = 'Overview';
+    var scales = {};
+    var xAxes = [];
+    var yxAxes = [];
+    var scaleLabel = {};
+    scaleLabel.display = true;
+    scaleLabel.labelString = 'Month';
+    xAxes.push(scaleLabel);
+    scaleLabel.labelString = 'Heads';
+    yAxes.push(scaleLabel);
+    scales.xAxes = xAxes;
+    scales.yAxes = yAxes;
+    chartOptions.scales = scales;
+*/
+    return chartOptions;
 }
 
-// sample from view-source:https://reactcommunity.org/react-chartjs/index.html
 function indexViewChartData(apiData) {
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var default_colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#DD4477',
@@ -48,7 +71,6 @@ function indexViewChartData(apiData) {
     // populate chart labels (x-axis points)
     chartData.labels = [];
     chartData.labels.push(months[parseInt(someMo) - 1] + '-' + parseInt(someYr));
-    console.log(months[parseInt(someMo) - 1] + '-' + parseInt(someYr));
     while (1) {
         if (someMo < 12) {
             someMo++;
@@ -58,7 +80,6 @@ function indexViewChartData(apiData) {
             someMo = 1;
         }
         chartData.labels.push(months[parseInt(someMo) - 1] + '-' + parseInt(someYr));
-        console.log(months[parseInt(someMo) - 1] + '-' + parseInt(someYr));
         
         if (someMo == endMo && someYr == endYr) {
             break;
@@ -67,7 +88,6 @@ function indexViewChartData(apiData) {
 
     // create chart datasets
     chartData.datasets = [];
-    console.log(apiData.titles.length);
     var dsToProjMap = new Object();
     for (var i = 0; i < apiData.titles.length; i++) {
         var dataset = new Object();
