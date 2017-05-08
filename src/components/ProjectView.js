@@ -1,35 +1,52 @@
 import React, { Component } from 'react';
 import ProjectList from '../containers/ProjectList';
+import { getDeliverables } from '../actions/actions_deliverables';
+//import { getProjects } from '../actions/actions_projects';
 import { connect } from 'react-redux';
-import { fetchProjects, fetchDeliverables} from '../actions/actions_nav';
+import NavTabs from '../containers/navigation/NavTabs';
+
 
 class ProjectView extends Component{
     constructor(props){
         super(props);
         this.state = {
-            fetched: false,
-            projects: [],
-            deliverables: [],
-            selectedProject: '',
-            selectedDeliverable: ''
+            fetched: false
         }
     }
+    componentWillMount(){
+        this.props.dispatch(getDeliverables).then(() => {
+            this.setState({fetched: true});
+        })
+    }
     render(){
-        return(
-            <div><h1>Projects</h1>
-            <div>
-                <ul className = "nav nav-tabs">
-                    <li><a href='/'>Index</a></li>
-                    <li className="active"><a href='/project'>Projects</a></li>
-                    <li><a href='/deliverable'>Deliverables</a></li>
-                    <li><a href='/task'>Tasks</a></li>
-                    <li><a href='/form'>Add and Edit</a></li>
-                </ul>    
-            </div>
-                <ProjectList />
-            </div>
-        );
+        if(this.state.loading === false){
+            return(
+                <div>
+                    Loading...
+                </div>
+            );
+        } else{ 
+            return(
+                <div><h1>Projects</h1>
+                    <div>
+                        <NavTabs type='project' tabList={this.props.projects} />
+                    </div>
+                    <br/><br/>
+                    <div>
+                        <NavTabs type='deliverable' tabList={this.props.deliverables}/>
+                    </div>
+                    <ProjectList />
+                </div>
+            );
+        }
     }
 }
 
-export default ProjectView;
+function mapStateToProps(state){
+    return{
+        deliverables: state.deliverables,
+        fetched: state.fetched, 
+        projects: state.projects
+    }
+}
+export default connect(mapStateToProps)(ProjectView);

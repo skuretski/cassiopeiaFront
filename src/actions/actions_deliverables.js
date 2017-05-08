@@ -12,7 +12,7 @@ export function getDeliverables(dispatch){
 
 export function selectDeliverable(dispatch){
     return function(dispatch){
-        
+        dispatch(selectOneDeliverable(deliverable_id));
     }
 }
 export const setDeliverables = (deliverables) => {

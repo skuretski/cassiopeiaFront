@@ -5,9 +5,12 @@ class App extends Component{
     constructor(props){
         super(props);
         this.state = {
-            selectedProject: '',
+            projects: [],
+            deliverables: [],
+            tasks: [],
+            selectedTask: '',
             selectedDeliverable: '',
-            selectedTask: ''
+            selectedProject: ''
         }
     }
     render(){
@@ -20,10 +23,14 @@ class App extends Component{
 }
 
 function mapStateToProps(state){
-    return {
-        selectedProject: state.selectedProject,
+    return{
+        projects: state.projects,
+        deliverables: state.deliverables,
+        tasks: state.tasks,
         selectedDeliverable: state.selectedDeliverable,
+        selectedProject: state.selectedProject,
         selectedTask: state.selectedTask
     }
 }
+
 export default connect(mapStateToProps)(App);

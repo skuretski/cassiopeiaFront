@@ -10,6 +10,11 @@ export function getTasks(dispatch){
     });
 }
 
+export function selectTask(task_id){
+    return function(dispatch){
+        dispatch(selectOneTask(task_id));
+    }
+}
 export const setTasks = (tasks) => {
     return{
         type: 'GET_TASKS',
@@ -17,7 +22,7 @@ export const setTasks = (tasks) => {
     }
 }
 
-export const setTask = (task_id) => {
+export const selectOneTask = (task_id) => {
     return{
         type: 'SELECT_TASK',
         task_id
