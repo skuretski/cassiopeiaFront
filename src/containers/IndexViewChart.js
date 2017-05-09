@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Line } from "react-chartjs-2";
+// https://github.com/gor181/react-chartjs-2
 
 export default class IndexViewChart extends Component {
     constructor(props) {
@@ -19,7 +20,9 @@ export default class IndexViewChart extends Component {
     }
 };
 
-// https://github.com/gor181/react-chartjs-2
+// -----------------------------------------------------------------------------
+// Define Options For The Chart
+// -----------------------------------------------------------------------------
 function indexViewChartOptions() {
     var chartOptions = {
         responsive: true,
@@ -35,7 +38,7 @@ function indexViewChartOptions() {
                 type: 'linear',
                 scaleLabel: {
                     display: true,
-                    labelString: 'Man-months'
+                    labelString: 'Man-Months'
                     }
                 }, {
                 id: 'default',
@@ -53,55 +56,31 @@ function indexViewChartOptions() {
     return chartOptions;
 }
 
+// -----------------------------------------------------------------------------
+// Define Data For The Chart
+// -----------------------------------------------------------------------------
 function indexViewChartData(apiData) {
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var default_colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#DD4477',
         '#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC'];
+    var chartData = {};
     
-    // get the beginning mo/yr and end mo/yr from earliest and latest of SOW, funding, and assigned employees
-    var beginMo = 12;
-    var beginYr = Number.MAX_VALUE;
-    var endMo = 1;
-    var endYr = Number.MIN_VALUE;
+    // -----------------------------------------------------------------------------
+    // Get the beginning mo/yr and end mo/yr from earliest and latest of SOW, funding, and assigned employees
+    // -----------------------------------------------------------------------------
+    if (apiData.date_range.length == 0) {
+        return chartData;
+    }
+    var beginMo = apiData.date_range[0].mo;
+    var beginYr = apiData.date_range[0].yr;
+    var endMo = apiData.date_range[apiData.date_range.length - 1].mo;
+    var endYr = apiData.date_range[apiData.date_range.length - 1].yr;
     
-
-    // TODO: refactor this super shitty code to pass the data into a function and return the begin and end dates for each data set (sow, funding, assigned_employees)
-    if (apiData.sow.length > 0) {
-        if (parseInt(apiData.sow[0].yr) < beginYr || (parseInt(apiData.sow[0].yr) == beginYr && parseInt(apiData.sow[0].mo) < beginMo)) {
-            beginMo = apiData.sow[0].mo;
-            beginYr = apiData.sow[0].yr;
-        }
-        if (parseInt(apiData.sow[apiData.sow.length - 1].yr) > endYr || (parseInt(apiData.sow[apiData.sow.length - 1].yr) == endYr && parseInt(apiData.sow[apiData.sow.length - 1].mo) > endMo)) {
-            endMo = apiData.sow[apiData.sow.length - 1].mo;
-            endYr = apiData.sow[apiData.sow.length - 1].yr;
-        }
-    }
-    if (apiData.funding.length > 0) {
-        if (parseInt(apiData.funding[0].yr) < beginYr || (parseInt(apiData.funding[0].yr) == beginYr && parseInt(apiData.funding[0].mo) < beginMo)) {
-            beginMo = apiData.funding[0].mo;
-            beginYr = apiData.funding[0].yr;
-        }
-        if (parseInt(apiData.funding[apiData.funding.length - 1].yr) > endYr || (parseInt(apiData.funding[apiData.funding.length - 1].yr) == endYr && parseInt(apiData.funding[apiData.funding.length - 1].mo) > endMo)) {
-            endMo = apiData.funding[apiData.funding.length - 1].mo;
-            endYr = apiData.funding[apiData.funding.length - 1].yr;
-        }
-    }
-    if (apiData.assigned_employees.length > 0) {
-        if (parseInt(apiData.assigned_employees[0].yr) < beginYr || (parseInt(apiData.assigned_employees[0].yr) == beginYr && parseInt(apiData.assigned_employees[0].mo) < beginMo)) {
-            beginMo = apiData.assigned_employees[0].mo;
-            beginYr = apiData.assigned_employees[0].yr;
-        }
-        if (parseInt(apiData.assigned_employees[apiData.assigned_employees.length - 1].yr) > endYr || (parseInt(apiData.assigned_employees[apiData.assigned_employees.length - 1].yr) == endYr && parseInt(apiData.assigned_employees[apiData.assigned_employees.length - 1].mo) > endMo)) {
-            endMo = apiData.assigned_employees[apiData.assigned_employees.length - 1].mo;
-            endYr = apiData.assigned_employees[apiData.assigned_employees.length - 1].yr;
-        }
-    }    
-
+    // -----------------------------------------------------------------------------
+    // Populate chart labels (x-axis points)
+    // -----------------------------------------------------------------------------
     var someMo = beginMo;
     var someYr = beginYr;
-    var chartData = {};
-
-    // populate chart labels (x-axis points)
     chartData.labels = [];
     chartData.labels.push(months[parseInt(someMo) - 1] + '-' + parseInt(someYr));
     while (1) {
@@ -119,7 +98,9 @@ function indexViewChartData(apiData) {
         }
     }
 
-    // create chart datasets for SOW
+    // -----------------------------------------------------------------------------
+    // Create chart datasets for SOW
+    // -----------------------------------------------------------------------------
     chartData.datasets = [];
     var dsToProjMap = new Object();
     for (var i = 0; i < apiData.titles.length; i++) {
@@ -137,7 +118,9 @@ function indexViewChartData(apiData) {
         chartData.datasets.push(dataset);
     }
 
-    // get actual SOW data to be plotted into chart datasets
+    // -----------------------------------------------------------------------------
+    // Get actual SOW data to be plotted into chart datasets
+    // -----------------------------------------------------------------------------
     var sow = apiData.sow;
     var sowIndex = 0;
     var someDate;
@@ -161,7 +144,9 @@ function indexViewChartData(apiData) {
         }
     }
 
-    // create chart datasets for assigned employees
+    // -----------------------------------------------------------------------------
+    // Create chart datasets for assigned employees
+    // -----------------------------------------------------------------------------
     var dataset = new Object();
     dataset.label = 'Total Assigned Employees';
     dataset.yAxisID = 'default';
@@ -173,7 +158,9 @@ function indexViewChartData(apiData) {
     dataset.pointBorderColor = hexToRGB('#000000', 1); // the border color of the points
     //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
-    // get actual assigned employee data to be plotted into chart datasets
+    // -----------------------------------------------------------------------------
+    // Get actual assigned employee data to be plotted into chart datasets
+    // -----------------------------------------------------------------------------
     dataset.data = new Array(chartData.labels.length).fill(0);
     var j = 0;
     for (var i = 0; i < apiData.assigned_employees.length; i++) { // for each entry in apiData.assigned_employees
@@ -185,7 +172,9 @@ function indexViewChartData(apiData) {
     }
     chartData.datasets.unshift(dataset);
 
-    // create chart datasets for funding
+    // -----------------------------------------------------------------------------
+    // Create chart datasets for funding
+    // -----------------------------------------------------------------------------
     var dataset = new Object();
     dataset.label = 'Total Funding';
     dataset.yAxisID = 'default';
@@ -196,7 +185,9 @@ function indexViewChartData(apiData) {
     dataset.pointBorderColor = hexToRGB('#000000', 1); // the border color of the points
     //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
-    // get actual funding data to be plotted into chart datasets
+    // -----------------------------------------------------------------------------
+    // Get actual funding data to be plotted into chart datasets
+    // -----------------------------------------------------------------------------
     dataset.data = new Array(chartData.labels.length).fill(0);
     var j = 0;
     for (var i = 0; i < apiData.funding.length; i++) { // for each entry in apiData.funding
@@ -208,7 +199,9 @@ function indexViewChartData(apiData) {
     }
     chartData.datasets.unshift(dataset);
 
-    // align scales to be equal
+    // -----------------------------------------------------------------------------
+    // Align scales to be equal
+    // -----------------------------------------------------------------------------
     var maxYValue = 0;
     for (var i = 0; i < chartData.labels.length; i++) { // for each mo/yr combo on the chart
         maxYValue = Math.max(maxYValue, chartData.datasets[0].data[i]); // max value from funding
