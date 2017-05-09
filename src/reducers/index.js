@@ -5,6 +5,7 @@ import DeliverablesReducer from './reducer_deliverables';
 import TasksReducer from './reducer_tasks';
 import EmployeeReducer from './reducer_employees';
 import IndexViewReducer from './reducer_indexview';
+import ProjectViewReducer from './reducer_projectview';
 
 const rootReducer = combineReducers({
     projects: ProjectsReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     deliverables: DeliverablesReducer,
     tasks: TasksReducer,
     employees: EmployeeReducer,
-    indexViewData: IndexViewReducer
+    indexViewData: IndexViewReducer,
+    projectDeliverables: ProjectViewReducer
 });
 
 export default rootReducer;

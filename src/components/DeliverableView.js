@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import NavTabs from '../containers/navigation/NavTabs';
+import { getTasksByDeliverable } from '../actions/actions_deliverableview';
 
 class DeliverableView extends Component{
+    constructor(props){
+        super(props);
+    }
+    componentWillMount(){
+        console.log(this.props.routeParams.id);
+   //     this.props.dispatch(getTasksByDeliverable())
+    }
     render(){
+        console.log(this.props)
         return(
             <div><h1>Deliverables</h1>
             <div>
@@ -18,4 +29,9 @@ class DeliverableView extends Component{
     }
 }
 
-export default DeliverableView;
+function mapStateToProps(state){
+    return{
+        deliverableTasks: state.deliverableTasks
+    }
+}
+export default connect(mapStateToProps)(DeliverableView);

@@ -1,0 +1,12 @@
+body{
+    padding-top: 80px;
+}
+
+nav{
+    padding: 20px;
+}
+
+a.active{
+    color: #ff0000;
+    text-decoration: underline;
+}

@@ -11,10 +11,11 @@ export default(
 
 <Route path="/" component={App}>
     <IndexRoute component ={IndexView} />
-    <Route path="/project" component={ProjectView} />
-    <Route path="/deliverable" component={DeliverableView} />
-    <Route path="/task" component={TaskView} />
+    <Route path="/projects/:id" component={ProjectView}/>
+    <Route path="/projects/:id/deliverables/:id" component={DeliverableView} />
+    <Route path="/projects/:id/deliverables/:id/task" component={TaskView} />
     <Route path="/form" component={FormView} />
+    <Route path="/" component={IndexView} />
 </Route>
 
 );
