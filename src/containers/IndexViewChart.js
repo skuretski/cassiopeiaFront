@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Line } from "react-chartjs-2";
 // https://github.com/gor181/react-chartjs-2
+import _ from 'lodash';
 
 export default class IndexViewChart extends Component {
     constructor(props) {
@@ -33,7 +34,7 @@ function indexViewChartOptions() {
         scales: {
             yAxes: [
                 {
-                id: 'stacked',
+                id: 'stacked', // this yAxes is used for the stacked area datasets
                 stacked: true,
                 type: 'linear',
                 scaleLabel: {
@@ -41,18 +42,25 @@ function indexViewChartOptions() {
                     labelString: 'Man-Months'
                     }
                 }, {
-                id: 'default',
+                id: 'default', // this yAxes is used for the basic line datasets
                 stacked: false,
                 type: 'linear',
                 scaleLabel: {
                     display: true,
-                    labelString: 'remove this axis after figuring out how to set different axes to same scale'
+                    labelString: '2nd axis that will not normally be displayed'
                     },
                 display: false // show 2nd y-axis (only on for visual debugging)
             }]
+        },
+        legend: {
+            display: true,
+            position: 'right',
+            reverse: true,
+            labels: {
+                boxWidth: 20
+            }
         }
     };
-
     return chartOptions;
 }
 
@@ -60,7 +68,6 @@ function indexViewChartOptions() {
 // Define Data For The Chart
 // -----------------------------------------------------------------------------
 function indexViewChartData(apiData) {
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var default_colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#DD4477',
         '#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC'];
     var chartData = {};
@@ -82,7 +89,7 @@ function indexViewChartData(apiData) {
     var someMo = beginMo;
     var someYr = beginYr;
     chartData.labels = [];
-    chartData.labels.push(months[parseInt(someMo) - 1] + '-' + parseInt(someYr));
+    chartData.labels.push(dateHelper(someMo, someYr));
     while (1) {
         if (someMo < 12) {
             someMo++;
@@ -91,7 +98,7 @@ function indexViewChartData(apiData) {
             someYr++;
             someMo = 1;
         }
-        chartData.labels.push(months[parseInt(someMo) - 1] + '-' + parseInt(someYr));
+        chartData.labels.push(dateHelper(someMo, someYr));
         
         if (someMo == endMo && someYr == endYr) {
             break;
@@ -107,41 +114,30 @@ function indexViewChartData(apiData) {
         var dataset = new Object();
         dataset.label = 'SOW: ' + apiData.titles[i].title;
         dsToProjMap[apiData.titles[i].id] = i;
-        dataset.data = [];
+        dataset.data = new Array(chartData.labels.length).fill(0);
         dataset.yAxisID = 'stacked';
         dataset.lineTension = 0;
         dataset.backgroundColor = hexToRGB(default_colors[i % default_colors.length], 0.5); // the color of the shading below the line
         dataset.borderColor = hexToRGB(default_colors[i % default_colors.length], 1); // the color of the line itself
         dataset.pointBackgroundColor = hexToRGB(default_colors[i % default_colors.length], 0.5); // the fill color of the points
         dataset.pointBorderColor = hexToRGB(default_colors[i % default_colors.length], 1); // the border color of the points
-        //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
+        dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
         chartData.datasets.push(dataset);
     }
 
     // -----------------------------------------------------------------------------
-    // Get actual SOW data to be plotted into chart datasets
+    // Get actual SOW data (for each project) to be plotted into chart datasets
     // -----------------------------------------------------------------------------
-    var sow = apiData.sow;
-    var sowIndex = 0;
     var someDate;
-    for (var i = 0; i < chartData.labels.length; i++) { // for each mo/yr combo on the chart
-        for (var j = 0; j < chartData.datasets.length; j++) { // for each project (each project has its own dataset)
-            // is there a SOW entry for this mo/yr for this project?
-            // !!! this depends on the sow being in order by mo/yr/project !!!
-            if (sowIndex < sow.length) {
-                someDate = months[sow[sowIndex].mo - 1] + '-' + sow[sowIndex].yr;
-                if (someDate == chartData.labels[i] && dsToProjMap[sow[sowIndex].project_id] == j) {
-                    chartData.datasets[j].data.push(sow[sowIndex].sum_man_mo);
-                    sowIndex++;
-                }
-                else { // there is NOT a SOW entry for this mo/yr for this project
-                    chartData.datasets[j].data.push(0);
-                }
-            }
-            else { // there is NOT a SOW entry for this mo/yr for this project
-                chartData.datasets[j].data.push(0);
-            }
+    var j = 0;
+    for (var i = 0; i < apiData.sow.length; i++) { // for each entry in apiData.sow
+        console.log(apiData.sow[i]);
+        console.log(apiData.sow[i].mo);
+        someDate = dateHelper(apiData.sow[i].mo, apiData.sow[i].yr); // mo/yr of some entry in SOW result from api
+        while (someDate != chartData.labels[j]) {
+            j++;
         }
+        chartData.datasets[dsToProjMap[apiData.sow[i].project_id]].data[j] += apiData.sow[i].sum_man_mo;
     }
 
     // -----------------------------------------------------------------------------
@@ -156,7 +152,7 @@ function indexViewChartData(apiData) {
     dataset.borderDash = [2, 2];
     dataset.pointBackgroundColor = hexToRGB('#000000', 0.5); // the fill color of the points
     dataset.pointBorderColor = hexToRGB('#000000', 1); // the border color of the points
-    //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
+    dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
     // -----------------------------------------------------------------------------
     // Get actual assigned employee data to be plotted into chart datasets
@@ -164,7 +160,7 @@ function indexViewChartData(apiData) {
     dataset.data = new Array(chartData.labels.length).fill(0);
     var j = 0;
     for (var i = 0; i < apiData.assigned_employees.length; i++) { // for each entry in apiData.assigned_employees
-        someDate = months[apiData.assigned_employees[i].mo - 1] + '-' + apiData.assigned_employees[i].yr; // mo/yr of some entry in assigned_employees result from api
+        someDate = dateHelper(apiData.assigned_employees[i].mo, apiData.assigned_employees[i].yr); // mo/yr of some entry in assigned_employees result from api
         while (someDate != chartData.labels[j]) {
             j++;
         }
@@ -183,7 +179,7 @@ function indexViewChartData(apiData) {
     dataset.borderColor = hexToRGB('#000000', 1); // the color of the line itself
     dataset.pointBackgroundColor = hexToRGB('#000000', 0.5); // the fill color of the points
     dataset.pointBorderColor = hexToRGB('#000000', 1); // the border color of the points
-    //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
+    dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
     // -----------------------------------------------------------------------------
     // Get actual funding data to be plotted into chart datasets
@@ -191,7 +187,7 @@ function indexViewChartData(apiData) {
     dataset.data = new Array(chartData.labels.length).fill(0);
     var j = 0;
     for (var i = 0; i < apiData.funding.length; i++) { // for each entry in apiData.funding
-        someDate = months[apiData.funding[i].mo - 1] + '-' + apiData.funding[i].yr; // mo/yr of some entry in funding result from api
+        someDate = dateHelper(apiData.funding[i].mo, apiData.funding[i].yr); // mo/yr of some entry in funding result from api
         while (someDate != chartData.labels[j]) {
             j++;
         }
@@ -202,10 +198,8 @@ function indexViewChartData(apiData) {
     // -----------------------------------------------------------------------------
     // Align scales to be equal
     // -----------------------------------------------------------------------------
-    var maxYValue = 0;
+    var maxYValue = Math.max(_.max(chartData.datasets[0].data, _.max(chartData.datasets[1].data))); // max value from funding and assigned employees
     for (var i = 0; i < chartData.labels.length; i++) { // for each mo/yr combo on the chart
-        maxYValue = Math.max(maxYValue, chartData.datasets[0].data[i]); // max value from funding
-        maxYValue = Math.max(maxYValue, chartData.datasets[1].data[i]); // max value from assigned employees
         var sowSum = 0;
         for (var j = 2; j < chartData.datasets.length; j++) {
             sowSum += chartData.datasets[j].data[i];
@@ -234,4 +228,10 @@ function hexToRGB(hex, alpha) {
     } else {
         return "rgb(" + r + ", " + g + ", " + b + ")";
     }
+}
+
+// convert mo=2 and yr=2019 to "Feb-2019"
+function dateHelper(mo, yr) {
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return (months[mo - 1] + '-' + yr);
 }
