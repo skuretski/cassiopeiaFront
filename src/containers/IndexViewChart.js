@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Line } from "react-chartjs";
+import { Line } from "react-chartjs-2";
 
 export default class IndexViewChart extends Component {
     constructor(props) {
@@ -19,36 +19,25 @@ export default class IndexViewChart extends Component {
     }
 };
 
-
-// https://github.com/chartjs/Chart.js/blob/v1.1.1/docs/01-Line-Chart.md
-// https://github.com/houjiazong/react-chartjs2
 // https://github.com/gor181/react-chartjs-2
 function indexViewChartOptions() {
     var chartOptions = {
         responsive: true,
         title: {
             display: true,
-            text: 'whatever'
+            text: 'All Projects'
+        },
+        scales: {
+            yAxes: [{
+                stacked: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Man-months'
+                }
+            }]
         }
     };
 
-/*
-    chartOptions.title = new Object();
-    chartOptions.display = true;
-    chartOptions.text = 'Overview';
-    var scales = {};
-    var xAxes = [];
-    var yxAxes = [];
-    var scaleLabel = {};
-    scaleLabel.display = true;
-    scaleLabel.labelString = 'Month';
-    xAxes.push(scaleLabel);
-    scaleLabel.labelString = 'Heads';
-    yAxes.push(scaleLabel);
-    scales.xAxes = xAxes;
-    scales.yAxes = yAxes;
-    chartOptions.scales = scales;
-*/
     return chartOptions;
 }
 
@@ -94,11 +83,11 @@ function indexViewChartData(apiData) {
         dataset.label = apiData.titles[i].title;
         dsToProjMap[apiData.titles[i].id] = i;
         dataset.data = [];
-        dataset.label = 'StackedArea';
-        dataset.fillColor = hexToRGB(default_colors[i % default_colors.length], 0.5);
-        dataset.strokeColor = hexToRGB(default_colors[i % default_colors.length], 1); // the color of the line itself
-        dataset.pointColor = hexToRGB(default_colors[i % default_colors.length], 0.5); // the fill color of the points
-        dataset.pointStrokeColor = hexToRGB(default_colors[i % default_colors.length], 1); // the border color of the points
+        dataset.lineTension = 0;
+        dataset.backgroundColor = hexToRGB(default_colors[i % default_colors.length], 0.5);
+        dataset.borderColor = hexToRGB(default_colors[i % default_colors.length], 1); // the color of the line itself
+        dataset.pointBackgroundColor = hexToRGB(default_colors[i % default_colors.length], 0.5); // the fill color of the points
+        dataset.pointBorderColor = hexToRGB(default_colors[i % default_colors.length], 1); // the border color of the points
         chartData.datasets.push(dataset);
     }
 
@@ -113,44 +102,17 @@ function indexViewChartData(apiData) {
             if (sowIndex < sow.length) {
                 someDate = months[sow[sowIndex].mo - 1] + '-' + sow[sowIndex].yr;
                 if (someDate == chartData.labels[i] && dsToProjMap[sow[sowIndex].project_id] == j) {
-                    // to make a stacked area chart, we have make each line the sum of its own data plus the data underneath it
-                    if (j == 0) {
-                        chartData.datasets[j].data.push(sow[sowIndex].sum_man_mo);
-                    }
-                    else {
-                        chartData.datasets[j].data.push(sow[sowIndex].sum_man_mo + chartData.datasets[j - 1].data[i]);
-                    }
+                    chartData.datasets[j].data.push(sow[sowIndex].sum_man_mo);
                     sowIndex++;
                 }
                 else { // there is NOT a SOW entry for this mo/yr for this project
-                    if (j == 0) {
-                        chartData.datasets[j].data.push(0);
-                    }
-                    else {
-                        chartData.datasets[j].data.push(chartData.datasets[j - 1].data[i]);
-                    }
+                    chartData.datasets[j].data.push(0);
                 }
             }
             else { // there is NOT a SOW entry for this mo/yr for this project
-                if (j == 0) {
-                    chartData.datasets[j].data.push(0);
-                }
-                else {
-                    chartData.datasets[j].data.push(chartData.datasets[j - 1].data[i]);
-                }
+                chartData.datasets[j].data.push(0);
             }
         }
-    }
-
-    // reverse datasets so the biggest will be drawn in back and the smaller values will be drawn in front
-    var i = 0;
-    var j = chartData.datasets.length - 1;
-    while (i < j) {
-        var tempDataSet = chartData.datasets[i];
-        chartData.datasets[i] = chartData.datasets[j];
-        chartData.datasets[j] = tempDataSet;
-        i++;
-        j--;
     }
 
     return chartData;
