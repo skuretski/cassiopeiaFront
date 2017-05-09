@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import BaseChart from '../containers/BaseChart';
+import IndexViewChart from '../containers/IndexViewChart';
+import SummaryTable from '../components/SummaryTable';
+import { getIndexViewData } from '../actions/actions_indexview';
 import NavTabs from '../containers/navigation/NavTabs';
                    
 class IndexView extends Component{
     constructor(props){
         super(props);
+    }
+    componentDidMount(){
+        this.props.dispatch(getIndexViewData);
     }
     render(){
         return(
@@ -15,16 +20,19 @@ class IndexView extends Component{
                         <h1>Index</h1>
                             <h2>Cassiopeia Home Page</h2>
                                 <p>Welcome to our project management web application!</p>
+                                <IndexViewChart data={this.props.indexViewData}/>
+                                <SummaryTable data={this.props.indexViewData}/>
                     </div>
-                    <BaseChart />
             </div>
-        );        
-    }
+        ); 
+    }       
 }
 
 function mapStateToProps(state){
     return{
-        projects: state.projects
+        projects: state.projects,
+        indexViewData: state.indexViewData
     }
 }
+
 export default connect(mapStateToProps)(IndexView);

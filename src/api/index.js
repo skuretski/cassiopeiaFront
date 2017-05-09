@@ -1,5 +1,6 @@
 //var api = 'http://52.27.101.164:3000';
- var api = 'http://localhost:3000';
+var api = 'http://localhost:3000';
+
 
 exports.EMPLOYEES = `${api}/employees`;
 exports.PROJECTS = `${api}/projects`;
