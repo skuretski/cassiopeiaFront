@@ -16,17 +16,18 @@ management API. API here: https://github.com/skuretski/cassiopeia
 <ul>
     <li>axios</li>
     <li>babel-preset-stage-1</li>
-    <li>chart.js@1.1.1</li>
+    <li>chart.js@2.5.0</li>
     <li>express</li>
     <li>lodash</li>
     <li>path</li>
     <li>react</li>
-    <li>react-bootstrap</li>
-    <li>react-chartjs</li>
+    <li>react-chartjs-2</li>
     <li>react-dom</li>
     <li>react-redux</li>
     <li>react-router</li>
     <li>redux</li>
+    <li>redux-thunk</li>
+    <li>uuid</li>
 </ul>
 
 ## File Structure
