@@ -28,12 +28,24 @@ function indexViewChartOptions() {
             text: 'All Projects'
         },
         scales: {
-            yAxes: [{
+            yAxes: [
+                {
+                id: 'stacked',
                 stacked: true,
+                type: 'linear',
                 scaleLabel: {
                     display: true,
                     labelString: 'Man-months'
-                }
+                    }
+                }, {
+                id: 'default',
+                stacked: false,
+                type: 'linear',
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Default'
+                    },
+                display: true // show 2nd y-axis (only on for visual debugging)
             }]
         }
     };
@@ -46,15 +58,27 @@ function indexViewChartData(apiData) {
     var default_colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#DD4477',
         '#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC'];
     
+    // get the beginning mo/yr and end mo/yr from earliest and latest of SOW, funding, and assigned employees
     var beginMo = parseInt(apiData.sow[0].mo);
     var beginYr = parseInt(apiData.sow[0].yr);
     var endMo = parseInt(apiData.sow[apiData.sow.length - 1].mo);
     var endYr = parseInt(apiData.sow[apiData.sow.length - 1].yr);
-    // TODO: also consider funding and assigned employees in determination of beginDate and endDate
+    if (parseInt(apiData.funding[0].yr) <= beginYr && parseInt(apiData.funding[0].mo) <= beginMo) {
+        beginMo = apiData.funding[0].mo;
+        beginYr = apiData.funding[0].yr;
+    }
+    if (parseInt(apiData.funding[apiData.funding.length - 1].yr) >= endYr && parseInt(apiData.funding[apiData.funding.length - 1].mo) >= endMo) {
+        endMo = apiData.funding[apiData.funding.length - 1].mo;
+        endYr = apiData.funding[apiData.funding.length - 1].yr;
+    }
+    // TODO: assigned employees in determination of beginDate and endDate
+    // TODO: assigned employees in determination of beginDate and endDate
+    // TODO: assigned employees in determination of beginDate and endDate
+    // TODO: assigned employees in determination of beginDate and endDate
+
 
     var someMo = beginMo;
     var someYr = beginYr;
-    
     var chartData = {};
 
     // populate chart labels (x-axis points)
@@ -75,23 +99,25 @@ function indexViewChartData(apiData) {
         }
     }
 
-    // create chart datasets
+    // create chart datasets for SOW
     chartData.datasets = [];
     var dsToProjMap = new Object();
     for (var i = 0; i < apiData.titles.length; i++) {
         var dataset = new Object();
-        dataset.label = apiData.titles[i].title;
+        dataset.label = 'SOW: ' + apiData.titles[i].title;
         dsToProjMap[apiData.titles[i].id] = i;
         dataset.data = [];
+        dataset.yAxisID = 'stacked';
         dataset.lineTension = 0;
-        dataset.backgroundColor = hexToRGB(default_colors[i % default_colors.length], 0.5);
+        dataset.backgroundColor = hexToRGB(default_colors[i % default_colors.length], 0.5); // the color of the shading below the line
         dataset.borderColor = hexToRGB(default_colors[i % default_colors.length], 1); // the color of the line itself
         dataset.pointBackgroundColor = hexToRGB(default_colors[i % default_colors.length], 0.5); // the fill color of the points
         dataset.pointBorderColor = hexToRGB(default_colors[i % default_colors.length], 1); // the border color of the points
+        //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
         chartData.datasets.push(dataset);
     }
 
-    // get actual data to be plotted into chart datasets
+    // get actual SOW data to be plotted into chart datasets
     var sow = apiData.sow;
     var sowIndex = 0;
     var someDate;
@@ -114,6 +140,29 @@ function indexViewChartData(apiData) {
             }
         }
     }
+
+    // create chart datasets for funding
+    var dataset = new Object();
+    dataset.label = 'Total Funding';
+    dataset.yAxisID = 'default';
+    dataset.lineTension = 0;
+    dataset.backgroundColor = 'transparent'; // the color of the shading below the line
+    dataset.borderColor = hexToRGB('#000000', 1); // the color of the line itself
+    dataset.pointBackgroundColor = hexToRGB('#000000', 0.5); // the fill color of the points
+    dataset.pointBorderColor = hexToRGB('#000000', 1); // the border color of the points
+    //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
+
+    // get actual funding data to be plotted into chart datasets
+    dataset.data = new Array(chartData.labels.length).fill(0);
+    var j = 0;
+    for (var i = 0; i < apiData.funding.length; i++) { // for each entry in apiData.funding
+        someDate = months[apiData.funding[i].mo - 1] + '-' + apiData.funding[i].yr; // mo/yr of some entry in funding result from api
+        while (someDate != chartData.labels[j]) {
+            j++;
+        }
+        dataset.data[j] += apiData.funding[i].funding_amt;
+    }
+    chartData.datasets.unshift(dataset);
 
     return chartData;
 }
