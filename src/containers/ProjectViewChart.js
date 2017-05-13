@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2";
 // https://github.com/gor181/react-chartjs-2
 import _ from 'lodash';
 
-export default class IndexViewChart extends Component {
+export default class ProjectViewChart extends Component {
     constructor(props) {
         super(props);
     }
@@ -12,7 +12,7 @@ export default class IndexViewChart extends Component {
         if (!_.isEmpty(this.props.data)) {
             return (
                 <div>
-                    <Line data={indexViewChartData(this.props.data)} options={indexViewChartOptions()} />
+                    <Line data={projectViewChartData(this.props.data)} options={projectViewChartOptions()} />
                 </div>    
             );
         } else {
@@ -24,7 +24,7 @@ export default class IndexViewChart extends Component {
 // -----------------------------------------------------------------------------
 // Define Options For The Chart
 // -----------------------------------------------------------------------------
-function indexViewChartOptions() {
+function projectViewChartOptions() {
     var chartOptions = {
         responsive: true,
         title: {
@@ -67,7 +67,8 @@ function indexViewChartOptions() {
 // -----------------------------------------------------------------------------
 // Define Data For The Chart
 // -----------------------------------------------------------------------------
-function indexViewChartData(apiData) {
+function projectViewChartData(apiData) {
+    console.log(apiData);
     var default_colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#DD4477',
         '#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC'];
     var chartData = {};

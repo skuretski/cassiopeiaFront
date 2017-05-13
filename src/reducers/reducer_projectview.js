@@ -1,7 +1,8 @@
+// if you don't get me state, set state = null
 export default function(state = {}, action){
     switch (action.type){
-        case 'GET_PROJECT_DELIVERABLES':
-            return _.mapKeys(action.projectDeliverables, 'id');   
+        case 'GET_PROJECTVIEWDATA':
+            return action.projectViewData;
         default:
             return state;
     }   

@@ -1,21 +1,21 @@
 import axios from 'axios';
-import { PROJECTS } from '../api';
+import { PROJECTVIEW } from '../api';
 
-export function getDeliverablesByProject(id){
+export function getProjectViewData(id){
     return function(dispatch){
-        return axios.get(`${PROJECTS}/${id}/deliverables`)
+        return axios.get(`${PROJECTVIEW}/${id}`)
         .then((response) => {
-            dispatch(setProjectDeliv(response.data));
+            dispatch(setProjectViewData(response.data));
         }).catch((error) => {
             console.log(error);
         });
     }
-
 }
 
-export const setProjectDeliv = (projectDeliverables) => {
+export const setProjectViewData = (projectViewData) => {
     return{
-        type: 'GET_PROJECT_DELIVERABLES',
-        projectDeliverables
+        type: 'GET_PROJECTVIEWDATA',
+        projectViewData
     }
 }
+

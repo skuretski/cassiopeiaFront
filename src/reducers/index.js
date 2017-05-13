@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
     tasks: TasksReducer,
     employees: EmployeeReducer,
     indexViewData: IndexViewReducer,
-    projectDeliverables: ProjectViewReducer
+    projectViewData: ProjectViewReducer
 });
 
 export default rootReducer;
