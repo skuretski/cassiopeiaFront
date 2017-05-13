@@ -12,7 +12,7 @@ export default class ProjectViewChart extends Component {
         if (!_.isEmpty(this.props.data)) {
             return (
                 <div>
-                    <Line data={projectViewChartData(this.props.data)} options={projectViewChartOptions()} />
+                    <Line data={projectViewChartData(this.props.data)} options={projectViewChartOptions(this.props.data)} />
                 </div>    
             );
         } else {
@@ -24,12 +24,13 @@ export default class ProjectViewChart extends Component {
 // -----------------------------------------------------------------------------
 // Define Options For The Chart
 // -----------------------------------------------------------------------------
-function projectViewChartOptions() {
+function projectViewChartOptions(apiData) {
+    //var title = api
     var chartOptions = {
         responsive: true,
         title: {
             display: true,
-            text: 'Business Plan Overview'
+            text: 'Project Overview: ' + apiData.project[0].title
         },
         scales: {
             yAxes: [
@@ -68,7 +69,6 @@ function projectViewChartOptions() {
 // Define Data For The Chart
 // -----------------------------------------------------------------------------
 function projectViewChartData(apiData) {
-    console.log(apiData);
     var default_colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#DD4477',
         '#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC'];
     var chartData = {};
@@ -83,7 +83,7 @@ function projectViewChartData(apiData) {
     var beginYr = apiData.date_range[0].yr;
     var endMo = apiData.date_range[apiData.date_range.length - 1].mo;
     var endYr = apiData.date_range[apiData.date_range.length - 1].yr;
-    
+
     // -----------------------------------------------------------------------------
     // Populate chart labels (x-axis points)
     // -----------------------------------------------------------------------------
@@ -110,11 +110,11 @@ function projectViewChartData(apiData) {
     // Create chart datasets for SOW
     // -----------------------------------------------------------------------------
     chartData.datasets = [];
-    var dsToProjMap = new Object();
-    for (var i = 0; i < apiData.titles.length; i++) {
+    var dsToDelMap = new Object();
+    for (var i = 0; i < apiData.deliverables.length; i++) {
         var dataset = new Object();
-        dataset.label = 'SOW: ' + apiData.titles[i].title;
-        dsToProjMap[apiData.titles[i].id] = i;
+        dataset.label = 'SOW: ' + apiData.deliverables[i].title;
+        dsToDelMap[apiData.deliverables[i].id] = i;
         dataset.data = new Array(chartData.labels.length).fill(0);
         dataset.yAxisID = 'stacked';
         dataset.lineTension = 0;
@@ -127,20 +127,22 @@ function projectViewChartData(apiData) {
     }
 
     // -----------------------------------------------------------------------------
-    // Get actual SOW data (for each project) to be plotted into chart datasets
+    // Get actual SOW data (for each delivarble) to be plotted into chart datasets
     // -----------------------------------------------------------------------------
     var someDate;
     var j = 0;
     for (var i = 0; i < apiData.sow.length; i++) { // for each entry in apiData.sow
+        //console.log('i = ' + i);
         //console.log(apiData.sow[i]);
         //console.log(apiData.sow[i].mo);
         someDate = dateHelper(apiData.sow[i].mo, apiData.sow[i].yr); // mo/yr of some entry in SOW result from api
         while (someDate != chartData.labels[j]) {
+            //console.log('j = ' + j);
             j++;
         }
-        chartData.datasets[dsToProjMap[apiData.sow[i].project_id]].data[j] += apiData.sow[i].sum_man_mo;
+        chartData.datasets[dsToDelMap[apiData.sow[i].deliverable_id]].data[j] += apiData.sow[i].sum_man_mo;
     }
-    dsToProjMap = null; // i'm going to unshift into the dataset below, which will break the map
+    dsToDelMap = null; // i'm going to unshift into the dataset below, which will break the map
 
     // -----------------------------------------------------------------------------
     // Create chart datasets for funding
@@ -204,7 +206,7 @@ function projectViewChartData(apiData) {
     // -----------------------------------------------------------------------------
     // Align scales to be equal
     // -----------------------------------------------------------------------------
-    var maxYValue = Math.max(_.max(chartData.datasets[0].data, _.max(chartData.datasets[1].data))); // max value from funding and assigned employees
+    var maxYValue = Math.max(_.max(chartData.datasets[0].data), _.max(chartData.datasets[1].data)); // max value from funding and assigned employees
     for (var i = 0; i < chartData.labels.length; i++) { // for each mo/yr combo on the chart
         var sowSum = 0;
         for (var j = 2; j < chartData.datasets.length; j++) {
@@ -212,7 +214,14 @@ function projectViewChartData(apiData) {
         }
         maxYValue = Math.max(maxYValue, sowSum); // max value from combined (sandpiled) SOW
     }
-    maxYValue = Math.ceil(maxYValue / 10) * 10; // TODO: make this a little smarter -> round to an appropriate max based on the value
+    console.log('maxYValue:' + maxYValue);
+    if (maxYValue == Math.ceil(maxYValue / 10) * 10) {
+        maxYValue += 10;
+    }
+    else {
+        maxYValue = Math.ceil(maxYValue / 10) * 10; // TODO: make this a little smarter -> round to an appropriate max based on the value
+    }
+    console.log('maxYValue:' + maxYValue);
     Chart.scaleService.updateScaleDefaults('linear', {
         ticks: {
             max: maxYValue

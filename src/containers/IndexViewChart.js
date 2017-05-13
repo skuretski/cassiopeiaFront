@@ -203,7 +203,7 @@ function indexViewChartData(apiData) {
     // -----------------------------------------------------------------------------
     // Align scales to be equal
     // -----------------------------------------------------------------------------
-    var maxYValue = Math.max(_.max(chartData.datasets[0].data, _.max(chartData.datasets[1].data))); // max value from funding and assigned employees
+    var maxYValue = Math.max(_.max(chartData.datasets[0].data), _.max(chartData.datasets[1].data)); // max value from funding and assigned employees
     for (var i = 0; i < chartData.labels.length; i++) { // for each mo/yr combo on the chart
         var sowSum = 0;
         for (var j = 2; j < chartData.datasets.length; j++) {
@@ -211,7 +211,14 @@ function indexViewChartData(apiData) {
         }
         maxYValue = Math.max(maxYValue, sowSum); // max value from combined (sandpiled) SOW
     }
-    maxYValue = Math.ceil(maxYValue / 10) * 10; // TODO: make this a little smarter -> round to an appropriate max based on the value
+    //console.log('maxYValue:' + maxYValue);
+    if (maxYValue == Math.ceil(maxYValue / 10) * 10) {
+        maxYValue += 10;
+    }
+    else {
+        maxYValue = Math.ceil(maxYValue / 10) * 10; // TODO: make this a little smarter -> round to an appropriate max based on the value
+    }
+    //console.log('maxYValue:' + maxYValue);
     Chart.scaleService.updateScaleDefaults('linear', {
         ticks: {
             max: maxYValue
