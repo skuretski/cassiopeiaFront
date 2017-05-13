@@ -214,14 +214,14 @@ function projectViewChartData(apiData) {
         }
         maxYValue = Math.max(maxYValue, sowSum); // max value from combined (sandpiled) SOW
     }
-    console.log('maxYValue:' + maxYValue);
+    // console.log('maxYValue:' + maxYValue);
     if (maxYValue == Math.ceil(maxYValue / 10) * 10) {
         maxYValue += 10;
     }
     else {
         maxYValue = Math.ceil(maxYValue / 10) * 10; // TODO: make this a little smarter -> round to an appropriate max based on the value
     }
-    console.log('maxYValue:' + maxYValue);
+    // console.log('maxYValue:' + maxYValue);
     Chart.scaleService.updateScaleDefaults('linear', {
         ticks: {
             max: maxYValue

@@ -36,8 +36,6 @@ class ProjectSummaryTable extends Component {
             return <div></div>;
         }
 
-        console.log(this.props.data)
-
         return (
             <table className="table table-hover table-bordered">
                 <thead>
