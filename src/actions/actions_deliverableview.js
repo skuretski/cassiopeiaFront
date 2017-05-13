@@ -1,21 +1,20 @@
 import axios from 'axios';
-import { PROJECTS } from '../api';
+import { DELIVERABLEVIEW } from '../api';
 
-export function getTasksByDeliverable(project_id, deliverable_id){
+export function getDeliverableViewData(id) {
     return function(dispatch){
-        return axios.get(`${PROJECTS}/${project_id}/deliverables/${deliverable_id}/tasks`)
+        return axios.get(`${DELIVERABLEVIEW}/${id}`)
         .then((response) => {
-            dispatch(setDelivTasks(response.data));
+            dispatch(setDeliverableViewData(response.data));
         }).catch((error) => {
             console.log(error);
         });
-    
     }
 }
 
-export const setDelivTasks = (deliverableTasks) => {
-    return{
-        type: 'GET_DELIVERABLE_TASKS',
-        deliverableTasks
+export const setDeliverableViewData = (deliverableViewData) => {
+    return {
+        type: 'GET_DELIVERABLEVIEWDATA',
+        deliverableViewData
     }
 }
