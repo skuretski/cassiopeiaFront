@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TableRow from '../components/TableRow';
 import _ from 'lodash';
 
-class SummaryTable extends Component {
+class IndexSummaryTable extends Component {
     constructor(props) {
         super(props);
     }
@@ -61,4 +61,4 @@ class SummaryTable extends Component {
     }
 }
 
-export default SummaryTable;
+export default IndexSummaryTable;
