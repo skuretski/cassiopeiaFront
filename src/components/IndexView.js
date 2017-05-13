@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import IndexViewChart from '../containers/IndexViewChart';
-import SummaryTable from '../components/SummaryTable';
+import IndexSummaryTable from '../components/IndexSummaryTable';
 import { getIndexViewData } from '../actions/actions_indexview';
 import NavTabs from '../containers/navigation/NavTabs';
                    
@@ -21,7 +21,7 @@ class IndexView extends Component{
                             <h2>Cassiopeia Home Page</h2>
                                 <p>Welcome to our project management web application!</p>
                                 <IndexViewChart data={this.props.indexViewData}/>
-                                <SummaryTable data={this.props.indexViewData}/>
+                                <IndexSummaryTable data={this.props.indexViewData}/>
                     </div>
             </div>
         ); 
