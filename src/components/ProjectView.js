@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ProjectViewChart from '../containers/ProjectViewChart';
+import ProjectSummaryTable from '../components/ProjectSummaryTable';
 import ProjectList from '../containers/ProjectList';
 import NavTabs from '../containers/navigation/NavTabs';
 import { getProjectViewData } from '../actions/actions_projectview';
@@ -18,6 +19,7 @@ class ProjectView extends Component{
             <div className="container">
                 <NavTabs type='project' tabList={this.props.projects} toUrl={'/projects/'} />
                 <ProjectViewChart data={this.props.projectViewData}/>
+                <ProjectSummaryTable data={this.props.projectViewData}/>
                 <div>
                     <NavTabs type='deliverable' tabList={this.props.projectViewData.deliverables} toUrl={'/projects/'+project_id+'/deliverables/'}/>
                 </div>
