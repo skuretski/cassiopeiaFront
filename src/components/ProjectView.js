@@ -19,7 +19,7 @@ class ProjectView extends Component{
                 <NavTabs type='project' tabList={this.props.projects} toUrl={'/projects/'} />
                 <ProjectViewChart data={this.props.projectViewData}/>
                 <div>
-                    {/* <NavTabs type='deliverable' tabList={this.props.projectDeliverables} toUrl={'/projects/'+project_id+'/deliverables/'}/> */}
+                    <NavTabs type='deliverable' tabList={this.props.projectViewData.deliverables} toUrl={'/projects/'+project_id+'/deliverables/'}/>
                 </div>
             </div>
         );
