@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavTabs from '../containers/navigation/NavTabs';
-import { getTasksByDeliverable } from '../actions/actions_deliverableview';
+import { getDeliverableViewData } from '../actions/actions_deliverableview';
 
 class DeliverableView extends Component{
     constructor(props){
@@ -9,7 +9,6 @@ class DeliverableView extends Component{
     }
     componentWillMount(){
         console.log(this.props.routeParams.id);
-   //     this.props.dispatch(getTasksByDeliverable())
     }
     render(){
         console.log(this.props)

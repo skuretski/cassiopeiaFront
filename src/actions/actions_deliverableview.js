@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { PROJECTS } from '../api';
 
-export function getTasksByDeliverable(project_id, deliverable_id){
+export function getDeliverableViewData(project_id, deliverable_id){
     return function(dispatch){
         return axios.get(`${PROJECTS}/${project_id}/deliverables/${deliverable_id}/tasks`)
         .then((response) => {

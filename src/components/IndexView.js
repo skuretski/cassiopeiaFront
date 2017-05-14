@@ -4,27 +4,43 @@ import IndexViewChart from '../containers/IndexViewChart';
 import IndexSummaryTable from '../components/IndexSummaryTable';
 import { getIndexViewData } from '../actions/actions_indexview';
 import NavTabs from '../containers/navigation/NavTabs';
+import { Link } from 'react-router-dom';
                    
 class IndexView extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            loading: true
+        }
     }
     componentDidMount(){
-        this.props.dispatch(getIndexViewData);
+        this.setState({loading: true});
+        this.props.dispatch(getIndexViewData).then(() =>{
+            this.setState({loading: false});
+        });
     }
     render(){
-        return(
-            <div className="container">
-                <NavTabs type='project' tabList={this.props.projects} toUrl={'/projects/'}/>
-                    <div>
-                        <h1>Index</h1>
-                            <h2>Cassiopeia Home Page</h2>
-                                <p>Welcome to our project management web application!</p>
-                                <IndexViewChart data={this.props.indexViewData}/>
-                                <IndexSummaryTable data={this.props.indexViewData}/>
-                    </div>
-            </div>
-        ); 
+        if(this.state.loading === true){
+            return(
+                <div>
+                Loading...
+                </div>
+            )
+        }
+        else{
+            return(
+                <div className="container">
+                    <NavTabs type='project' tabList={this.props.indexViewData.titles}/>
+                        <div>
+                            <h1>Index</h1>
+                                <h2>Cassiopeia Home Page</h2>
+                                    <p>Welcome to our project management web application!</p>
+                                    <IndexViewChart data={this.props.indexViewData}/>
+                                    <IndexSummaryTable data={this.props.indexViewData}/>
+                        </div>
+                </div>
+            ); 
+        }
     }       
 }
 

@@ -1,39 +1,39 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getProjects } from '../actions/actions_projects';
-import { getDeliverables } from '../actions/actions_deliverables';
-import { getTasks } from '../actions/actions_tasks';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+import DeliverableView from './DeliverableView';
+import FormView from './FormView';
+import ProjectView from './ProjectView';
+import TaskView from './TaskView';
+import IndexView from './IndexView';
 
 class App extends Component{
     constructor(props){
         super(props);
-        this.state = {
-            loading: false
-        }
-    }
-    componentWillMount(){
-        this.setState({loading: true});
-        Promise.all([
-            this.props.dispatch(getProjects),
-            this.props.dispatch(getDeliverables),
-            this.props.dispatch(getTasks)
-        ]).then(() => this.setState({loading: false}))
-        .catch((error) => console.log(error));
     }
     render(){
         return(
+            <BrowserRouter>
             <div>
-                {this.props.children}
+                <Switch>
+                    <Route path="/projects/:project_id/deliverables/:deliv_id/task" component={TaskView} />
+                    <Route path="/projects/:project_id/deliverables/:deliv_id" component={DeliverableView} />
+                    <Route path="/projects/:project_id" component={ProjectView}/>       
+                    <Route path="/form" component={FormView} />
+                    <Route path="/" component={IndexView} />
+                </Switch>
             </div>
+            </BrowserRouter>
         );
     }
 }
 
 function mapStateToProps(state){
     return{
-        projects: state.projects,
-        deliverables: state.deliverables,
-        tasks: state.tasks
+        indexViewData: state.indexViewData,
+        projectViewData: state.projectViewData,
+        deliverableViewData: state.deliverableViewData
     }
 }
 export default connect(mapStateToProps)(App);

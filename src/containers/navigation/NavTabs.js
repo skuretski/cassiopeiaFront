@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavTab from './NavTab';
+import { NavLink } from 'react-router-dom';
 import _ from 'lodash';
 
 class NavTabs extends Component{
@@ -8,9 +9,10 @@ class NavTabs extends Component{
         super(props);
     }
     renderOneTab(){     
+        console.log(this.props);
         return _.map(this.props.tabList, tab => {
             return (
-                <NavTab url={this.props.toUrl} key={tab.id} tab={tab} type={this.props.type} />
+                <NavTab key={tab.id} tab={tab} type={this.props.type} projectId={null} delivId={null} />
             );
         });
     }
@@ -20,7 +22,7 @@ class NavTabs extends Component{
                 <nav className="navbar navbar-default navbar-fixed-top">
                     <div className="container-fluid">
                         <ul className="nav nav-tabs">
-                            <li className="active"><a href='/'>Home</a></li>
+                            <li><NavLink to='/' activeClassName="selected">Home</NavLink></li>
                             {this.renderOneTab()}
                         </ul>
                     </div>
