@@ -3,12 +3,18 @@ import { connect } from 'react-redux';
 import NavTabs from '../containers/navigation/NavTabs';
 
 class TaskView extends Component{
+    constructor(props){
+        super(props);
+    }
     render(){
         return(
-            <div><h1>Tasks</h1>
             <div>
-                <NavTabs type='project'tablist={this.props.projects}/>
-            </div>
+                <h1>Tasks</h1>
+                <div className="container">
+                    <NavTabs type='project' tabList={this.props.projects}/>
+                </div>
+                <div className="container">
+                </div>
             </div>
         );
     }

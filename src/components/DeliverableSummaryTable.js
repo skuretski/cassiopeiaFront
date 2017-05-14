@@ -6,7 +6,6 @@ class DeliverableSummaryTable extends Component {
     constructor(props) {
         super(props);
     }
-    
     sumHelper(data, comparison_value, comparison_key, accum_key) {
         // Sum over the data only if data points comparison key value matches
         // the comparison value. In this case, it's project_id == id
