@@ -16,7 +16,7 @@ management API. API here: https://github.com/skuretski/cassiopeia
 <ul>
     <li>axios</li>
     <li>babel-preset-stage-1</li>
-    <li>chart.js@2.5.0</li>
+    <li>chart.js</li>
     <li>express</li>
     <li>lodash</li>
     <li>path</li>
@@ -25,6 +25,7 @@ management API. API here: https://github.com/skuretski/cassiopeia
     <li>react-dom</li>
     <li>react-redux</li>
     <li>react-router</li>
+    <li>react-router-dom</li>
     <li>redux</li>
     <li>redux-thunk</li>
     <li>uuid</li>
@@ -33,20 +34,45 @@ management API. API here: https://github.com/skuretski/cassiopeia
 ## File Structure
 - src
   - actions
+    - actions_deliverables.js
+    - actions_deliverableview.js
+    - actions_disciplines.js
     - actions_employees.js
+    - actions_indexview.js
     - actions_projects.js
+    - actions_projectview.js
+    - actions_tasks.js
   - api
     - index.js
-  - components  //Static components
+  - components  
     - App.js
-  - containers  //Dynamic components
-    - graphs
+    - DeliverableSummaryTable.js
+    - DeliverableView.js
+    - FormView.js
+    - IndexSummaryTable.js
+    - IndexView.js
+    - ProjectSummaryTable.js
+    - ProjectView.js
+    - TableRow.js
+    - TaskView.js
+  - containers 
+    - navigation
+      - NavTab.js
+      - NavTabs.js 
+    - AddEmployee.js
+    - IndexViewChart.js
     - ProjectList.js
-  - middlewares
-    - async.js
+    - ProjectViewChart.js
   - reducers
     - index.js
+    - reducer_deliverables.js
+    - reducer_deliverableview.js
+    - reducer_disciplines.js
+    - reducer_employees.js
+    - reducer_indexview.js
     - reducer_projects.js
+    - reducer_projectview.js
+    - reducer_tasks.js
   - index.js
 - style
   - style.css
@@ -70,9 +96,8 @@ management API. API here: https://github.com/skuretski/cassiopeia
   - npm run dev
   - Then, open "localhost:8080"
 
-- To get bundle.js:
+- To get bundle.js either one:
   - webpack -p (Webpack must be installed globally)
-  - ** OR **
   - npm postinstall
 
 - To start server:
@@ -80,7 +105,6 @@ management API. API here: https://github.com/skuretski/cassiopeia
 
 - To test (using Mocha and Chai):
   - npm run test
-  -  ** OR **
   - npm run test:watch
 
 ## License
