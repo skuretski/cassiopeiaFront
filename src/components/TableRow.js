@@ -1,16 +1,41 @@
 import React from 'react';
 import uuid from 'uuid';
+import { NavLink } from 'react-router-dom';
 
 const TableRow = (props) => {
-    return (
-        <tr key={props.title}>
-            <td>{props.title}</td>
-            {/*Create a td for each value we were passed in props*/}
-            {props.values.map((v) => {
-                return <td key={uuid.v4()}>{v}</td>
-            })}
-        </tr>
-    );
+    if(props.type === "project"){
+        return (
+            <tr key={props.title}>
+                <td><NavLink key={props.id} to={"/projects/" + props.id} activeClassName="selected">{props.title}</NavLink></td>
+                {/*Create a td for each value we were passed in props*/}
+                {props.values.map((v) => {
+                    return <td key={uuid.v4()}>{v}</td>
+                })}
+            </tr>
+        );
+    } else if(props.type === "deliverable"){
+        return(
+            <tr key={props.title}>
+                <td><NavLink key={props.id} to={props.toUrl + "/deliverables/" + props.id} activeClassName="selected">{props.title}</NavLink></td>
+                {/*Create a td for each value we were passed in props*/}
+                {props.values.map((v) => {
+                    return <td key={uuid.v4()}>{v}</td>
+                })}
+            </tr>
+        );
+    } else if(props.type === "task"){
+        return(
+            <tr key={props.title}>
+                <td><NavLink key={props.id} to={props.toUrl + "/tasks"} activeClassName="selected">{props.title}</NavLink></td>
+                {/*Create a td for each value we were passed in props*/}
+                {props.values.map((v) => {
+                    return <td key={uuid.v4()}>{v}</td>
+                })}
+            </tr>
+        );
+    }
+
+
 }
 
 export default TableRow;

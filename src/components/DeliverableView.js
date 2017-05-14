@@ -2,35 +2,53 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavTabs from '../containers/navigation/NavTabs';
 import { getDeliverableViewData } from '../actions/actions_deliverableview';
+import { getTaskViewData } from '../actions/actions_deliverableview';
+import DeliverableSummaryTable from '../components/DeliverableSummaryTable';
 
 class DeliverableView extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            loading: true
+        }
     }
     componentWillMount(){
-        console.log(this.props.routeParams.id);
+        this.setState({loading: true});                  
+        this.props.dispatch(getDeliverableViewData(this.props.match.params.deliv_id)).then(()=> {
+            this.setState({loading: false});
+        });
     }
     render(){
-        console.log(this.props)
-        return(
-            <div><h1>Deliverables</h1>
-            <div>
-                <ul className = "nav nav-tabs">
-                    <li><a href='/'>Index</a></li>
-                    <li><a href='/project'>Projects</a></li>
-                    <li className="active"><a href='/deliverable'>Deliverables</a></li>
-                    <li><a href='/task'>Tasks</a></li>
-                    <li><a href='/form'>Add and Edit</a></li>
-                </ul>    
-            </div>
-            </div>
-        );
+        if(this.state.loading === true){
+            return(
+                <div>Loading...</div>
+            );
+        } else{
+            return(
+                <div>
+                    <h1>Deliverables</h1>
+                    <div className="container">
+                        <NavTabs type='project' tabList={this.props.projects}/>
+                    </div>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col col-md-2">
+                            </div>
+                            <div className="col col-md-10">
+                                <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
     }
 }
 
 function mapStateToProps(state){
     return{
-        deliverableTasks: state.deliverableTasks
+        projects: state.projects,
+        deliverableViewData: state.deliverableViewData,
     }
 }
 export default connect(mapStateToProps)(DeliverableView);

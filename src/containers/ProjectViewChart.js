@@ -11,7 +11,7 @@ export default class ProjectViewChart extends Component {
     render() {
         if (!_.isEmpty(this.props.data)) {
             return (
-                <div>
+                <div className="container">
                     <Line data={projectViewChartData(this.props.data)} options={projectViewChartOptions(this.props.data)} />
                 </div>    
             );

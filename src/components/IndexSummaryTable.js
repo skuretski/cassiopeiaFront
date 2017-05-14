@@ -51,9 +51,10 @@ class IndexSummaryTable extends Component {
                     {/*For each project, pass the title and the sum of that projects
                        SOW, funding, and assigned employees to TableRow as props*/}
                     {this.props.data.titles.map( (project) => {
+                        const id = project.id;
                         const title = project.title;
                         const values = this.sumData(project.id, this.props.data);
-                        return <TableRow key={title} title={title} values={values} />
+                        return <TableRow key={id} id={id} type="project" title={title} values={values}/>
                     })}
                 </tbody>
             </table>

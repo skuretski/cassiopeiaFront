@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import TableRow from '../components/TableRow';
 import _ from 'lodash';
 
-class ProjectSummaryTable extends Component {
+class DeliverableSummaryTable extends Component {
     constructor(props) {
         super(props);
     }
-
+    
     sumHelper(data, comparison_value, comparison_key, accum_key) {
         // Sum over the data only if data points comparison key value matches
         // the comparison value. In this case, it's project_id == id
@@ -24,8 +24,8 @@ class ProjectSummaryTable extends Component {
 
     sumData(id, data) {
         // Compute the sum for the provided id for SOW, funding, and employees
-        var sow_sum = this.sumHelper(data.sow, id, 'deliverable_id', 'sum_man_mo');
-        var employee_sum = this.sumHelper(data.assigned_employees, id, 'deliverable_id', 'sum_effort');
+        var sow_sum = this.sumHelper(data.sow, id, 'task_id', 'sum_man_mo');
+        var employee_sum = this.sumHelper(data.assigned_employees, id, 'task_id', 'sum_effort');
 
         return [sow_sum, employee_sum];
     }
@@ -40,20 +40,20 @@ class ProjectSummaryTable extends Component {
             <table className="table table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th>Deliverable</th>
+                        <th>Task</th>
                         <th>Statement of Work</th>
                         <th>Assigned Employees</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {/*For each deliverable, pass the title and the sum of that deliverables
+                    {/*For each task, pass the title and the sum of that tasks
                        SOW and assigned employees to TableRow as props*/}
-                    {this.props.data.deliverables.map( (deliverable) => {
+                    {this.props.data.tasks.map( (task) => {
                         const url = this.props.url;
-                        const id = deliverable.id;
-                        const title = deliverable.title;
-                        const values = this.sumData(deliverable.id, this.props.data);
-                        return <TableRow key={id} id={id} type="deliverable" toUrl={url} title={title} values={values} />
+                        const id = task.id
+                        const title = task.title;
+                        const values = this.sumData(task.id, this.props.data);
+                        return <TableRow key={id} id={id} toUrl={url} type="task" title={title} values={values} />
                     })}
                 </tbody>
             </table>
@@ -61,4 +61,4 @@ class ProjectSummaryTable extends Component {
     }
 }
 
-export default ProjectSummaryTable;
+export default DeliverableSummaryTable;

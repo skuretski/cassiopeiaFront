@@ -5,7 +5,7 @@ import ProjectSummaryTable from '../components/ProjectSummaryTable';
 import ProjectList from '../containers/ProjectList';
 import NavTabs from '../containers/navigation/NavTabs';
 import { getProjectViewData } from '../actions/actions_projectview';
-import { getIndexViewData } from '../actions/actions_indexview';
+
 import _ from 'lodash';
 
 class ProjectView extends Component{
@@ -16,16 +16,10 @@ class ProjectView extends Component{
         }
     }
     componentWillMount(){
-        this.setState({loading: true});
-        this.props.dispatch(getProjectViewData(this.props.match.params.project_id))
-            .then(() => {
-                if(_.isEmpty(this.props.indexViewData)){
-                    this.props.dispatch(getIndexViewData).then(() => {
-                        this.setState({loading:false})
-                    });
-            }
-            this.setState({loading:false});
-        });                  
+        this.setState({loading: true});     
+            this.props.dispatch(getProjectViewData(this.props.match.params.project_id)).then(() =>{
+            this.setState({loading: false});
+        });               
     }
     render(){
         if(this.state.loading === true){
@@ -34,12 +28,20 @@ class ProjectView extends Component{
             )
         } else {
             return(
-                <div className="container">
-                    <NavTabs type='project' tabList={this.props.indexViewData.titles}/>
-                    <ProjectViewChart data={this.props.projectViewData}/>
-                    <ProjectSummaryTable data={this.props.projectViewData}/>
-                    <div>
-                        <NavTabs type='deliverable' tabList={this.props.projectViewData.deliverables} projectId={this.props.match.params.project_id}/>
+                <div>
+                    <div className="container">
+                        <NavTabs type='project' tabList={this.props.projects}/>
+                   </div>
+                   <div className="container">
+                        <div className="row">
+                            <div className="col col-md-2">
+                                <NavTabs type='deliverable' tabList={this.props.projectViewData.deliverables} projectId={this.props.match.params.project_id}/>
+                            </div>
+                            <div className="col col-md-10">
+                                <ProjectViewChart data={this.props.projectViewData}/>
+                            </div>
+                        </div>
+                            <ProjectSummaryTable data={this.props.projectViewData} url={this.props.match.url}/>                        
                     </div>
                 </div>
             );
@@ -50,7 +52,8 @@ class ProjectView extends Component{
 function mapStateToProps(state){
     return{
         projectViewData: state.projectViewData,
-        indexViewData: state.indexViewData
+        projects: state.projects,
+        indexLoaded: state.indexLoaded,
     }
 }
 export default connect(mapStateToProps)(ProjectView);

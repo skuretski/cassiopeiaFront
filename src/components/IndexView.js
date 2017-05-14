@@ -4,15 +4,16 @@ import IndexViewChart from '../containers/IndexViewChart';
 import IndexSummaryTable from '../components/IndexSummaryTable';
 import { getIndexViewData } from '../actions/actions_indexview';
 import NavTabs from '../containers/navigation/NavTabs';
-import { Link } from 'react-router-dom';
-                   
+import { Link, Route } from 'react-router-dom';
+import ProjectView from './ProjectView';      
+
 class IndexView extends Component{
     constructor(props){
         super(props);
         this.state = {
             loading: true
         }
-    }
+    }                
     componentDidMount(){
         this.setState({loading: true});
         this.props.dispatch(getIndexViewData).then(() =>{
@@ -29,8 +30,9 @@ class IndexView extends Component{
         }
         else{
             return(
+                <div>
                 <div className="container">
-                    <NavTabs type='project' tabList={this.props.indexViewData.titles}/>
+                    <NavTabs type='project' tabList={this.props.projects}/>
                         <div>
                             <h1>Index</h1>
                                 <h2>Cassiopeia Home Page</h2>
@@ -38,6 +40,7 @@ class IndexView extends Component{
                                     <IndexViewChart data={this.props.indexViewData}/>
                                     <IndexSummaryTable data={this.props.indexViewData}/>
                         </div>
+                </div>
                 </div>
             ); 
         }
