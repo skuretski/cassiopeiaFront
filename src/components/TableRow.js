@@ -33,6 +33,15 @@ const TableRow = (props) => {
                 })}
             </tr>
         );
+    } else if (props.type === "totals"){
+        return (
+            <tr>
+                <td><strong>{props.title}</strong></td>
+                {props.values.map((v) => {
+                    return <td key={uuid.v4()}><strong>{v}</strong></td>
+                })}
+            </tr>
+        );
     }
 
 

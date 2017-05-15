@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 class IndexSummaryTable extends Component {
     constructor(props) {
-        super(props);
+        super(props);        
     }
 
     sumHelper(data, comparison_value, comparison_key, accum_key) {
@@ -37,6 +37,8 @@ class IndexSummaryTable extends Component {
             return <div></div>;
         }
 
+        var totals = [];
+
         return (
             <table className="table table-hover table-bordered">
                 <thead>
@@ -54,8 +56,14 @@ class IndexSummaryTable extends Component {
                         const id = project.id;
                         const title = project.title;
                         const values = this.sumData(project.id, this.props.data);
+                        totals = values.map((a, i) => typeof totals[i] == 'undefined' ? a : a + totals[i]);
                         return <TableRow key={id} id={id} type="project" title={title} values={values}/>
-                    })}
+                    })};
+                    {/* BUG: For some reason, this is getting wrapped in a <span>, which
+                        is producing a warning in the console. Google-fu suggests that 
+                        this is only fix-able by upgrading to React 0.15? */}
+                    {totals = totals.map(t => _.round(t, 1))}
+                    <TableRow type="totals" title="TOTAL" values={totals}/>;
                 </tbody>
             </table>
         );
