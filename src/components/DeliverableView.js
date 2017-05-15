@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import NavTabs from '../containers/navigation/NavTabs';
 import { getDeliverableViewData } from '../actions/actions_deliverableview';
 import { getTaskViewData } from '../actions/actions_deliverableview';
+import DeliverableViewChart from '../containers/DeliverableViewChart';
 import DeliverableSummaryTable from '../components/DeliverableSummaryTable';
 
 class DeliverableView extends Component{
@@ -35,6 +36,7 @@ class DeliverableView extends Component{
                             <div className="col col-md-2">
                             </div>
                             <div className="col col-md-10">
+                                <DeliverableViewChart data={this.props.deliverableViewData}/>
                                 <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
                             </div>
                         </div>
