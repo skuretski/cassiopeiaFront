@@ -21,6 +21,16 @@ class ProjectView extends Component{
             this.setState({loading: false});
         });               
     }
+    componentWillReceiveProps(nextProps){
+        if(nextProps.match.params.project_id != this.props.match.params.project_id){
+            this.props.dispatch(getProjectViewData(nextProps.match.params.project_id)).then(() =>{
+                 this.setState({loading: false});
+            }); 
+        }
+    }
+    componentWillUnmount(){
+        this.setState({loading: true});
+    }
     render(){
         if(this.state.loading === true){
             return(

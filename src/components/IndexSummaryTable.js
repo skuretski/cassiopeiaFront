@@ -31,6 +31,12 @@ class IndexSummaryTable extends Component {
         return [sow_sum, funding_sum, employee_sum];
     }
 
+    calculateTotals(totals){
+        totals = totals.map(t => _.round(t, 1));
+        return (
+            <TableRow type="totals" title="TOTAL" values={totals}/>
+        );
+    }
     render() {
         // Don't bother rendering the table if we don't have data
         if (!this.props.data) {
@@ -58,12 +64,8 @@ class IndexSummaryTable extends Component {
                         const values = this.sumData(project.id, this.props.data);
                         totals = values.map((a, i) => typeof totals[i] == 'undefined' ? a : a + totals[i]);
                         return <TableRow key={id} id={id} type="project" title={title} values={values}/>
-                    })};
-                    {/* BUG: For some reason, this is getting wrapped in a <span>, which
-                        is producing a warning in the console. Google-fu suggests that 
-                        this is only fix-able by upgrading to React 0.15? */}
-                    {totals = totals.map(t => _.round(t, 1))}
-                    <TableRow type="totals" title="TOTAL" values={totals}/>;
+                    })}
+                    {this.calculateTotals(totals)}
                 </tbody>
             </table>
         );
