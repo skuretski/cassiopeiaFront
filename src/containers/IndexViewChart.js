@@ -86,21 +86,20 @@ function indexViewChartData(apiData) {
     // -----------------------------------------------------------------------------
     // Populate chart labels (x-axis points)
     // -----------------------------------------------------------------------------
-    var someMo = beginMo;
-    var someYr = beginYr;
+    var someMo = [];
+    someMo.push(beginMo);
+    someMo.push(beginYr);
+
     chartData.labels = [];
-    chartData.labels.push(dateHelper(someMo, someYr));
+    var cdlMo = []; var cdlYr = [];
+    cdlMo.push(someMo[0]); cdlYr.push(someMo[1]);
+    chartData.labels.push(dateHelper(someMo[0], someMo[1]));
     while (1) {
-        if (someMo < 12) {
-            someMo++;
-        }
-        else {
-            someYr++;
-            someMo = 1;
-        }
-        chartData.labels.push(dateHelper(someMo, someYr));
+        someMo = nextMonth(someMo[0], someMo[1]);
+        cdlMo.push(someMo[0]); cdlYr.push(someMo[1]);
+        chartData.labels.push(dateHelper(someMo[0], someMo[1]));
         
-        if (someMo == endMo && someYr == endYr) {
+        if (someMo[0] == endMo && someMo[1] == endYr) {
             break;
         }
     }
@@ -187,26 +186,102 @@ function indexViewChartData(apiData) {
     //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
     // -----------------------------------------------------------------------------
-    // Get actual assigned employee data to be plotted into chart datasets
+    // Get active  employee data to be plotted into chart datasets
     // -----------------------------------------------------------------------------
     dataset.data = new Array(chartData.labels.length).fill(0);
-    var j = 0;
-    for (var i = 0; i < apiData.assigned_employees.length; i++) { // for each entry in apiData.assigned_employees
-        someDate = dateHelper(apiData.assigned_employees[i].mo, apiData.assigned_employees[i].yr); // mo/yr of some entry in assigned_employees result from api
-        while (someDate != chartData.labels[j]) {
-            j++;
-        }
-        dataset.data[j] += apiData.assigned_employees[i].effort;
+    chartData.datasets.unshift(dataset);
+
+    // -----------------------------------------------------------------------------
+    // Create chart datasets for assigned employees
+    // -----------------------------------------------------------------------------
+    var ae_color = '#090F0E';
+    var dataset = new Object();
+    dataset.label = 'Total Active Employees';
+    dataset.yAxisID = 'default';
+    dataset.lineTension = 0;
+    dataset.backgroundColor = 'transparent'; // the color of the shading below the line
+    dataset.borderColor = hexToRGB(ae_color, 1); // the color of the line itself
+    dataset.borderDash = [6, 6];
+    dataset.pointBackgroundColor = hexToRGB(ae_color, 0.5); // the fill color of the points
+    dataset.pointBorderColor = hexToRGB(ae_color, 1); // the border color of the points
+    dataset.pointStyle = 'cross';
+    //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
+
+    // -----------------------------------------------------------------------------
+    // Get actual assigned employee data to be plotted into chart datasets
+    // assumes all employees in database have active start <= active end
+    // assumes all act_emp values returned from db will be >= 0 (non-negative)
+    // -----------------------------------------------------------------------------
+    dataset.data = new Array(chartData.labels.length).fill(0);
+
+    var num_act_emp = 0;
+    var aes = 0; var aee = 0; var cdl = 0;
+
+    while (aes < apiData.active_employee_starts.length && cdl < cdlMo.length && aee < apiData.active_employee_ends.length) {
+        console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aes='+aes+', '+apiData.active_employee_starts[aes].start_mo+'_'+apiData.active_employee_starts[aes].start_yr+'; aee='+aee+', '+apiData.active_employee_ends[aee].end_mo+'_'+apiData.active_employee_ends[aee].end_yr);
+        if (dateCompare(apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr, cdlMo[cdl], cdlYr[cdl]) <= 1 &&
+            dateCompare(apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr, apiData.active_employee_ends[aee].end_mo, apiData.active_employee_ends[aee].end_yr) <= 1) {
+                // the active_employee_starts mo/yr is the current earliest, so advance to next active_employee_starts mo/yr
+                num_act_emp += apiData.active_employee_starts[aes].act_emp;
+                aes++;
+            }
+        else if (dateCompare(cdlMo[cdl], cdlYr[cdl], apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr) <= 1 &&
+            dateCompare(cdlMo[cdl], cdlYr[cdl], apiData.active_employee_ends[aee].end_mo, apiData.active_employee_ends[aee].end_yr) <= 1) {
+                // the chartDataLabel mo/yr is the current earliest, so advance to next chartDataLabel mo/yr
+                dataset.data[cdl] = num_act_emp;
+                cdl++;
+            }
+        else if (dateCompare(apiData.active_employee_ends[aee].end_mo, apiData.active_employee_ends[aee].end_yr, cdlMo[cdl], cdlYr[cdl]) <= 1 &&
+            dateCompare(apiData.active_employee_ends[aee].end_mo, apiData.active_employee_ends[aee].end_yr, apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr) <= 1) {
+                // the active_employee_ends mo/yr is the current earliest, so advance to next active_employee_ends mo/yr
+                num_act_emp -= apiData.active_employee_ends[aee].act_emp;
+                aee++;
+            }
     }
+
+    while (aes < apiData.active_employee_starts.length && cdl < cdlMo.length) {
+        console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aes='+aes+', '+apiData.active_employee_starts[aes].start_mo+'_'+apiData.active_employee_starts[aes].start_yr);
+        if (dateCompare(apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr, cdlMo[cdl], cdlYr[cdl]) <= 1) {
+                // the active_employee_starts mo/yr is the current earliest, so advance to next active_employee_starts mo/yr
+                num_act_emp += apiData.active_employee_starts[aes].act_emp;
+                aes++;
+            }
+        else if (dateCompare(cdlMo[cdl], cdlYr[cdl], apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr)) {
+                // the chartDataLabel mo/yr is the current earliest, so advance to next chartDataLabel mo/yr
+                dataset.data[cdl] = num_act_emp;
+                cdl++;
+            }
+    }
+
+    while (cdl < cdlMo.length && aee < apiData.active_employee_ends.length) {
+        console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aee='+aee+', '+apiData.active_employee_ends[aee].end_mo+'_'+apiData.active_employee_ends[aee].end_yr);
+        if (dateCompare(cdlMo[cdl], cdlYr[cdl], apiData.active_employee_ends[aee].end_mo, apiData.active_employee_ends[aee].end_yr) <= 1) {
+                // the chartDataLabel mo/yr is the current earliest, so advance to next chartDataLabel mo/yr
+                dataset.data[cdl] = num_act_emp;
+                cdl++;
+            }
+        else if (dateCompare(apiData.active_employee_ends[aee].end_mo, apiData.active_employee_ends[aee].end_yr, cdlMo[cdl], cdlYr[cdl]) <= 1) {
+                // the active_employee_ends mo/yr is the current earliest, so advance to next active_employee_ends mo/yr
+                num_act_emp -= apiData.active_employee_ends[aee].act_emp;
+                aee++;
+            }
+    }
+
+    while (cdl < cdlMo.length) {
+        console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]);
+        dataset.data[cdl] = num_act_emp;
+        cdl++;
+    }
+
     chartData.datasets.unshift(dataset);
 
     // -----------------------------------------------------------------------------
     // Align scales to be equal
     // -----------------------------------------------------------------------------
-    var maxYValue = Math.max(_.max(chartData.datasets[0].data), _.max(chartData.datasets[1].data)); // max value from funding and assigned employees
+    var maxYValue = Math.max(_.max(chartData.datasets[0].data), _.max(chartData.datasets[1].data), _.max(chartData.datasets[2].data)); // max value from funding, assigned employees, and active employees
     for (var i = 0; i < chartData.labels.length; i++) { // for each mo/yr combo on the chart
         var sowSum = 0;
-        for (var j = 2; j < chartData.datasets.length; j++) {
+        for (var j = 3; j < chartData.datasets.length; j++) {
             sowSum += chartData.datasets[j].data[i];
         }
         maxYValue = Math.max(maxYValue, sowSum); // max value from combined (sandpiled) SOW
@@ -246,4 +321,32 @@ function hexToRGB(hex, alpha) {
 function dateHelper(mo, yr) {
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return (months[mo - 1] + '-' + yr);
+}
+
+function nextMonth(mo, yr) {
+    if (mo == 12) {
+        return [1, yr + 1];
+    }
+    else {
+        return [mo + 1, yr];
+    }
+}
+
+function dateCompare(mo1, yr1, mo2, yr2) {
+    // return 0 if same month, 1 if first month is earlier, 2 if second month is earlier
+    if (yr1 < yr2) {
+        return 1;
+    }
+    else if (yr2 < yr1) {
+        return 2;
+    }
+    else if (mo1 < mo2) {
+        return 1;
+    }
+    else if (mo2 < mo1) {
+        return 2;
+    }
+    else {
+        return 0;
+    }
 }
