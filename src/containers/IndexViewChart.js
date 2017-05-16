@@ -10,6 +10,8 @@ export default class IndexViewChart extends Component {
 
     render() {
         if (!_.isEmpty(this.props.data)) {
+            Chart.defaults.global.title.fontSize = 24;
+            Chart.defaults.global.defaultFontSize = 14;
             return (
                 <div>
                     <Line data={indexViewChartData(this.props.data)} options={indexViewChartOptions()} />

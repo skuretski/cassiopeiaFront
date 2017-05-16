@@ -10,6 +10,8 @@ export default class DeliverableViewChart extends Component {
 
     render() {
         if (!_.isEmpty(this.props.data)) {
+            Chart.defaults.global.title.fontSize = 24;
+            Chart.defaults.global.defaultFontSize = 14;
             return (
                 <div className="container">
                     <Line data={deliverableViewChartData(this.props.data)} options={deliverableViewChartOptions(this.props.data)} />
