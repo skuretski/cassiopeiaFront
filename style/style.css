@@ -14,3 +14,9 @@ a.active{
     color: #ff0000;
     text-decoration: underline;
 }
+
+.selected {
+  color:#23527C;
+  font-weight: bold;
+  background-color:#EEEEEE;
+}
