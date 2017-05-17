@@ -3,11 +3,11 @@ td, th {
     text-align: center !important;
 }
 body{
-    padding-top: 80px;
+    padding-top: 120px;
 }
 
 nav{
-    padding: 20px;
+    padding: 10px;
 }
 
 a.active{

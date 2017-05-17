@@ -27,11 +27,8 @@ class DeliverableView extends Component{
         } else{
             return(
                 <div>
-                    <h1>Deliverables</h1>
                     <div className="container">
                         <NavTabs type='project' tabList={this.props.projects}/>
-                    </div>
-                    <div className="container">
                         <div className="row">
                             <div className="col col-md-2">
                             </div>

@@ -30,17 +30,10 @@ class IndexView extends Component{
         }
         else{
             return(
-                <div>
                 <div className="container">
                     <NavTabs type='project' tabList={this.props.projects}/>
-                        <div>
-                            <h1>Index</h1>
-                                <h2>Cassiopeia Home Page</h2>
-                                    <p>Welcome to our project management web application!</p>
-                                    <IndexViewChart data={this.props.indexViewData}/>
-                                    <IndexSummaryTable data={this.props.indexViewData}/>
-                        </div>
-                </div>
+                    <IndexViewChart data={this.props.indexViewData}/>
+                    <IndexSummaryTable data={this.props.indexViewData}/>
                 </div>
             ); 
         }

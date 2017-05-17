@@ -22,6 +22,10 @@ class NavTabs extends Component{
                     <div className="container-fluid">
                         <ul className="nav nav-tabs">
                             <li><NavLink to='/' activeClassName="selected">Home</NavLink></li>
+                        </ul>
+                    </div>
+                    <div className="container-fluid">
+                        <ul className="nav nav-tabs">
                             {this.renderOneTab()}
                         </ul>
                     </div>
