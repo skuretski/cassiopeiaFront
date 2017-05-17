@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import IndexViewChart from '../containers/IndexViewChart';
-import IndexSummaryTable from '../components/IndexSummaryTable';
-import { getIndexViewData } from '../actions/actions_indexview';
-import NavTabs from '../containers/navigation/NavTabs';
-import { Link, Route } from 'react-router-dom';
-import ProjectView from './ProjectView';      
-
+import IndexViewChart from '../Charts/IndexViewChart';
+import IndexSummaryTable from '../Tables/IndexSummaryTable';
+import { getIndexViewData } from '../../actions';
+import NavTabs from '../Navigation/NavTabs';
+import { NavLink } from 'react-router-dom';
+     
 class IndexView extends Component{
     constructor(props){
         super(props);
@@ -23,8 +22,8 @@ class IndexView extends Component{
     render(){
         if(this.state.loading === true){
             return(
-                <div>
-                Loading...
+                <div className="container">
+                <h3>Loading...</h3>
                 </div>
             )
         }

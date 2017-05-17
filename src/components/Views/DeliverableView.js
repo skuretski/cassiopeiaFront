@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import NavTabs from '../containers/navigation/NavTabs';
-import { getDeliverableViewData } from '../actions/actions_deliverableview';
-import { getTaskViewData } from '../actions/actions_deliverableview';
-import DeliverableViewChart from '../containers/DeliverableViewChart';
-import DeliverableSummaryTable from '../components/DeliverableSummaryTable';
+import NavTabs from '../Navigation/NavTabs';
+import { getDeliverableViewData, getTaskViewData } from '../../actions';
+import DeliverableViewChart from '../Charts/DeliverableViewChart';
+import DeliverableSummaryTable from '../Tables/DeliverableSummaryTable';
 
 class DeliverableView extends Component{
     constructor(props){
@@ -29,9 +28,9 @@ class DeliverableView extends Component{
                 <div>
                     <div className="container">
                         <NavTabs type='project' tabList={this.props.projects}/>
+                    </div>
+                    <div className="container">
                         <div className="row">
-                            <div className="col col-md-2">
-                            </div>
                             <div className="col col-md-10">
                                 <DeliverableViewChart data={this.props.deliverableViewData}/>
                                 <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
@@ -47,6 +46,7 @@ class DeliverableView extends Component{
 function mapStateToProps(state){
     return{
         projects: state.projects,
+        deliverables: state.deliverables,
         deliverableViewData: state.deliverableViewData,
     }
 }

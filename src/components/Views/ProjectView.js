@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ProjectViewChart from '../containers/ProjectViewChart';
-import ProjectSummaryTable from '../components/ProjectSummaryTable';
-import ProjectList from '../containers/ProjectList';
-import NavTabs from '../containers/navigation/NavTabs';
-import { getProjectViewData } from '../actions/actions_projectview';
+import ProjectViewChart from '../Charts/ProjectViewChart';
+import ProjectSummaryTable from '../Tables/ProjectSummaryTable';
+import NavTabs from '../Navigation/NavTabs';
+import { getProjectViewData } from '../../actions';
 
 import _ from 'lodash';
 
@@ -32,6 +31,7 @@ class ProjectView extends Component{
         this.setState({loading: true});
     }
     render(){
+        console.log(this.props.match);
         if(this.state.loading === true){
             return(
                 <div>Loading...</div>

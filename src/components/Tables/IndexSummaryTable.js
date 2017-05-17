@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TableRow from '../components/TableRow';
+import TableRow from './TableComponents/TableRow';
 import _ from 'lodash';
 
 class IndexSummaryTable extends Component {

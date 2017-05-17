@@ -11,7 +11,7 @@ class NavTabs extends Component{
     renderOneTab(){   
         return _.map(this.props.tabList, tab => {
             return (
-                <NavTab key={tab.id} tab={tab} type={this.props.type} projectId={this.props.projectId} delivId={this.props.delivId} />
+                <NavTab key={tab.id} tab={tab} isActive={this.props.isActive} type={this.props.type} projectId={this.props.projectId} delivId={this.props.delivId} />
             );
         });
     }
@@ -21,11 +21,12 @@ class NavTabs extends Component{
                 <nav className="navbar navbar-default navbar-fixed-top">
                     <div className="container-fluid">
                         <ul className="nav nav-tabs">
-                            <li><NavLink to='/' activeClassName="selected">Home</NavLink></li>
+                            <li><NavLink exact={true} activeClassName="selected" to='/'>Home</NavLink></li>
                         </ul>
                     </div>
                     <div className="container-fluid">
                         <ul className="nav nav-tabs">
+                            <li role="presentation" className="disabled"><NavLink to="#"><strong>Projects</strong></NavLink></li>
                             {this.renderOneTab()}
                         </ul>
                     </div>
@@ -34,11 +35,12 @@ class NavTabs extends Component{
         }
         else if(this.props.type == 'deliverable'){
             return(
-                <nav className="navbar navbar-default">
-                    <ul className= 'nav nav-tabs nav-stacked col-md-2'>
-                         {this.renderOneTab()}
-                    </ul>
-                </nav>
+                    <nav className="navbar navbar-default">
+                        <ul className= 'nav nav-tabs'>
+                            <li role="presentation" className="disabled"><NavLink to="#"><strong>Deliverables</strong></NavLink></li>
+                            {this.renderOneTab()}
+                        </ul>
+                    </nav>
             );
         }
         else if(this.props.type == 'task'){

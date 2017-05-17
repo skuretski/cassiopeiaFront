@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getDisciplines, setDiscipline } from '../actions/actions_disciplines';
-import { getEmployees, postEmployees }from '../actions/actions_employees';
+import { getDisciplines, setDiscipline } from '../../actions';
+import { getEmployees, postEmployees }from '../../actions';
 
 
 class AddEmployee extends Component {

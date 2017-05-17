@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DELIVERABLEVIEW } from '../api';
+import { DELIVERABLEVIEW } from '../../api';
 
 export function getDeliverableViewData(id) {
     return function(dispatch){

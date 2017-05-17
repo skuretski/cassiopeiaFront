@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PROJECTVIEW } from '../api';
+import { PROJECTVIEW } from '../../api';
 
 export function getProjectViewData(id){
     return function(dispatch){

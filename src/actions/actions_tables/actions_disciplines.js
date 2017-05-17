@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DISCIPLINES } from '../api';
+import { DISCIPLINES } from '../../api';
 
 export function getDisciplines(dispatch){
     return axios.get(DISCIPLINES)

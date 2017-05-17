@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
-import { getProjects } from '../actions/actions_projects';
-import { getTasks } from '../actions/actions_tasks';
-import { getDeliverables } from '../actions/actions_deliverables';
+import { getProjects, getTasks, getDeliverables } from '../actions';
 
-import DeliverableView from './DeliverableView';
-import FormView from './FormView';
-import ProjectView from './ProjectView';
-import TaskView from './TaskView';
-import IndexView from './IndexView';
+
+import DeliverableView from './Views/DeliverableView';
+import FormView from './Views/FormView';
+import ProjectView from './Views/ProjectView';
+import TaskView from './Views/TaskView';
+import IndexView from './Views/IndexView';
 
 class App extends Component{
     constructor(props){

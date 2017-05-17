@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddEmployee from '../containers/AddEmployee';
+import AddEmployee from '../Forms/AddEmployee';
 
 class FormView extends Component{
     render(){

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { INDEXVIEW } from '../api';
+import { INDEXVIEW } from '../../api';
 
 export function getIndexViewData(dispatch){
     return axios.get(INDEXVIEW)

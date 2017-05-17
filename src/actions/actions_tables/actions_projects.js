@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PROJECTS } from '../api';
+import { PROJECTS } from '../../api';
 
 export function getProjects(dispatch){
     return axios.get(PROJECTS)

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DELIVERABLES } from '../api';
+import { DELIVERABLES } from '../../api';
 
 export function getDeliverables(dispatch){
     return axios.get(DELIVERABLES)

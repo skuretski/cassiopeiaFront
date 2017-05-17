@@ -10,13 +10,12 @@ nav{
     padding: 10px;
 }
 
-a.active{
-    color: #ff0000;
-    text-decoration: underline;
-}
-
 .selected {
   color:#23527C;
   font-weight: bold;
   background-color:#EEEEEE;
+}
+
+#htmlContainer{
+    margin: 0;
 }

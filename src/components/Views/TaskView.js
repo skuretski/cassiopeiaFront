@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import NavTabs from '../containers/navigation/NavTabs';
+import NavTabs from '../Navigation/NavTabs';
 
 class TaskView extends Component{
     constructor(props){

@@ -220,7 +220,7 @@ function indexViewChartData(apiData) {
     var aes = 0; var aee = 0; var cdl = 0;
 
     while (aes < apiData.active_employee_starts.length && cdl < cdlMo.length && aee < apiData.active_employee_ends.length) {
-        console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aes='+aes+', '+apiData.active_employee_starts[aes].start_mo+'_'+apiData.active_employee_starts[aes].start_yr+'; aee='+aee+', '+apiData.active_employee_ends[aee].end_mo+'_'+apiData.active_employee_ends[aee].end_yr);
+       // console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aes='+aes+', '+apiData.active_employee_starts[aes].start_mo+'_'+apiData.active_employee_starts[aes].start_yr+'; aee='+aee+', '+apiData.active_employee_ends[aee].end_mo+'_'+apiData.active_employee_ends[aee].end_yr);
         if (dateCompare(apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr, cdlMo[cdl], cdlYr[cdl]) <= 1 &&
             dateCompare(apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr, apiData.active_employee_ends[aee].end_mo, apiData.active_employee_ends[aee].end_yr) <= 1) {
                 // the active_employee_starts mo/yr is the current earliest, so advance to next active_employee_starts mo/yr
@@ -242,7 +242,7 @@ function indexViewChartData(apiData) {
     }
 
     while (aes < apiData.active_employee_starts.length && cdl < cdlMo.length) {
-        console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aes='+aes+', '+apiData.active_employee_starts[aes].start_mo+'_'+apiData.active_employee_starts[aes].start_yr);
+       // console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aes='+aes+', '+apiData.active_employee_starts[aes].start_mo+'_'+apiData.active_employee_starts[aes].start_yr);
         if (dateCompare(apiData.active_employee_starts[aes].start_mo, apiData.active_employee_starts[aes].start_yr, cdlMo[cdl], cdlYr[cdl]) <= 1) {
                 // the active_employee_starts mo/yr is the current earliest, so advance to next active_employee_starts mo/yr
                 num_act_emp += apiData.active_employee_starts[aes].act_emp;
@@ -256,7 +256,7 @@ function indexViewChartData(apiData) {
     }
 
     while (cdl < cdlMo.length && aee < apiData.active_employee_ends.length) {
-        console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aee='+aee+', '+apiData.active_employee_ends[aee].end_mo+'_'+apiData.active_employee_ends[aee].end_yr);
+        //console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]+'; aee='+aee+', '+apiData.active_employee_ends[aee].end_mo+'_'+apiData.active_employee_ends[aee].end_yr);
         if (dateCompare(cdlMo[cdl], cdlYr[cdl], apiData.active_employee_ends[aee].end_mo, apiData.active_employee_ends[aee].end_yr) <= 1) {
                 // the chartDataLabel mo/yr is the current earliest, so advance to next chartDataLabel mo/yr
                 dataset.data[cdl] = num_act_emp;
@@ -270,7 +270,7 @@ function indexViewChartData(apiData) {
     }
 
     while (cdl < cdlMo.length) {
-        console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]);
+       // console.log('num_act_emp='+num_act_emp+'; cdl='+cdl+', '+cdlMo[cdl]+'_'+cdlYr[cdl]);
         dataset.data[cdl] = num_act_emp;
         cdl++;
     }
