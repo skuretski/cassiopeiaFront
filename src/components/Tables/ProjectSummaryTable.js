@@ -30,11 +30,20 @@ class ProjectSummaryTable extends Component {
         return [sow_sum, employee_sum];
     }
 
+    calculateTotals(totals) {
+        totals = totals.map(t => _.round(t, 1));
+        return (
+            <TableRow type="totals" title="TOTAL" values={totals}/>
+        )
+    }
+
     render() {
         // Don't bother rendering the table if we don't have data
         if (_.isEmpty(this.props.data)) {
             return <div></div>;
         }
+
+        var totals = [];
 
         return (
             <table className="table table-hover table-bordered">
@@ -53,8 +62,10 @@ class ProjectSummaryTable extends Component {
                         const id = deliverable.id;
                         const title = deliverable.title;
                         const values = this.sumData(deliverable.id, this.props.data);
+                        totals = values.map((a, i) => typeof totals[i] == 'undefined' ? a : a + totals[i]);
                         return <TableRow key={id} id={id} type="deliverable" toUrl={url} title={title} values={values} />
                     })}
+                    {this.calculateTotals(totals)}
                 </tbody>
             </table>
         );
