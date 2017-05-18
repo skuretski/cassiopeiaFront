@@ -7,6 +7,7 @@ import EmployeeReducer from './reducer_employees';
 import IndexViewReducer from './reducer_indexview';
 import ProjectViewReducer from './reducer_projectview';
 import DeliverableViewReducer from './reducer_deliverableview';
+import TaskViewReducer from './reducer_taskview';
 
 const rootReducer = combineReducers({
     projects: ProjectsReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     indexViewData: IndexViewReducer,
     projectViewData: ProjectViewReducer,
     deliverableViewData: DeliverableViewReducer,
+    taskViewData: TaskViewReducer,
 });
 
 export default rootReducer;

@@ -26,7 +26,7 @@ const TableRow = (props) => {
     } else if(props.type === "task"){
         return(
             <tr key={props.title}>
-                <td><NavLink key={props.id} to={props.toUrl + "/tasks"} activeClassName="selected">{props.title}</NavLink></td>
+                <td><NavLink key={props.id} to={props.toUrl + "/tasks/" + props.id} activeClassName="selected">{props.title}</NavLink></td>
                 {/*Create a td for each value we were passed in props*/}
                 {props.values.map((v) => {
                     return <td key={uuid.v4()}>{v}</td>
