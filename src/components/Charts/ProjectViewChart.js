@@ -14,8 +14,8 @@ export default class ProjectViewChart extends Component {
             Chart.defaults.global.defaultFontSize = 14;
             return (
                 <div className="container">
-                    <Line data={projectViewChartData(this.props.data)} options={projectViewChartOptions(this.props.data)} />
-                </div>    
+                    <Line data={projectViewChartData(this.props.data)} options={projectViewChartOptions(this.props.data)} />  
+                </div>
             );
         } else {
             return <div></div>;

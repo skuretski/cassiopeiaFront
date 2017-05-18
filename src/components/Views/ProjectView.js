@@ -5,8 +5,6 @@ import ProjectSummaryTable from '../Tables/ProjectSummaryTable';
 import NavTabs from '../Navigation/NavTabs';
 import { getProjectViewData } from '../../actions';
 
-import _ from 'lodash';
-
 class ProjectView extends Component{
     constructor(props){
         super(props);
@@ -31,10 +29,9 @@ class ProjectView extends Component{
         this.setState({loading: true});
     }
     render(){
-        console.log(this.props.match);
         if(this.state.loading === true){
             return(
-                <div>Loading...</div>
+                <div className="container">Loading...</div>
             )
         } else {
             return(

@@ -8,10 +8,10 @@ class NavTabs extends Component{
     constructor(props){
         super(props);
     }
-    renderOneTab(){   
-        return _.map(this.props.tabList, tab => {
+    renderOneTab(props){ 
+        return _.map(props.tabList, tab => {
             return (
-                <NavTab key={tab.id} tab={tab} isActive={this.props.isActive} type={this.props.type} projectId={this.props.projectId} delivId={this.props.delivId} />
+                <NavTab key={tab.id} tab={tab} isActive={props.isActive} type={props.type} projectId={props.projectId} delivId={props.delivId} />
             );
         });
     }
@@ -27,7 +27,7 @@ class NavTabs extends Component{
                     <div className="container-fluid">
                         <ul className="nav nav-tabs">
                             <li role="presentation" className="disabled"><NavLink to="#"><strong>Projects</strong></NavLink></li>
-                            {this.renderOneTab()}
+                            {this.renderOneTab(this.props)}
                         </ul>
                     </div>
                 </nav>
@@ -38,7 +38,7 @@ class NavTabs extends Component{
                     <nav className="navbar navbar-default">
                         <ul className= 'nav nav-tabs'>
                             <li role="presentation" className="disabled"><NavLink to="#"><strong>Deliverables</strong></NavLink></li>
-                            {this.renderOneTab()}
+                            {this.renderOneTab(this.props)}
                         </ul>
                     </nav>
             );
@@ -46,11 +46,10 @@ class NavTabs extends Component{
         else if(this.props.type == 'task'){
             return(
                 <nav className="navbar navbar-default">
-                    <div className="container-fluid">
-                        <ul className = 'nav nav-tabs navbar-right'>
-                            {this.renderOneTab()}
+                        <ul className = 'nav nav-tabs'>
+                            <li role="presentation" className="disabled"><NavLink to="#"><strong>Tasks</strong></NavLink></li>
+                            {this.renderOneTab(this.props)}
                         </ul>
-                    </div>
                 </nav>
             );
         }
