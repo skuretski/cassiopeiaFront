@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import NavTabs from '../Navigation/NavTabs';
 import { getTaskViewData } from '../../actions';
 // import TaskViewChart from '../Charts/TaskViewChart';
-// import TaskSummaryTable from '../Tables/TaskSummaryTable';
+import TaskSummaryTable from '../Tables/TaskSummaryTable';
 
 class TaskView extends Component{
     constructor(props){
@@ -34,7 +34,7 @@ class TaskView extends Component{
                     <div className="row">
                         <div className="col col-md-10">
                             {/*<TaskViewChart data={this.props.taskViewData}/>*/}
-                            {/*<TaskSummaryTable data={this.props.taskViewData} url={this.props.match.url}/>*/}
+                            <TaskSummaryTable data={this.props.taskViewData} url={this.props.match.url}/>
                         </div>
                     </div>
                 </div>
