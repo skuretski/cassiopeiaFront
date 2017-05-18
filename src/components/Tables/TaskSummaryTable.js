@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import TableRow from './TableComponents/TableRow';
 import _ from 'lodash';
 
-class ProjectSummaryTable extends Component {
+class TaskSummaryTable extends Component {
     constructor(props) {
         super(props);
     }
-
     sumHelper(data, comparison_value, comparison_key, accum_key) {
         // Sum over the data only if data points comparison key value matches
         // the comparison value. In this case, it's project_id == id
@@ -24,8 +23,8 @@ class ProjectSummaryTable extends Component {
 
     sumData(id, data) {
         // Compute the sum for the provided id for SOW, funding, and employees
-        var sow_sum = this.sumHelper(data.sow, id, 'deliverable_id', 'sum_man_mo');
-        var employee_sum = this.sumHelper(data.assigned_employees, id, 'deliverable_id', 'sum_effort');
+        var sow_sum = this.sumHelper(data.sow, id, 'task_id', 'sum_man_mo');
+        var employee_sum = this.sumHelper(data.assigned_employees, id, 'task_id', 'sum_effort');
 
         return [sow_sum, employee_sum];
     }
@@ -46,30 +45,45 @@ class ProjectSummaryTable extends Component {
         var totals = [];
 
         return (
+            <div className="table-responsive">
             <table className="table table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th>Deliverable</th>
-                        <th>Statement of Work</th>
-                        <th>Assigned Employees</th>
+                        <th>Employee</th>
+                        {this.props.data.sow.map( (sow) => {
+                            const mo = sow.mo;
+                            const yr = sow.yr;
+                            const title = mo + '/' + yr;
+                            return <th key={title}>{title}</th>
+                        })}
                     </tr>
                 </thead>
                 <tbody>
-                    {/*For each deliverable, pass the title and the sum of that deliverables
-                       SOW and assigned employees to TableRow as props*/}
-                    {this.props.data.deliverables.map( (deliverable) => {
+                    {/* TODO: Add employee/assignment data to test table results */}
+                    {/* This table is going to be a little more messy than the others.
+                        Any given employee isn't guaranteed to be assigned in all months,
+                        so there needs to be some logic to create blank <td> elements
+                        for months without any assignment. Once I add test data I'll
+                        swing back around to this... */}
+
+                    {/*For each employee, pass the name and the SOW of that employee
+                       to TableRow as props*/}
+                    {/*
+                    {this.props.data.assigned_employees.map( (emp) => {
+                        const name = emp.first + ' ' + emp.last;
                         const url = this.props.url;
-                        const id = deliverable.id;
-                        const title = deliverable.title;
-                        const values = this.sumData(deliverable.id, this.props.data);
+                        const id = emp.employee_id;
+                        const values = emp.sum_effort;
                         totals = values.map((a, i) => typeof totals[i] == 'undefined' ? a : a + totals[i]);
-                        return <TableRow key={id} id={id} type="deliverable" toUrl={url} title={title} values={values} />
+                        return <TableRow key={id} id={id} toUrl={url} type="employee" title={title} values={values} />
                     })}
                     {this.calculateTotals(totals)}
+                    */}
                 </tbody>
             </table>
+            </div>
         );
     }
 }
 
-export default ProjectSummaryTable;
+export default TaskSummaryTable;

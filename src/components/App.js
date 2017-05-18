@@ -31,7 +31,7 @@ class App extends Component{
         return(
             <div>
                 <Switch>
-                    <Route path="/projects/:project_id/deliverables/:deliv_id/tasks" component={TaskView} />
+                    <Route path="/projects/:project_id/deliverables/:deliv_id/tasks/:task_id" component={TaskView} />
                     <Route path="/projects/:project_id/deliverables/:deliv_id" component={DeliverableView} />   
                     <Route path="/projects/:project_id" component={ProjectView} />
                     <Route path="/form" component={FormView} />
