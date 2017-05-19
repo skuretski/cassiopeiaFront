@@ -7,6 +7,10 @@ import rootReducer from './reducers';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 
+const initialProjectState = {
+    title: '',
+    description: ''
+};
 
 const configuredStore = createStore(
     rootReducer,

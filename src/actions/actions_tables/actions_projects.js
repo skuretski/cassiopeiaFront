@@ -10,6 +10,24 @@ export function getProjects(dispatch){
     });
 }
 
+export function addProject(project){
+    return function(dispatch){
+        if(title === '' || desc === ''){
+            console.log("Error. Fields must be filled out.");
+        }
+        else{
+            return axios.post(PROJECTS,{
+                title: project.title,
+                description: project.description
+            }).then((response) => {
+                dispatch(createProject(response.data));
+            }).catch((error) => {
+                console.log("Error. Did not add project.");
+            });
+        }
+    }
+}
+
 export const setProjects = (projects) => {
     return{
         type: 'GET_PROJECTS',
@@ -21,5 +39,12 @@ export function selectOneProject(project){
     return{
         type: 'SELECT_PROJECT',
         project
+    }
+}
+
+export function createProject(newProject){
+    return{
+        type: 'ADD_PROJECT',
+        project: newProject.data
     }
 }

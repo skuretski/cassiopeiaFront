@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import NavTab from './NavTab';
 import { Route, NavLink } from 'react-router-dom';
 import _ from 'lodash';
+import { addProject } from '../../actions';
 
 class NavTabs extends Component{
     constructor(props){
         super(props);
+    }
+    showAddProjectModal(){
+
     }
     renderOneTab(props){ 
         return _.map(props.tabList, tab => {
@@ -28,6 +32,7 @@ class NavTabs extends Component{
                         <ul className="nav nav-tabs">
                             <li role="presentation" className="disabled"><NavLink to="#"><strong>Projects</strong></NavLink></li>
                             {this.renderOneTab(this.props)}
+                            <li><button type="button" className="btn btn-primary" data-toggle="modal" data-target=".bs-project-modal-lg">Add Project</button></li>
                         </ul>
                     </div>
                 </nav>

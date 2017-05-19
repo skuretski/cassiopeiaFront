@@ -64,7 +64,6 @@ function mapStateToProps(state){
     return{
         projectViewData: state.projectViewData,
         projects: state.projects,
-        indexLoaded: state.indexLoaded,
     }
 }
 export default connect(mapStateToProps)(ProjectView);

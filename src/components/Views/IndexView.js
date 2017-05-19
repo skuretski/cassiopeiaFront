@@ -4,7 +4,7 @@ import IndexViewChart from '../Charts/IndexViewChart';
 import IndexSummaryTable from '../Tables/IndexSummaryTable';
 import { getIndexViewData } from '../../actions';
 import NavTabs from '../Navigation/NavTabs';
-import { NavLink } from 'react-router-dom';
+import AddProjectForm from '../Forms/AddProjectForm';
      
 class IndexView extends Component{
     constructor(props){
@@ -19,10 +19,13 @@ class IndexView extends Component{
             this.setState({loading: false});
         });
     }
+    addProjectAction(){
+        console.log("Hi!");
+    }
     render(){
         if(this.state.loading === true){
             return(
-                <div className="container">
+                <div className="container-fluid">
                 <h3>Loading...</h3>
                 </div>
             )
@@ -31,6 +34,20 @@ class IndexView extends Component{
             return(
                 <div className="container">
                     <NavTabs type='project' tabList={this.props.projects}/>
+
+                    {/* START MODAL */}
+                    <div className="modal fade bs-project-modal-lg" tabIndex="-1" role="dialog">
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="container-fluid">
+                                <h2>Add a Project</h2>
+                                <AddProjectForm/>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    {/* END MODAL */}
+
                     <IndexViewChart data={this.props.indexViewData}/>
                     <IndexSummaryTable data={this.props.indexViewData}/>
                 </div>
