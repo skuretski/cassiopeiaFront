@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavTabs from '../Navigation/NavTabs';
 import { getTaskViewData } from '../../actions';
-// import TaskViewChart from '../Charts/TaskViewChart';
+import TaskViewChart from '../Charts/TaskViewChart';
 import TaskSummaryTable from '../Tables/TaskSummaryTable';
 
 class TaskView extends Component{
@@ -79,7 +79,7 @@ class TaskView extends Component{
                                 <h4><b>Deliverable: {this.props.taskViewData.deliverable[0].title}</b></h4>
                                 <h4><b>Task: {this.props.taskViewData.task[0].title}</b></h4>
                             </div>
-                            {/*<TaskViewChart data={this.props.taskViewData}/>*/}
+                            <TaskViewChart data={this.props.taskViewData}/>
                             <TaskSummaryTable data={this.props.taskViewData} url={this.props.match.url}/>
                         </div>
                         <div className="col-md-2">
