@@ -47,25 +47,41 @@ class DeliverableView extends Component{
         } else{
             return(
                 <div>
-                    <div className="container">
+                    <div className="container-fluid">
                         <NavTabs type='project' tabList={this.props.projects}/>
                     </div>
-                    <div className="container">
+                    <div className="container-fluid">
                         <div className="row">
-                            <div className= "col col-md-2">
-                                <NavTabs 
-                                    type='deliverable' 
-                                    tabList={this.getProjectDeliverables(this.props.match.params.project_id, this.props.deliverables)}
-                                    projectId={this.props.match.params.project_id}
-                                    delivId={this.props.match.params.deliv_id}
-                                    isActive={this.props.match.params.deliv_id}
-                                />
+                            <div className= "col-md-2">
+                                <div className="sidebar-nav-fixed affix">
+                                    <div className="well">
+                                        <NavTabs 
+                                            type='deliverable' 
+                                            tabList={this.getProjectDeliverables(this.props.match.params.project_id, this.props.deliverables)}
+                                            projectId={this.props.match.params.project_id}
+                                            delivId={this.props.match.params.deliv_id}
+                                            isActive={this.props.match.params.deliv_id}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col col-md-8">
+                            <div className="col-md-8">
                                 <DeliverableViewChart data={this.props.deliverableViewData}/>
                                 <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
                             </div>
-                            <div className="col col-md-2" id="rightsidebar">
+                            <div className="col-md-2">
+                                <div className="sidebar-nav-fixed pull-right affix">
+                                    <div className="well">
+                                        <NavTabs 
+                                            type='task' 
+                                            tabList={this.props.deliverableViewData.tasks}
+                                            projectId={this.props.match.params.project_id}
+                                            delivId={this.props.match.params.deliv_id}
+                                            taskId={this.props.match.params.task_id}
+                                            isActive={this.props.match.params.deliv_id}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -13,14 +13,39 @@ class TaskView extends Component{
         }
     }
     componentWillMount(){
+        console.log(this.props);
         this.setState({loading: true});
         this.props.dispatch(getTaskViewData(this.props.match.params.task_id)).then(()=> {
             this.setState({loading: false});
         });
     }
-    componentWillMount(){
-        
-
+    componentWillReceiveProps(nextProps){
+        if(nextProps.match.params.task_id != this.props.match.params.task_id){
+            this.setState({loading: true});
+                this.props.dispatch(getTaskViewData(nextProps.match.params.task_id)).then(()=> {
+                    this.setState({loading: false});
+            });
+        }
+    }
+    getProjectDeliverables(projectId, deliverables){
+        var projDelivs = [];
+        _.map(deliverables, function(deliverable){
+            if(deliverable.project_id == projectId){
+                projDelivs.push(deliverable)
+                return deliverable;
+            }        
+        });
+        return projDelivs;
+    }
+    getDeliverableTasks(delivId, tasks){
+        var delivTasks = [];
+        _.map(tasks, function(task){
+            if(task.deliverable_id == delivId){
+                delivTasks.push(task);
+                return task;
+            }
+        });
+        return delivTasks;
     }
     render(){
         if (this.state.loading === true) {
@@ -31,14 +56,41 @@ class TaskView extends Component{
 
         return(
             <div>
-                <div className="container">
+                <div className="container-fluid">
                     <NavTabs type='project' tabList={this.props.projects}/>
                 </div>
-                <div className="container">
+                <div className="container-fluid">
                     <div className="row">
-                        <div className="col col-md-10">
+                        <div className="col-md-2">
+                            <div className="sidebar-nav-fixed affix">
+                                <div className="well">
+                                    <NavTabs 
+                                        type='deliverable' 
+                                        tabList={this.getProjectDeliverables(this.props.match.params.project_id, this.props.deliverables)}
+                                        projectId={this.props.match.params.project_id}
+                                        delivId={this.props.match.params.deliv_id}
+                                        isActive={this.props.match.params.deliv_id}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-8">
                             {/*<TaskViewChart data={this.props.taskViewData}/>*/}
                             <TaskSummaryTable data={this.props.taskViewData} url={this.props.match.url}/>
+                        </div>
+                        <div className="col-md-2">
+                            <div className="sidebar-nav-fixed pull-right affix">
+                                <div className="well">
+                                    <NavTabs 
+                                        type='task' 
+                                        tabList={this.getDeliverableTasks(this.props.match.params.deliv_id, this.props.tasks)}
+                                        projectId={this.props.match.params.project_id}
+                                        delivId={this.props.match.params.deliv_id}
+                                        taskId={this.props.match.params.task_id}
+                                        isActive={this.props.match.params.task_id}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

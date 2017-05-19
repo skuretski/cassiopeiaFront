@@ -11,23 +11,20 @@ nav{
 }
 
 .selected {
-  color:#23527C;
+  color:#EEEEEE;
   font-weight: bold;
-  background-color:#EEEEEE;
+  background-color:#23527C;
 }
 
 #htmlContainer{
-    margin: 0;
+    margin: auto;
+}
+.sidebar-nav-fixed{
+    width: 14%;
 }
 
-#leftsidebar{
-    height: 100%;
-    position: fixed;
-    left: 0;
-}
-
-#rightsidebar{
-    height: 100%;
-    position: fixed;
-    right: 0;
+#verticalLI{
+    display: block;
+    float: left;
+    clear: left;
 }

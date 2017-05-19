@@ -31,24 +31,28 @@ class ProjectView extends Component{
     render(){
         if(this.state.loading === true){
             return(
-                <div className="container">Loading...</div>
+                <div className="container-fluid">Loading...</div>
             )
         } else {
             return(
                 <div>
-                    <div className="container">
+                    <div className="container-fluid">
                         <NavTabs type='project' tabList={this.props.projects}/>
-                   </div>
-                   <div className="container">
+                    </div>
+                    <div className="container-fluid">
                         <div className="row">
-                            <div className="col col-md-2">
-                                <NavTabs type='deliverable' tabList={this.props.projectViewData.deliverables} projectId={this.props.match.params.project_id}/>
+                            <div className="col-md-2">
+                                <div className="sidebar-nav-fixed affix">
+                                    <div className="well">
+                                        <NavTabs type='deliverable' tabList={this.props.projectViewData.deliverables} projectId={this.props.match.params.project_id}/>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="col col-md-10">
+                            <div className="col-md-8">
                                 <ProjectViewChart data={this.props.projectViewData}/>
+                                <ProjectSummaryTable data={this.props.projectViewData} url={this.props.match.url}/>                        
                             </div>
                         </div>
-                            <ProjectSummaryTable data={this.props.projectViewData} url={this.props.match.url}/>                        
                     </div>
                 </div>
             );

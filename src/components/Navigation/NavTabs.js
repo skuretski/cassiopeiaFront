@@ -11,7 +11,7 @@ class NavTabs extends Component{
     renderOneTab(props){ 
         return _.map(props.tabList, tab => {
             return (
-                <NavTab key={tab.id} tab={tab} isActive={props.isActive} type={props.type} projectId={props.projectId} delivId={props.delivId} />
+                <NavTab key={tab.id} tab={tab} isActive={props.isActive} type={props.type} projectId={props.projectId} delivId={props.delivId} taskId={props.taskId} />
             );
         });
     }
@@ -36,7 +36,7 @@ class NavTabs extends Component{
         else if(this.props.type == 'deliverable'){
             return(
                     <nav className="navbar navbar-default">
-                        <ul className= 'nav nav-tabs'>
+                        <ul className= 'nav nav-tabs' id="verticalUL">
                             <li role="presentation" className="disabled"><NavLink to="#"><strong>Deliverables</strong></NavLink></li>
                             {this.renderOneTab(this.props)}
                         </ul>
@@ -46,7 +46,7 @@ class NavTabs extends Component{
         else if(this.props.type == 'task'){
             return(
                 <nav className="navbar navbar-default">
-                        <ul className = 'nav nav-tabs'>
+                        <ul className = 'nav nav-tabs' id="verticalUL">
                             <li role="presentation" className="disabled"><NavLink to="#"><strong>Tasks</strong></NavLink></li>
                             {this.renderOneTab(this.props)}
                         </ul>
