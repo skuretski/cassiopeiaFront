@@ -13,7 +13,6 @@ class TaskView extends Component{
         }
     }
     componentWillMount(){
-        console.log(this.props);
         this.setState({loading: true});
         this.props.dispatch(getTaskViewData(this.props.match.params.task_id)).then(()=> {
             this.setState({loading: false});
