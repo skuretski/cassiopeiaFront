@@ -34,7 +34,6 @@ class IndexView extends Component{
             return(
                 <div className="container">
                     <NavTabs type='project' tabList={this.props.projects}/>
-
                     {/* START MODAL */}
                     <div className="modal fade bs-project-modal-lg" tabIndex="-1" role="dialog">
                         <div className="modal-dialog modal-lg" role="document">
@@ -47,7 +46,9 @@ class IndexView extends Component{
                         </div>
                     </div> 
                     {/* END MODAL */}
-
+                    <div className="chart-title">
+                        <h4><b>Business Plan Overview</b></h4>
+                    </div>
                     <IndexViewChart data={this.props.indexViewData}/>
                     <IndexSummaryTable data={this.props.indexViewData}/>
                 </div>

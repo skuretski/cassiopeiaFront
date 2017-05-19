@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2";
 // https://github.com/gor181/react-chartjs-2
 import _ from 'lodash';
 
-export default class ProjectViewChart extends Component {
+export default class TaskViewChart extends Component {
     constructor(props) {
         super(props);
     }
@@ -14,8 +14,8 @@ export default class ProjectViewChart extends Component {
             Chart.defaults.global.defaultFontSize = 14;
             return (
                 <div>
-                    <Line data={projectViewChartData(this.props.data)} options={projectViewChartOptions(this.props.data)} />  
-                </div>
+                    <Line data={taskViewChartData(this.props.data)} options={taskViewChartOptions(this.props.data)} />
+                </div>    
             );
         } else {
             return <div></div>;
@@ -26,13 +26,13 @@ export default class ProjectViewChart extends Component {
 // -----------------------------------------------------------------------------
 // Define Options For The Chart
 // -----------------------------------------------------------------------------
-function projectViewChartOptions(apiData) {
+function taskViewChartOptions(apiData) {
     //var title = api
     var chartOptions = {
         responsive: true,
         title: {
             display: false,
-            text: 'Project: ' + apiData.project[0].title
+            text: 'Project: ' + apiData.project[0].title + ' | Deliverable: ' + apiData.deliverable[0].title
         },
         scales: {
             yAxes: [
@@ -70,13 +70,13 @@ function projectViewChartOptions(apiData) {
 // -----------------------------------------------------------------------------
 // Define Data For The Chart
 // -----------------------------------------------------------------------------
-function projectViewChartData(apiData) {
+function taskViewChartData(apiData) {
     var default_colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#DD4477',
         '#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC'];
     var chartData = {};
     
     // -----------------------------------------------------------------------------
-    // Get the beginning mo/yr and end mo/yr from earliest and latest of SOW, funding, and assigned employees
+    // Get the beginning mo/yr and end mo/yr from earliest and latest of SOW and employee assignments
     // -----------------------------------------------------------------------------
     if (apiData.date_range.length == 0) {
         return chartData;
@@ -109,14 +109,15 @@ function projectViewChartData(apiData) {
     }
 
     // -----------------------------------------------------------------------------
-    // Create chart datasets for SOW
+    // Create chart datasets for employee assignments
     // -----------------------------------------------------------------------------
     chartData.datasets = [];
-    var dsToDelMap = new Object();
-    for (var i = 0; i < apiData.deliverables.length; i++) {
+/*
+    var dsToEmpMap = new Object();
+    for (var i = 0; i < apiData.emp_asgn.length; i++) {
         var dataset = new Object();
-        dataset.label = 'SOW: ' + apiData.deliverables[i].title;
-        dsToDelMap[apiData.deliverables[i].id] = i;
+        dataset.label = '' + apiData.emp_asgn[i].last + ', ' + apiData.emp_asgn[i].first;
+        dsToEmpMap[apiData.emp_asgn[i].id] = i;
         dataset.data = new Array(chartData.labels.length).fill(0);
         dataset.yAxisID = 'stacked';
         dataset.lineTension = 0;
@@ -127,9 +128,9 @@ function projectViewChartData(apiData) {
         //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
         chartData.datasets.push(dataset);
     }
-
+/*
     // -----------------------------------------------------------------------------
-    // Get actual SOW data (for each delivarble) to be plotted into chart datasets
+    // Get actual SOW data (for each task) to be plotted into chart datasets
     // -----------------------------------------------------------------------------
     var someDate;
     var j = 0;
@@ -142,38 +143,9 @@ function projectViewChartData(apiData) {
             //console.log('j = ' + j);
             j++;
         }
-        chartData.datasets[dsToDelMap[apiData.sow[i].deliverable_id]].data[j] += apiData.sow[i].sum_man_mo;
+        chartData.datasets[dsToTskMap[apiData.sow[i].task_id]].data[j] += apiData.sow[i].sum_man_mo;
     }
-    dsToDelMap = null; // i'm going to unshift into the dataset below, which will break the map
-
-    // -----------------------------------------------------------------------------
-    // Create chart datasets for funding
-    // -----------------------------------------------------------------------------
-    var fund_color = '#000000';
-    var dataset = new Object();
-    dataset.label = 'Total Funding';
-    dataset.yAxisID = 'default';
-    dataset.lineTension = 0;
-    dataset.backgroundColor = 'transparent'; // the color of the shading below the line
-    dataset.borderColor = hexToRGB(fund_color, 1); // the color of the line itself
-    dataset.pointBackgroundColor = hexToRGB(fund_color, 0.5); // the fill color of the points
-    dataset.pointBorderColor = hexToRGB(fund_color, 1); // the border color of the points
-    dataset.pointStyle = 'rect';
-    //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
-
-    // -----------------------------------------------------------------------------
-    // Get actual funding data to be plotted into chart datasets
-    // -----------------------------------------------------------------------------
-    dataset.data = new Array(chartData.labels.length).fill(0);
-    var j = 0;
-    for (var i = 0; i < apiData.funding.length; i++) { // for each entry in apiData.funding
-        someDate = dateHelper(apiData.funding[i].mo, apiData.funding[i].yr); // mo/yr of some entry in funding result from api
-        while (someDate != chartData.labels[j]) {
-            j++;
-        }
-        dataset.data[j] += apiData.funding[i].funding_amt;
-    }
-    chartData.datasets.unshift(dataset);
+    dsToEmpMap = null; // i'm going to unshift into the dataset below, which will break the map
 
     // -----------------------------------------------------------------------------
     // Create chart datasets for assigned employees
@@ -208,10 +180,10 @@ function projectViewChartData(apiData) {
     // -----------------------------------------------------------------------------
     // Align scales to be equal
     // -----------------------------------------------------------------------------
-    var maxYValue = Math.max(_.max(chartData.datasets[0].data), _.max(chartData.datasets[1].data)); // max value from funding and assigned employees
+    var maxYValue = _.max(chartData.datasets[0].data); // max value from assigned employees
     for (var i = 0; i < chartData.labels.length; i++) { // for each mo/yr combo on the chart
         var sowSum = 0;
-        for (var j = 2; j < chartData.datasets.length; j++) {
+        for (var j = 1; j < chartData.datasets.length; j++) {
             sowSum += chartData.datasets[j].data[i];
         }
         maxYValue = Math.max(maxYValue, sowSum); // max value from combined (sandpiled) SOW
@@ -229,7 +201,7 @@ function projectViewChartData(apiData) {
             max: maxYValue
         }
     })    
-
+    */
     return chartData;
 }
 

@@ -30,7 +30,7 @@ function indexViewChartOptions() {
     var chartOptions = {
         responsive: true,
         title: {
-            display: true,
+            display: false,
             text: 'Business Plan Overview'
         },
         scales: {

@@ -36,6 +36,52 @@ class TaskSummaryTable extends Component {
         )
     }
 
+    createDateStrings() {
+        var date_range = this.props.data.date_range;
+        var month = parseInt(date_range[0].mo);
+        var year = parseInt(date_range[0].yr);
+        var endMonth = parseInt(date_range[1].mo);
+        var endYear = parseInt(date_range[1].yr);
+
+        var dateStrings = [];
+        while (year <= endYear && month <= endMonth) {
+            dateStrings.push(month + '/' + year);
+            month += 1;
+            if (month > 12) {
+                month = 1;
+                year += 1;
+            }
+        }
+
+        return dateStrings;
+    }
+
+    createHeaderCells(dates) {
+        var thCells = [];
+        dates.map( date => { thCells.push(<th key={date}>{date}</th>); });
+        return thCells;
+    }
+
+    createSOWCells(dates) {
+        var sow_obj = this.props.data.sow.reduce((s, item) => {
+            s[item.mo + '/' + item.yr] = item.sum_man_mo;
+            return s;
+        },{});
+
+        var thCells = [<td key="sow">SOW</td>];
+        var values = [];
+        dates.map( date => {
+            values.push(sow_obj[date] ? sow_obj[date] : 0);
+        });
+
+        return <TableRow type="totals" title="SOW" values={values} />
+    }
+
+    // createEmployeeCells(dates) {
+
+    // }
+
+
     render() {
         // Don't bother rendering the table if we don't have data
         if (_.isEmpty(this.props.data)) {
@@ -50,35 +96,12 @@ class TaskSummaryTable extends Component {
                 <thead>
                     <tr>
                         <th>Employee</th>
-                        {this.props.data.sow.map( (sow) => {
-                            const mo = sow.mo;
-                            const yr = sow.yr;
-                            const title = mo + '/' + yr;
-                            return <th key={title}>{title}</th>
-                        })}
+                        {this.createHeaderCells(this.createDateStrings())}
                     </tr>
                 </thead>
                 <tbody>
-                    {/* TODO: Add employee/assignment data to test table results */}
-                    {/* This table is going to be a little more messy than the others.
-                        Any given employee isn't guaranteed to be assigned in all months,
-                        so there needs to be some logic to create blank <td> elements
-                        for months without any assignment. Once I add test data I'll
-                        swing back around to this... */}
-
-                    {/*For each employee, pass the name and the SOW of that employee
-                       to TableRow as props*/}
-                    {/*
-                    {this.props.data.assigned_employees.map( (emp) => {
-                        const name = emp.first + ' ' + emp.last;
-                        const url = this.props.url;
-                        const id = emp.employee_id;
-                        const values = emp.sum_effort;
-                        totals = values.map((a, i) => typeof totals[i] == 'undefined' ? a : a + totals[i]);
-                        return <TableRow key={id} id={id} toUrl={url} type="employee" title={title} values={values} />
-                    })}
-                    {this.calculateTotals(totals)}
-                    */}
+                    {this.createSOWCells(this.createDateStrings())}
+                    {/*{this.createEmployeeCells(this.createDateStrings())}*/}
                 </tbody>
             </table>
             </div>

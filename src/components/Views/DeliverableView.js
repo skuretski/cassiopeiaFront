@@ -66,6 +66,10 @@ class DeliverableView extends Component{
                                 </div>
                             </div>
                             <div className="col-md-8">
+                                <div className="chart-title">
+                                    <h4><b>Project: {this.props.deliverableViewData.project[0].title}</b></h4>
+                                    <h4><b>Deliverable: {this.props.deliverableViewData.deliverable[0].title}</b></h4>
+                                </div>
                                 <DeliverableViewChart data={this.props.deliverableViewData}/>
                                 <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
                             </div>
