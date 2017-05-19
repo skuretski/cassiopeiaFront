@@ -31,8 +31,8 @@ function deliverableViewChartOptions(apiData) {
     var chartOptions = {
         responsive: true,
         title: {
-            display: true,
-            text: 'Deliverable Overview: ' + apiData.deliverable[0].title + ' (Project: ' + apiData.project[0].title +')'
+            display: false,
+            text: 'Project: ' + apiData.project[0].title + ' | Deliverable: ' + apiData.deliverable[0].title
         },
         scales: {
             yAxes: [

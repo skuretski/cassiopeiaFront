@@ -74,6 +74,11 @@ class TaskView extends Component{
                             </div>
                         </div>
                         <div className="col-md-8">
+                            <div className="chart-title">
+                                <h4><b>Project: {this.props.taskViewData.project[0].title}</b></h4>
+                                <h4><b>Deliverable: {this.props.taskViewData.deliverable[0].title}</b></h4>
+                                <h4><b>Task: {this.props.taskViewData.task[0].title}</b></h4>
+                            </div>
                             {/*<TaskViewChart data={this.props.taskViewData}/>*/}
                             <TaskSummaryTable data={this.props.taskViewData} url={this.props.match.url}/>
                         </div>

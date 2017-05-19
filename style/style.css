@@ -28,3 +28,7 @@ nav{
     float: left;
     clear: left;
 }
+
+.chart-title{
+    text-align:center;
+}

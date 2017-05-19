@@ -49,6 +49,9 @@ class ProjectView extends Component{
                                 </div>
                             </div>
                             <div className="col-md-8">
+                                <div className="chart-title">
+                                    <h4><b>Project: {this.props.projectViewData.project[0].title}</b></h4>
+                                </div>
                                 <ProjectViewChart data={this.props.projectViewData}/>
                                 <ProjectSummaryTable data={this.props.projectViewData} url={this.props.match.url}/>                        
                             </div>

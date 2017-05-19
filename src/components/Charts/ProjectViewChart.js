@@ -31,8 +31,8 @@ function projectViewChartOptions(apiData) {
     var chartOptions = {
         responsive: true,
         title: {
-            display: true,
-            text: 'Project Overview: ' + apiData.project[0].title
+            display: false,
+            text: 'Project: ' + apiData.project[0].title
         },
         scales: {
             yAxes: [

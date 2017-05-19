@@ -31,6 +31,9 @@ class IndexView extends Component{
             return(
                 <div className="container">
                     <NavTabs type='project' tabList={this.props.projects}/>
+                    <div className="chart-title">
+                        <h4><b>Business Plan Overview</b></h4>
+                    </div>
                     <IndexViewChart data={this.props.indexViewData}/>
                     <IndexSummaryTable data={this.props.indexViewData}/>
                 </div>
