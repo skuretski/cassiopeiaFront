@@ -42,7 +42,17 @@ const TableRow = (props) => {
                 })}
             </tr>
         );
-    }
+   } else {
+        return (
+            <tr>
+                <td>{props.title}</td>
+                {props.values.map((v) => {
+                    return <td key={uuid.v4()}>{v}</td>
+                })}
+            </tr>
+        );
+
+   }
 
 
 }

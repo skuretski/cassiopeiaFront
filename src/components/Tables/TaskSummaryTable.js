@@ -6,35 +6,6 @@ class TaskSummaryTable extends Component {
     constructor(props) {
         super(props);
     }
-    sumHelper(data, comparison_value, comparison_key, accum_key) {
-        // Sum over the data only if data points comparison key value matches
-        // the comparison value. In this case, it's project_id == id
-        var sum = _.reduce(data, (total, point) => {
-            if (point[comparison_key] == comparison_value) {
-                return total + point[accum_key];
-            } else {
-                return total;
-            }
-        }, 0);
-
-        // Return value rounded to 1 decimal place
-        return _.round(sum, 1);
-    }
-
-    sumData(id, data) {
-        // Compute the sum for the provided id for SOW, funding, and employees
-        var sow_sum = this.sumHelper(data.sow, id, 'task_id', 'sum_man_mo');
-        var employee_sum = this.sumHelper(data.assigned_employees, id, 'task_id', 'sum_effort');
-
-        return [sow_sum, employee_sum];
-    }
-
-    calculateTotals(totals) {
-        totals = totals.map(t => _.round(t, 1));
-        return (
-            <TableRow type="totals" title="TOTAL" values={totals}/>
-        )
-    }
 
     createDateStrings() {
         var date_range = this.props.data.date_range;
@@ -68,7 +39,6 @@ class TaskSummaryTable extends Component {
             return s;
         },{});
 
-        var thCells = [<td key="sow">SOW</td>];
         var values = [];
         dates.map( date => {
             values.push(sow_obj[date] ? sow_obj[date] : 0);
@@ -77,9 +47,31 @@ class TaskSummaryTable extends Component {
         return <TableRow type="totals" title="SOW" values={values} />
     }
 
-    // createEmployeeCells(dates) {
+    createEmployeeCells(dates) {
+        var employees = this.props.data.employees;
+        var rows = [];
 
-    // }
+        // Loop through assigned employees, create map of ID and date to effort
+        var assignments = this.props.data.assigned_employees.reduce((a, item) => {
+            if (!(item.employee_id in a)) {
+                a[item.employee_id] = {};
+            }
+            a[item.employee_id][item.mo + '/' + item.yr] = item.sum_effort;
+            return a;
+        },{});
+        
+        var rows = [];
+        employees.map( e => {
+            var values = [];
+            dates.map( date => {
+                values.push(assignments[e.id][date] ? assignments[e.id][date] : 0);
+            });
+
+            rows.push(<TableRow key={e.id} title={e.last + ', ' + e.first} values={values}/>);
+        })
+
+        return rows;
+    }
 
 
     render() {
@@ -101,7 +93,7 @@ class TaskSummaryTable extends Component {
                 </thead>
                 <tbody>
                     {this.createSOWCells(this.createDateStrings())}
-                    {/*{this.createEmployeeCells(this.createDateStrings())}*/}
+                    {this.createEmployeeCells(this.createDateStrings())}
                 </tbody>
             </table>
             </div>
