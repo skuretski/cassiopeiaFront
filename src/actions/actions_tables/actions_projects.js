@@ -12,7 +12,7 @@ export function getProjects(dispatch){
 
 export function addProject(project){
     return function(dispatch){
-        if(title === '' || desc === ''){
+        if(project.title === '' || project.description === ''){
             console.log("Error. Fields must be filled out.");
         }
         else{

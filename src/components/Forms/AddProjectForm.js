@@ -9,22 +9,22 @@ class AddProjectForm extends Component{
         this.state = {
             added: false
         }
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(project){
-        console.log(project.title);
-        // dispatch(addProject(project)).then(() => {
-        //     this.setState({added: true});
-        // });
+        const { dispatch } = this.props;
+        console.log(project);
+        dispatch(actions.submit(addProject(project)));
     }
     render(){
         return(
-            <Form model="projects"
+            <Form model="project" onSubmit={this.handleSubmit}
                 >
                 <label>Project Name:</label>
-                <Control.text model="projects.title" />
+                <Control.text model="project.title" />
                 <br/>
                 <label>Project Description:</label>
-                <Control.text model="projects.description" />
+                <Control.text model="project.description" />
                 <br/>
                 <br/><br/>
                 <button type="submit">
@@ -34,10 +34,13 @@ class AddProjectForm extends Component{
         )
     }
 }
+AddProjectForm.propTypes = {
+    dispatch: React.PropTypes.func.isRequired
+};
+
 function mapStateToProps(state){
     return{
-        projects: state.projects,
-        projectForm: state.projectForm
+        projects: state.projects
     }  
 }
 export default connect(mapStateToProps)(AddProjectForm);

@@ -10,6 +10,8 @@ import FormView from './Views/FormView';
 import ProjectView from './Views/ProjectView';
 import TaskView from './Views/TaskView';
 import IndexView from './Views/IndexView';
+import FundingView from './Views/FundingView';
+import EmployeeView from './Views/EmployeeView';
 
 class App extends Component{
     constructor(props){
@@ -34,7 +36,8 @@ class App extends Component{
                     <Route path="/projects/:project_id/deliverables/:deliv_id/tasks/:task_id" component={TaskView} />
                     <Route path="/projects/:project_id/deliverables/:deliv_id" component={DeliverableView} />   
                     <Route path="/projects/:project_id" component={ProjectView} />
-                    <Route path="/form" component={FormView} />
+                    <Route path="/funding" component={FundingView} />
+                    <Route path="/employees" component={EmployeeView} />
                     <Route exact path="/" component={IndexView} />
                 </Switch>
             </div>

@@ -26,6 +26,8 @@ class NavTabs extends Component{
                     <div className="container-fluid">
                         <ul className="nav nav-tabs">
                             <li><NavLink exact={true} activeClassName="selected" to='/'>Home</NavLink></li>
+                            <li><NavLink exact={true} activeClassName="selected" to="/employees">Employees</NavLink></li>
+                            <li><NavLink exact={true} activeClassName="selected" to="/funding">Funding</NavLink></li>
                         </ul>
                     </div>
                     <div className="container-fluid">
