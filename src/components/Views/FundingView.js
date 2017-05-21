@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FundingViewByProjectChart from '../Charts/FundingViewByProjectChart';
+import FundingByProjectSummaryTable from '../Tables/FundingByProjectSummaryTable';
 import FundingViewByTypeChart from '../Charts/FundingViewByTypeChart';
+import FundingByTypeSummaryTable from '../Tables/FundingByTypeSummaryTable';
 import NavTabs from '../Navigation/NavTabs';
 import { getFundingViewData } from '../../actions';
 
@@ -14,24 +16,35 @@ class FundingView extends Component{
     }
     componentWillMount(){
         this.setState({loading: true});     
-            this.props.dispatch(getFundingViewData()).then(() =>{
+            this.props.dispatch(getFundingViewData).then(() =>{
             this.setState({loading: false});
         });               
     }
     render(){
-        return(
-            <div className="container">
-                <NavTabs type='project' tabList={this.props.projects}/>
-                <div className="chart-title">
-                    <h4><b>Funding Overview (By Project)</b></h4>
+        if(this.state.loading === true){
+            return(
+                <div className="container-fluid">
+                <h3>Loading...</h3>
                 </div>
-                {<FundingViewByProjectChart data={this.props.fundingViewData}/>}
-                <div className="chart-title">
-                    <h4><b>Funding Overview (By Type)</b></h4>
+            )
+        }
+        else{
+            return (
+                <div className="container">
+                    <NavTabs type='project' tabList={this.props.projects}/>
+                    <div className="chart-title">
+                        <h4><b>Funding Overview (By Project)</b></h4>
+                    </div>
+                    {<FundingViewByProjectChart data={this.props.fundingViewData}/>}
+                    {<FundingByProjectSummaryTable data={this.props.fundingViewData}/>}                       
+                    <div className="chart-title">
+                        <h4><b>Funding Overview (By Type)</b></h4>
+                    </div>
+                    {<FundingViewByTypeChart data={this.props.fundingViewData}/>}
+                    {<FundingByTypeSummaryTable data={this.props.fundingViewData}/>}
                 </div>
-                {<FundingViewByTypeChart data={this.props.fundingViewData}/>}
-            </div>
-        );
+            );
+        }
     }
 }
 
