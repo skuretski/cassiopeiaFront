@@ -153,10 +153,10 @@ function taskViewChartData(apiData) {
     dataset.lineTension = 0;
     dataset.backgroundColor = 'transparent'; // the color of the shading below the line
     dataset.borderColor = hexToRGB(ae_color, 1); // the color of the line itself
-    dataset.borderDash = [2, 2];
+    //dataset.borderDash = [2, 2];
     dataset.pointBackgroundColor = hexToRGB(ae_color, 0.5); // the fill color of the points
     dataset.pointBorderColor = hexToRGB(ae_color, 1); // the border color of the points
-    dataset.pointStyle = 'star';
+    //dataset.pointStyle = 'star';
     //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
     // -----------------------------------------------------------------------------
