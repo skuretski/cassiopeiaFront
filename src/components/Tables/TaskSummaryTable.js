@@ -84,7 +84,7 @@ class TaskSummaryTable extends Component {
 
     render() {
         // Don't bother rendering the table if we don't have data
-        if (_.isEmpty(this.props.data)) {
+        if (_.isEmpty(this.props.data) || _.isEmpty(this.props.data.date_range)) {
             return <div></div>;
         }
 
