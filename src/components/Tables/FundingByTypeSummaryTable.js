@@ -47,7 +47,7 @@ class FundingByTypeSummaryTable extends Component {
             <table className="table table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th>Project</th>
+                        <th>Funding Type</th>
                         <th>Funding (mm)</th>
                         <th>Funding (% of total)</th>
                     </tr>
