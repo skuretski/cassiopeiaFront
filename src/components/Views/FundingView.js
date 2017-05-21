@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import FundingViewChartByProject from '../Charts/FundingViewChartByProject';
-import FundingViewChartByType from '../Charts/FundingViewChartByType';
+import FundingViewByProjectChart from '../Charts/FundingViewByProjectChart';
+import FundingViewByTypeChart from '../Charts/FundingViewByTypeChart';
 import NavTabs from '../Navigation/NavTabs';
 import { getFundingViewData } from '../../actions';
 
@@ -25,11 +25,11 @@ class FundingView extends Component{
                 <div className="chart-title">
                     <h4><b>Funding Overview (By Project)</b></h4>
                 </div>
-                {<FundingViewChartByProject data={this.props.fundingViewData}/>}
+                {<FundingViewByProjectChart data={this.props.fundingViewData}/>}
                 <div className="chart-title">
                     <h4><b>Funding Overview (By Type)</b></h4>
                 </div>
-                {<FundingViewChartByType data={this.props.fundingViewData}/>}
+                {<FundingViewByTypeChart data={this.props.fundingViewData}/>}
             </div>
         );
     }

@@ -3,7 +3,7 @@ import { Line } from "react-chartjs-2";
 // https://github.com/gor181/react-chartjs-2
 import _ from 'lodash';
 
-export default class FundingViewChartByType extends Component {
+export default class FundingViewByTypeChart extends Component {
     constructor(props) {
         super(props);
     }
