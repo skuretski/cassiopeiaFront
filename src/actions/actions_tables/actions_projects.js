@@ -20,9 +20,10 @@ export function addProject(project){
                 title: project.title,
                 description: project.description
             }).then((response) => {
-                dispatch(createProject(response.data));
+                console.log(response.data);
+          //      dispatch(createProject(response.data));
             }).catch((error) => {
-                console.log("Error. Did not add project.");
+                console.log(error);
             });
         }
     }
