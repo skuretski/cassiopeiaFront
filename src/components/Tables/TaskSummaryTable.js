@@ -10,7 +10,7 @@ class TaskSummaryTable extends Component {
     // convert mo=2 and yr=2019 to "Feb-2019"
     dateHelper(mo, yr) {
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        return (months[mo - 1] + '-' + yr);
+        return months[mo - 1] + '-' + yr;
     }
 
     createDateStrings() {
@@ -21,7 +21,10 @@ class TaskSummaryTable extends Component {
         var endYear = parseInt(date_range[1].yr);
 
         var dateStrings = [];
-        while (year <= endYear && month <= endMonth) {
+        while (year <= endYear) {
+            if (year === endYear && month > endMonth) {
+                break;
+            }
             dateStrings.push(this.dateHelper(month, year));
             month += 1;
             if (month > 12) {
@@ -29,7 +32,6 @@ class TaskSummaryTable extends Component {
                 year += 1;
             }
         }
-
         return dateStrings;
     }
 
