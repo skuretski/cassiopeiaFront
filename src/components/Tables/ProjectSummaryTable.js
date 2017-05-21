@@ -32,6 +32,9 @@ class ProjectSummaryTable extends Component {
 
     calculateTotals(totals) {
         totals = totals.map(t => _.round(t, 1));
+        if (totals.length == 0) {
+            totals = [0, 0];
+        }
         return (
             <TableRow type="totals" title="TOTAL" values={totals}/>
         )
