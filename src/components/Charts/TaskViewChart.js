@@ -112,12 +112,11 @@ function taskViewChartData(apiData) {
     // Create chart datasets for employee assignments
     // -----------------------------------------------------------------------------
     chartData.datasets = [];
-/*
     var dsToEmpMap = new Object();
-    for (var i = 0; i < apiData.emp_asgn.length; i++) {
+    for (var i = 0; i < apiData.employees.length; i++) {
         var dataset = new Object();
-        dataset.label = '' + apiData.emp_asgn[i].last + ', ' + apiData.emp_asgn[i].first;
-        dsToEmpMap[apiData.emp_asgn[i].id] = i;
+        dataset.label = '' + apiData.employees[i].last + ', ' + apiData.employees[i].first;
+        dsToEmpMap[apiData.employees[i].id] = i;
         dataset.data = new Array(chartData.labels.length).fill(0);
         dataset.yAxisID = 'stacked';
         dataset.lineTension = 0;
@@ -128,31 +127,28 @@ function taskViewChartData(apiData) {
         //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
         chartData.datasets.push(dataset);
     }
-/*
+
     // -----------------------------------------------------------------------------
-    // Get actual SOW data (for each task) to be plotted into chart datasets
+    // Get actual assignment data (for each employee) to be plotted into chart datasets
     // -----------------------------------------------------------------------------
+
     var someDate;
     var j = 0;
-    for (var i = 0; i < apiData.sow.length; i++) { // for each entry in apiData.sow
-        //console.log('i = ' + i);
-        //console.log(apiData.sow[i]);
-        //console.log(apiData.sow[i].mo);
-        someDate = dateHelper(apiData.sow[i].mo, apiData.sow[i].yr); // mo/yr of some entry in SOW result from api
+    for (var i = 0; i < apiData.assigned_employees.length; i++) { // for each entry in apiData.sow
+        someDate = dateHelper(apiData.assigned_employees[i].mo, apiData.assigned_employees[i].yr); // mo/yr of some entry in assigned_employees result from api
         while (someDate != chartData.labels[j]) {
-            //console.log('j = ' + j);
             j++;
         }
-        chartData.datasets[dsToTskMap[apiData.sow[i].task_id]].data[j] += apiData.sow[i].sum_man_mo;
+        chartData.datasets[dsToEmpMap[apiData.assigned_employees[i].employee_id]].data[j] += apiData.assigned_employees[i].sum_effort;
     }
     dsToEmpMap = null; // i'm going to unshift into the dataset below, which will break the map
 
     // -----------------------------------------------------------------------------
-    // Create chart datasets for assigned employees
+    // Create chart datasets for SOW
     // -----------------------------------------------------------------------------
     var ae_color = '#090F0E';
     var dataset = new Object();
-    dataset.label = 'Total Assigned Employees';
+    dataset.label = 'SOW';
     dataset.yAxisID = 'default';
     dataset.lineTension = 0;
     dataset.backgroundColor = 'transparent'; // the color of the shading below the line
@@ -164,29 +160,29 @@ function taskViewChartData(apiData) {
     //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
     // -----------------------------------------------------------------------------
-    // Get actual assigned employee data to be plotted into chart datasets
+    // Get actual SOW data to be plotted into chart datasets
     // -----------------------------------------------------------------------------
     dataset.data = new Array(chartData.labels.length).fill(0);
     var j = 0;
-    for (var i = 0; i < apiData.assigned_employees.length; i++) { // for each entry in apiData.assigned_employees
-        someDate = dateHelper(apiData.assigned_employees[i].mo, apiData.assigned_employees[i].yr); // mo/yr of some entry in assigned_employees result from api
+    for (var i = 0; i < apiData.sow.length; i++) { // for each entry in apiData.sow
+        someDate = dateHelper(apiData.sow[i].mo, apiData.sow[i].yr); // mo/yr of some entry in sow result from api
         while (someDate != chartData.labels[j]) {
             j++;
         }
-        dataset.data[j] += apiData.assigned_employees[i].effort;
+        dataset.data[j] += apiData.sow[i].sum_man_mo;
     }
     chartData.datasets.unshift(dataset);
 
     // -----------------------------------------------------------------------------
     // Align scales to be equal
     // -----------------------------------------------------------------------------
-    var maxYValue = _.max(chartData.datasets[0].data); // max value from assigned employees
+    var maxYValue = _.max(chartData.datasets[0].data); // max value from SOW employees
     for (var i = 0; i < chartData.labels.length; i++) { // for each mo/yr combo on the chart
         var sowSum = 0;
         for (var j = 1; j < chartData.datasets.length; j++) {
             sowSum += chartData.datasets[j].data[i];
         }
-        maxYValue = Math.max(maxYValue, sowSum); // max value from combined (sandpiled) SOW
+        maxYValue = Math.max(maxYValue, sowSum); // max value from combined (sandpiled) employee assignments
     }
     // console.log('maxYValue:' + maxYValue);
     if (maxYValue == Math.ceil(maxYValue / 10) * 10) {
@@ -201,7 +197,7 @@ function taskViewChartData(apiData) {
             max: maxYValue
         }
     })    
-    */
+
     return chartData;
 }
 

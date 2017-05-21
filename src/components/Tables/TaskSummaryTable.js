@@ -7,6 +7,12 @@ class TaskSummaryTable extends Component {
         super(props);
     }
 
+    // convert mo=2 and yr=2019 to "Feb-2019"
+    dateHelper(mo, yr) {
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return (months[mo - 1] + '-' + yr);
+    }
+
     createDateStrings() {
         var date_range = this.props.data.date_range;
         var month = parseInt(date_range[0].mo);
@@ -16,7 +22,7 @@ class TaskSummaryTable extends Component {
 
         var dateStrings = [];
         while (year <= endYear && month <= endMonth) {
-            dateStrings.push(month + '/' + year);
+            dateStrings.push(this.dateHelper(month, year));
             month += 1;
             if (month > 12) {
                 month = 1;
@@ -35,7 +41,7 @@ class TaskSummaryTable extends Component {
 
     createSOWCells(dates) {
         var sow_obj = this.props.data.sow.reduce((s, item) => {
-            s[item.mo + '/' + item.yr] = item.sum_man_mo;
+            s[this.dateHelper(item.mo, item.yr)] = item.sum_man_mo;
             return s;
         },{});
 
@@ -56,7 +62,7 @@ class TaskSummaryTable extends Component {
             if (!(item.employee_id in a)) {
                 a[item.employee_id] = {};
             }
-            a[item.employee_id][item.mo + '/' + item.yr] = item.sum_effort;
+            a[item.employee_id][this.dateHelper(item.mo, item.yr)] = item.sum_effort;
             return a;
         },{});
         
