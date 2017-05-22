@@ -19,9 +19,6 @@ class IndexView extends Component{
             this.setState({loading: false});
         });
     }
-    addProjectAction(){
-        console.log("Hi!");
-    }
     render(){
         if(this.state.loading === true){
             return(

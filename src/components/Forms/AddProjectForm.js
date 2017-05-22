@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, reset } from 'redux-form';
 import { addProject } from '../../actions';
 import { Link } from 'react-router-dom';
 
@@ -13,9 +13,9 @@ class AddProjectForm extends Component{
     }
     renderField(field){
         const { meta: { touched, error} } = field;
-        const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+        const customClass = `form-group ${touched && error ? 'has-danger' : ''}`;
         return(
-            <div className={className}>
+            <div className={customClass}>
                 <label>{field.label}</label>
                 <input className="form-control"
                     type="text"
@@ -28,11 +28,14 @@ class AddProjectForm extends Component{
         );
     }
     onSubmit(project){
-        var projectId = '';
-        this.props.dispatch(addProject(project)).then(() => {
-            this.setState({added: true});
-         //   this.props.history.push('/');
-        });
+        if(!errors){
+            this.props.dispatch(addProject(project)).then(() => {
+                this.setState({added: true});
+                this.props.reset();
+               // this.props.history.push('/projects/');
+            });
+        }
+
     }
     render(){
         const { handleSubmit } = this.props;
@@ -51,7 +54,7 @@ class AddProjectForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add New Project
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal" onClick={this.props.reset}>Cancel</button>
             </form>
         )
     }
@@ -75,7 +78,6 @@ function mapStateToProps(state){
 
 export default reduxForm({
     form: 'AddProjectForm',
-    fields: ['title', 'description'],
     validate: validate
 
 }, mapStateToProps, null)(AddProjectForm);

@@ -1,13 +1,17 @@
 import _ from 'lodash';
+import merge from 'lodash/merge';
 
 export default function(state = {}, action){
     switch (action.type){   
         case 'GET_PROJECTS':
             return _.mapKeys(action.projects, 'id'); 
-        case 'ADD_PROJECT': {
-            return state;
-            //TODO: Need to update projects state with new project
-        }
+        case 'ADD_PROJECT':
+            return {
+                ...state,
+                [action.project.id]: {
+                    ...action.project
+                }
+            }
         default:
             return state;
     }   
