@@ -8,14 +8,7 @@ import IndexViewReducer from './reducer_indexview';
 import ProjectViewReducer from './reducer_projectview';
 import DeliverableViewReducer from './reducer_deliverableview';
 import TaskViewReducer from './reducer_taskview';
-import { combineForms, createForms } from 'react-redux-form';
-
-const initialProjectState = {
-    id: '',
-    title: '',
-    description: ''
-};
-
+import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
     projects: ProjectsReducer,
@@ -27,9 +20,7 @@ const rootReducer = combineReducers({
     projectViewData: ProjectViewReducer,
     deliverableViewData: DeliverableViewReducer,
     taskViewData: TaskViewReducer,
-    ...createForms({
-        project: initialProjectState
-    })
+    form: formReducer
 });
 
 export default rootReducer;

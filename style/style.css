@@ -38,3 +38,6 @@ a.active{
     text-align:center;
 }
 
+.modal-content{
+    padding: 5%;
+}

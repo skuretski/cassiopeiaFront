@@ -16,16 +16,15 @@ export function addProject(project){
             console.log("Error. Fields must be filled out.");
         }
         else{
-            return axios.post(PROJECTS,{
+            return axios.post(PROJECTS, {
                 title: project.title,
                 description: project.description
             }).then((response) => {
-                console.log(response.data);
-          //      dispatch(createProject(response.data));
+                dispatch(createProject(response.data[0]));
             }).catch((error) => {
                 console.log(error);
             });
-        }
+         }
     }
 }
 
@@ -36,16 +35,16 @@ export const setProjects = (projects) => {
     }
 }
 
-export function selectOneProject(project){
+export const selectOneProject = (project) => {
     return{
         type: 'SELECT_PROJECT',
         project
     }
 }
 
-export function createProject(newProject){
+export const createProject = (newProject) => {
     return{
         type: 'ADD_PROJECT',
-        project: newProject.data
+        project: newProject
     }
 }

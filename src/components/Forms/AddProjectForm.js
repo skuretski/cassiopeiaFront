@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { actions, Field, Errors, Form, Control } from 'react-redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { addProject } from '../../actions';
+import { Link } from 'react-router-dom';
 
 class AddProjectForm extends Component{
     constructor(props){
@@ -9,38 +10,72 @@ class AddProjectForm extends Component{
         this.state = {
             added: false
         }
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleSubmit(project){
-        const { dispatch } = this.props;
-        console.log(project);
-        dispatch(actions.submit(addProject(project)));
+    renderField(field){
+        const { meta: { touched, error} } = field;
+        const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+        return(
+            <div className={className}>
+                <label>{field.label}</label>
+                <input className="form-control"
+                    type="text"
+                    {...field.input}
+                />
+                <div className="text-help">
+                {touched ? error : ''}
+                </div>
+            </div>
+        );
+    }
+    onSubmit(project){
+        var projectId = '';
+        this.props.dispatch(addProject(project)).then(() => {
+            this.setState({added: true});
+         //   this.props.history.push('/');
+        });
     }
     render(){
+        const { handleSubmit } = this.props;
         return(
-            <Form model="project" onSubmit={this.handleSubmit}
-                >
-                <label>Project Name:</label>
-                <Control.text model="project.title" />
-                <br/>
-                <label>Project Description:</label>
-                <Control.text model="project.description" />
-                <br/>
-                <br/><br/>
-                <button type="submit">
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))} >
+                <Field
+                    label="Project Title"
+                    name="title"
+                    component={this.renderField}
+                    />
+                <Field
+                    label="Project Description"
+                    name="description"
+                    component={this.renderField}
+                    />
+                <button type="submit" className="btn btn-primary">
                     Add New Project
                 </button>
-            </Form>
+                <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </form>
         )
     }
 }
-AddProjectForm.propTypes = {
-    dispatch: React.PropTypes.func.isRequired
-};
 
+var validate = (formProps) => {
+    var errors = {};
+    if(!formProps.title){
+        errors.title = "Project title is required.";
+    }
+    if(!formProps.description){
+        errors.description = "Project description is required.";
+    }
+    return errors;
+}
 function mapStateToProps(state){
     return{
         projects: state.projects
     }  
 }
-export default connect(mapStateToProps)(AddProjectForm);
+
+export default reduxForm({
+    form: 'AddProjectForm',
+    fields: ['title', 'description'],
+    validate: validate
+
+}, mapStateToProps, null)(AddProjectForm);
