@@ -26,15 +26,35 @@ class FundingByTypeSummaryTable extends Component {
         // Compute the sum for the provided id for SOW, funding, and employees
         var funding_sum = this.sumHelper(data.by_type, id, 'fundingType_id', 'funding_amt');
 
-        return [funding_sum, funding_sum];
+        return funding_sum;
     }
 
-    calculateTotals(totals){
-        totals = totals.map(t => _.round(t, 1));
-        return (
-            <TableRow type="totals" title="TOTAL" values={totals}/>
-        );
+    renderTable() {
+        // Determine the funding for each project type, and the total funding
+        var typeFunding = [];
+        var fundingTotal = 0;
+        const types = this.props.data.type;
+        types.map( t => {
+            const id = t.id;
+            typeFunding[id] = this.sumData(id, this.props.data);
+            fundingTotal += typeFunding[id];
+        })
+
+        // Now that we know the total and each type, build table rows
+        var tableRows = [];
+        types.map( t => {
+            const id = t.id;
+            const title = t.title;
+            var values = [typeFunding[id], typeFunding[id]/fundingTotal * 100];
+            values = values.map(v => _.round(v, 1));
+            tableRows.push(<TableRow key={id} id={id} type="type" title={title} values={values}/>)
+        })
+
+        // Last row shows the totals, last value is 100 since total is always 100% of total
+        tableRows.push(<TableRow key="totals" type="totals" title="TOTAL" values={[_.round(fundingTotal, 1), 100]}/>)
+        return tableRows;
     }
+
     render() {
         // Don't bother rendering the table if we don't have data
         if (!this.props.data) {
@@ -53,16 +73,7 @@ class FundingByTypeSummaryTable extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {/*For each project, pass the title and the sum of that projects
-                       SOW, funding, and assigned employees to TableRow as props*/}
-                    {this.props.data.type.map( (type) => {
-                        const id = type.id;
-                        const title = type.title;
-                        const values = this.sumData(type.id, this.props.data);
-                        totals = values.map((a, i) => typeof totals[i] == 'undefined' ? a : a + totals[i]);
-                        return <TableRow key={id} id={id} type="type" title={title} values={values}/>
-                    })}
-                    {this.calculateTotals(totals)}
+                    {this.renderTable()}
                 </tbody>
             </table>
         );

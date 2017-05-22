@@ -23,25 +23,43 @@ class FundingByProjectSummaryTable extends Component {
     }
 
     sumData(id, data) {
-        // Compute the sum for the provided id for SOW, funding, and employees
+        // Compute the sum for the provided id for funding amount 
         var funding_sum = this.sumHelper(data.by_project, id, 'project_id', 'funding_amt');
 
-        return [funding_sum, funding_sum];
+        return funding_sum;
     }
 
-    calculateTotals(totals){
-        totals = totals.map(t => _.round(t, 1));
-        return (
-            <TableRow type="totals" title="TOTAL" values={totals}/>
-        );
+    renderTable() {
+        // Determine the funding for each project, and the total funding
+        var projectFunding = [];
+        var fundingTotal = 0;
+        const projects = this.props.data.project;
+        projects.map( p => {
+            const id = p.id;
+            projectFunding[id] = this.sumData(id, this.props.data);
+            fundingTotal += projectFunding[id];
+        })
+
+        // Now that we know the total and each project, build table rows
+        var tableRows = [];
+        projects.map( p => {
+            const id = p.id;
+            const title = p.title;
+            var values = [projectFunding[id], projectFunding[id]/fundingTotal * 100];
+            values = values.map(v => _.round(v, 1));
+            tableRows.push(<TableRow key={id} id={id} title={title} values={values} type="project"/>);
+        })
+
+        // Last row shows the totals, last value is 100 since total is always 100% of total
+        tableRows.push(<TableRow key="totals" type="totals" title="TOTAL" values={[_.round(fundingTotal, 1), 100]}/>);
+        return tableRows;
     }
+
     render() {
         // Don't bother rendering the table if we don't have data
         if (!this.props.data) {
             return <div></div>;
         }
-
-        var totals = [];
 
         return (
             <table className="table table-hover table-bordered">
@@ -53,16 +71,7 @@ class FundingByProjectSummaryTable extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {/*For each project, pass the title and the sum of that projects
-                       SOW, funding, and assigned employees to TableRow as props*/}
-                    {this.props.data.project.map( (project) => {
-                        const id = project.id;
-                        const title = project.title;
-                        const values = this.sumData(project.id, this.props.data);
-                        totals = values.map((a, i) => typeof totals[i] == 'undefined' ? a : a + totals[i]);
-                        return <TableRow key={id} id={id} type="project" title={title} values={values}/>
-                    })}
-                    {this.calculateTotals(totals)}
+                    {this.renderTable()}
                 </tbody>
             </table>
         );
