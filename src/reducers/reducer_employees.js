@@ -10,6 +10,8 @@ export default function(state = [], action){
                 else
                     return true;
             });
+        case 'GET_EMPLOYEES_BY_DISCIPLINE':
+            return action.payload.data;
         default:
             return state;
     }   

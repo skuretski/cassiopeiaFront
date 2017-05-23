@@ -9,6 +9,7 @@ import IndexViewReducer from './reducer_indexview';
 import ProjectViewReducer from './reducer_projectview';
 import DeliverableViewReducer from './reducer_deliverableview';
 import TaskViewReducer from './reducer_taskview';
+import EmployeeDisciplineRedcuer from './reducer_employees_by_discipline';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({

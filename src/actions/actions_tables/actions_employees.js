@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { EMPLOYEES, ONE_EMPLOYEE } from '../../api';
+import { EMPLOYEES, EMPLOYEES_BY_DISCIPLINE, ONE_EMPLOYEE } from '../../api';
 
 export function postEmployees(data){
     return axios.post(EMPLOYEES, {
@@ -34,4 +34,13 @@ export var setEmployees = (employees) => {
         type: 'GET_EMPLOYEES',
         employees
     }
+}
+
+export function getEmployeesByDiscipline(discipline_id) {
+    const url = `${EMPLOYEES_BY_DISCIPLINE}/${discipline_id}`;
+    const request = axios.get(url);
+    return {
+        type: 'GET_EMPLOYEES_BY_DISCIPLINE',
+        payload: request
+    };
 }

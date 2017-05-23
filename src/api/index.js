@@ -14,3 +14,4 @@ exports.INDEXVIEW = `${api}/indexView`;
 exports.PROJECTVIEW = `${api}/projectView`;
 exports.DELIVERABLEVIEW = `${api}/deliverableView`;
 exports.TASKVIEW = `${api}/taskView`;
+exports.EMPLOYEES_BY_DISCIPLINE = `${api}/employees/discipline`;
