@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import EmployeeSummaryTable from '../Tables/EmployeeSummaryTable';
 import NavTabs from '../Navigation/NavTabs';
 import { getEmployees } from '../../actions';
 
@@ -18,13 +19,24 @@ class EmployeeView extends Component{
     }
     render(){
         console.log(this.props.employees);
-        return(
-
-            <div className="container">
-                <NavTabs type='project' tabList={this.props.projects}/>
-                <h2>Employees</h2>
-            </div>
-        );
+        if(this.state.loading === true){
+            return(
+                <div className="container-fluid">
+                <h3>Loading...</h3>
+                </div>
+            )
+        }
+        else{
+            return (
+                <div className="container">
+                    <NavTabs type='project' tabList={this.props.projects}/>
+                    <div className="chart-title">
+                        <h4><b>Employee List</b></h4>
+                    </div>
+                    {<EmployeeSummaryTable data={this.props.employees}/>}
+                </div>
+            );
+        }
     }
 }
 
