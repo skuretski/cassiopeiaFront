@@ -4,6 +4,7 @@ import NavTabs from '../Navigation/NavTabs';
 import { getTaskViewData } from '../../actions';
 import TaskViewChart from '../Charts/TaskViewChart';
 import TaskSummaryTable from '../Tables/TaskSummaryTable';
+import AddAssignmentForm from '../Forms/AddAssignmentForm';
 
 class TaskView extends Component{
     constructor(props){
@@ -82,6 +83,7 @@ class TaskView extends Component{
                             </div>
                             <TaskViewChart data={this.props.taskViewData}/>
                             <TaskSummaryTable data={this.props.taskViewData} url={this.props.match.url}/>
+                            <AddAssignmentForm discipline_id={this.props.taskViewData.task[0].discipline_id}/>
                         </div>
                         <div className="col-md-2">
                             <div className="sidebar-nav-fixed pull-right affix">
