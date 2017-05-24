@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import EmployeeSummaryTable from '../Tables/EmployeeSummaryTable';
+import FundingViewByTypeChart from '../Charts/FundingViewByTypeChart';
+import FundingByTypeSummaryTable from '../Tables/FundingByTypeSummaryTable';
 import NavTabs from '../Navigation/NavTabs';
-import { getEmployees } from '../../actions';
+import { getFundingViewData } from '../../actions';
 
-class EmployeeView extends Component{
+class FundingTypeView extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -12,13 +13,12 @@ class EmployeeView extends Component{
         }
     }
     componentWillMount(){
-        this.setState({loading:true});
-        this.props.dispatch(getEmployees).then(() => {
+        this.setState({loading: true});     
+            this.props.dispatch(getFundingViewData).then(() =>{
             this.setState({loading: false});
-        })
+        });               
     }
     render(){
-        console.log(this.props.employees);
         if(this.state.loading === true){
             return(
                 <div className="container-fluid">
@@ -29,11 +29,12 @@ class EmployeeView extends Component{
         else{
             return (
                 <div className="container">
-                    <NavTabs/>
+                    <NavTabs/>                     
                     <div className="chart-title">
-                        <h4><b>Employee List</b></h4>
+                        <h4><b>Funding Overview (By Type)</b></h4>
                     </div>
-                    {<EmployeeSummaryTable data={this.props.employees}/>}
+                    {<FundingViewByTypeChart data={this.props.fundingViewData}/>}
+                    {<FundingByTypeSummaryTable data={this.props.fundingViewData}/>}
                 </div>
             );
         }
@@ -42,8 +43,8 @@ class EmployeeView extends Component{
 
 function mapStateToProps(state){
     return{
-        employees: state.employees
+        fundingViewData: state.fundingViewData
     }
 }
 
-export default connect(mapStateToProps)(EmployeeView);
+export default connect(mapStateToProps)(FundingTypeView);

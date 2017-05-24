@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
-import { addProject } from '../../actions';
+import { addDeliverable } from '../../actions';
 
-class AddProjectForm extends Component{
+class AddDeliverableForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -26,14 +26,16 @@ class AddProjectForm extends Component{
             </div>
         );
     }
-    onSubmit(project){
-        if(!errors){
-            // this.props.dispatch(addProject(project)).then(() => {
-            //     this.setState({added: true});
-            //     this.props.reset();
-               // this.props.history.push('/projects/');
-           // });
-        }
+    onSubmit(deliverable){
+    //    console.log(errors);
+    //     if(!errors){
+    //         deliverable.project_id = this.props.projectId;
+    //         this.props.dispatch(addDeliverable(deliverable)).then(() => {
+    //             this.setState({added: true});
+    //             this.props.reset();
+    //           // this.props.history.push('/projects/');
+    //        });          
+    //    }
 
     }
     render(){
@@ -41,17 +43,17 @@ class AddProjectForm extends Component{
         return(
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))} >
                 <Field
-                    label="Project Title"
+                    label="Deliverable Title"
                     name="title"
                     component={this.renderField}
                     />
                 <Field
-                    label="Project Description"
+                    label="Deliverable Description"
                     name="description"
                     component={this.renderField}
                     />
                 <button type="submit" className="btn btn-primary">
-                    Add New Project
+                    Add Deliverable to {this.props.projects[this.props.projectId].title}
                 </button>
                 <button className="btn btn-danger" data-dismiss="modal" onClick={this.props.reset}>Cancel</button>
             </form>
@@ -59,24 +61,25 @@ class AddProjectForm extends Component{
     }
 }
 
-var validateProjects = (formProps) => {
+var validateDelivs = (formProps) => {
     var errors = {};
     if(!formProps.title){
-        errors.title = "Project title is required.";
+        errors.title = "Deliverable title is required.";
     }
     if(!formProps.description){
-        errors.description = "Project description is required.";
+        errors.description = "Deliverable description is required.";
     }
     return errors;
 }
 function mapStateToProps(state){
     return{
-        projects: state.projects
-    }  
+        projects: state.projects,
+        deliverables: state.deliverables
+    }
 }
 
 export default reduxForm({
-    form: 'AddProjectForm',
-    validate: validateProjects
+    form: 'AddDeliverableForm',
+    validate: validateDelivs
 
-}, mapStateToProps, null)(AddProjectForm);
+}, mapStateToProps, null)(AddDeliverableForm);

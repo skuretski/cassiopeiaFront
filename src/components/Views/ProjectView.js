@@ -4,6 +4,8 @@ import ProjectViewChart from '../Charts/ProjectViewChart';
 import ProjectSummaryTable from '../Tables/ProjectSummaryTable';
 import NavTabs from '../Navigation/NavTabs';
 import { getProjectViewData } from '../../actions';
+import AddProjectForm from '../Forms/AddProjectForm';
+import AddDeliverableForm from '../Forms/AddDeliverableForm';
 
 class ProjectView extends Component{
     constructor(props){
@@ -39,10 +41,38 @@ class ProjectView extends Component{
                     <div className="container-fluid">
                         <NavTabs type='project' tabList={this.props.projects}/>
                     </div>
+                    {/* START ADDPROJECTFORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-project-modal-lg" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog modal-lg" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <h2>Add a Project</h2>
+                                    <AddProjectForm/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END ADDPROJECTFORM MODAL */}
+                    {/* START ADD_DELIV_FORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-deliverable-modal-lg" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog modal-lg" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <h2>Add a Deliverable to {this.props.projects[this.props.match.params.project_id].title}</h2>
+                                    <AddDeliverableForm projectId={this.props.match.params.project_id} projects={this.props.projects}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END ADD_DELIV_FORM MODAL */}
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-md-2">
-                                <div className="sidebar-nav-fixed affix">
+                                <div className="sidebar-nav">
                                     <div className="well">
                                         <NavTabs type='deliverable' tabList={this.props.projectViewData.deliverables} projectId={this.props.match.params.project_id}/>
                                     </div>

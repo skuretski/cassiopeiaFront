@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import NavTabs from '../Navigation/NavTabs';
 import { getDeliverableViewData, getTaskViewData } from '../../actions';
 import DeliverableViewChart from '../Charts/DeliverableViewChart';
+import AddProjectForm from '../Forms/AddProjectForm';
+import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import DeliverableSummaryTable from '../Tables/DeliverableSummaryTable';
 import _ from 'lodash';
 
@@ -51,9 +53,37 @@ class DeliverableView extends Component{
                         <NavTabs type='project' tabList={this.props.projects}/>
                     </div>
                     <div className="container-fluid">
+                        {/* START ADDPROJECTFORM MODAL */}
+                        <div className="modal fade bs-project-modal-lg" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog modal-lg" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                        <h2>Add a Project</h2>
+                                        <AddProjectForm/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        {/* END ADD_PROJECT_FORM MODAL */}
+                    {/* START ADD_DELIV_FORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-deliverable-modal-lg" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog modal-lg" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <h2>Add a Deliverable to {this.props.projects[this.props.match.params.project_id].title}</h2>
+                                    <AddDeliverableForm projectId={this.props.match.params.project_id} projects={this.props.projects}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END ADD_DELIV_FORM MODAL */}
+                    <div className="container-fluid">
                         <div className="row">
                             <div className= "col-md-2">
-                                <div className="sidebar-nav-fixed affix">
+                                <div className="sidebar-nav">
                                     <div className="well">
                                         <NavTabs 
                                             type='deliverable' 
@@ -74,7 +104,7 @@ class DeliverableView extends Component{
                                 <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
                             </div>
                             <div className="col-md-2">
-                                <div className="sidebar-nav-fixed pull-right affix">
+                                <div className="sidebar-nav pull-rightx">
                                     <div className="well">
                                         <NavTabs 
                                             type='task' 

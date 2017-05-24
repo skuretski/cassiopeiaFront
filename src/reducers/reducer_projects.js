@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import merge from 'lodash/merge';
 
 export default function(state = {}, action){
     switch (action.type){   

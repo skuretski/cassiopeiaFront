@@ -10,10 +10,9 @@ nav{
     padding: 10px;
 }
 
-.selected {
-  color:#EEEEEE;
-  font-weight: bold;
-  background-color:#23527C;
+a.selected {
+  color:#EEEEEE !important;
+  background-color:#23527C !important;
 }
 
 a.active{
@@ -23,9 +22,6 @@ a.active{
 }
 #htmlContainer{
     margin: auto;
-}
-.sidebar-nav-fixed{
-    width: 14%;
 }
 
 #verticalLI{
@@ -44,3 +40,50 @@ a.active{
 .text-help{
     color: red;
 }
+
+#navLabel{
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-right: 2em;
+    color: #222;
+}
+
+#projectNavbar{
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.navbar-inverse a{
+    color:#eee;
+}
+.navbar-inverse a.selected{
+    background-color: #eee !important;
+    color: #222 !important;
+}
+
+.well{
+    border-top: none;
+}
+
+li .btn-primary{
+    background-color: #222;
+    border-color: #222;
+}
+
+li .btn-primary:hover {
+    background-color: #eee;
+    color: #222;
+    border-color: #222;
+}
+
+li .btn-primary:focus{
+    background-color: #eee;
+    color: #222;
+    border-color: #222;
+}
+
+#verticalButton{
+    margin-top: 50px;
+}
+
+

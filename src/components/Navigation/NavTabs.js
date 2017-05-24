@@ -9,9 +9,6 @@ class NavTabs extends Component{
     constructor(props){
         super(props);
     }
-    showAddProjectModal(){
-
-    }
     renderOneTab(props){ 
         return _.map(props.tabList, tab => {
             return (
@@ -19,22 +16,35 @@ class NavTabs extends Component{
             );
         });
     }
+    renderHomeNav(){
+        return(
+            <div className="container-fluid">
+                <nav className="navbar navbar-inverse navbar-fixed-top">
+                    <ul className="nav nav-pills">
+                        <li><NavLink exact={true} activeClassName="selected" to='/'><span className="glyphicon glyphicon-home"></span>  Home</NavLink></li>
+                        <li><NavLink exact={true} activeClassName="selected" to="/employees">Employees</NavLink></li>
+                        <li className="dropdown">
+                            <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                            aria-expanded="false">Funding<span className="caret"></span></a>
+                            <ul className="dropdown-menu">
+                                <li><NavLink exact={true} activeClassName="selected" to="/funding/project">Funding By Project</NavLink></li>
+                                <li><NavLink exact={true} activeClassName="selected" to="/funding/type">Funding By Type</NavLink></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        );
+    }
     renderTabs(){
         if(this.props.type == 'project'){
             return(
-                <nav className="navbar navbar-default navbar-fixed-top">
+                <nav className="navbar navbar-default nav-justified" id="projectNavbar">
                     <div className="container-fluid">
                         <ul className="nav nav-tabs">
-                            <li><NavLink exact={true} activeClassName="selected" to='/'>Home</NavLink></li>
-                            <li><NavLink exact={true} activeClassName="selected" to="/employees">Employees</NavLink></li>
-                            <li><NavLink exact={true} activeClassName="selected" to="/funding">Funding</NavLink></li>
-                        </ul>
-                    </div>
-                    <div className="container-fluid">
-                        <ul className="nav nav-tabs">
-                            <li role="presentation" className="disabled"><NavLink to="#"><strong>Projects</strong></NavLink></li>
+                            <li><h3 className="navbar-brand" id="navLabel"><strong>Projects</strong></h3></li>
                             {this.renderOneTab(this.props)}
-                            <li><button type="button" className="btn btn-primary" data-toggle="modal" data-target=".bs-project-modal-lg">Add Project</button></li>
+                            <li className="pull-right"><button type="button" className="btn btn-primary" data-toggle="modal" data-target=".bs-project-modal-lg">Add Project</button></li>
                         </ul>
                     </div>
                 </nav>
@@ -44,8 +54,9 @@ class NavTabs extends Component{
             return(
                     <nav className="navbar navbar-default">
                         <ul className= 'nav nav-tabs' id="verticalUL">
-                            <li role="presentation" className="disabled"><NavLink to="#"><strong>Deliverables</strong></NavLink></li>
+                            <li><h3 className="navbar-brand" id="navLabel"><strong>Deliverables</strong></h3></li>
                             {this.renderOneTab(this.props)}
+                            <li><button type="button" className="btn btn-primary" id="verticalButton" data-toggle="modal" data-target=".bs-deliverable-modal-lg">Add Deliverable</button></li>
                         </ul>
                     </nav>
             );
@@ -54,7 +65,7 @@ class NavTabs extends Component{
             return(
                 <nav className="navbar navbar-default">
                         <ul className = 'nav nav-tabs' id="verticalUL">
-                            <li role="presentation" className="disabled"><NavLink to="#"><strong>Tasks</strong></NavLink></li>
+                            <li><h3 className="navbar-brand" id="navLabel"><strong>Tasks</strong></h3></li>
                             {this.renderOneTab(this.props)}
                         </ul>
                 </nav>
@@ -65,6 +76,7 @@ class NavTabs extends Component{
     render(){
         return(
             <div>
+                {this.renderHomeNav()}
                 {this.renderTabs()}
             </div>
         );

@@ -29,9 +29,9 @@ class IndexView extends Component{
         }
         else{
             return(
-                <div className="container">
+                <div className="container-fluid">
                     <NavTabs type='project' tabList={this.props.projects}/>
-                    {/* START MODAL */}
+                    {/* START ADDPROJECTFORM MODAL */}
                     <div className="modal fade bs-project-modal-lg" tabIndex="-1" role="dialog">
                         <div className="modal-dialog modal-lg" role="document">
                             <div className="modal-content">
@@ -42,12 +42,14 @@ class IndexView extends Component{
                             </div>
                         </div>
                     </div> 
-                    {/* END MODAL */}
+                    {/* END ADDPROJECTFORM MODAL */}
                     <div className="chart-title">
                         <h4><b>Business Plan Overview</b></h4>
                     </div>
-                    <IndexViewChart data={this.props.indexViewData}/>
-                    <IndexSummaryTable data={this.props.indexViewData}/>
+                    <div className="container">
+                        <IndexViewChart data={this.props.indexViewData}/>
+                        <IndexSummaryTable data={this.props.indexViewData}/>
+                    </div>
                 </div>
             ); 
         }

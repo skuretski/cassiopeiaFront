@@ -5,6 +5,7 @@ import { getTaskViewData } from '../../actions';
 import TaskViewChart from '../Charts/TaskViewChart';
 import TaskSummaryTable from '../Tables/TaskSummaryTable';
 import AddAssignmentForm from '../Forms/AddAssignmentForm';
+import AddProjectForm from '../Forms/AddProjectForm';
 
 class TaskView extends Component{
     constructor(props){
@@ -59,10 +60,22 @@ class TaskView extends Component{
                 <div className="container-fluid">
                     <NavTabs type='project' tabList={this.props.projects}/>
                 </div>
+                {/* START ADDPROJECTFORM MODAL */}
+                    <div className="modal fade bs-project-modal-lg" tabIndex="-1" role="dialog">
+                        <div className="modal-dialog modal-lg" role="document">
+                            <div className="modal-content">
+                                <div className="container-fluid">
+                                <h2>Add a Project</h2>
+                                <AddProjectForm/>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                {/* END ADDPROJECTFORM MODAL */}
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-2">
-                            <div className="sidebar-nav-fixed affix">
+                            <div className="sidebar-nav">
                                 <div className="well">
                                     <NavTabs 
                                         type='deliverable' 
@@ -86,7 +99,7 @@ class TaskView extends Component{
                             <AddAssignmentForm discipline_id={this.props.taskViewData.task[0].discipline_id}/>
                         </div>
                         <div className="col-md-2">
-                            <div className="sidebar-nav-fixed pull-right affix">
+                            <div className="sidebar-nav pull-right">
                                 <div className="well">
                                     <NavTabs 
                                         type='task' 
