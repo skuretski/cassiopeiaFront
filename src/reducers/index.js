@@ -4,6 +4,7 @@ import DisciplinesReducer from './reducer_disciplines';
 import DeliverablesReducer from './reducer_deliverables';
 import TasksReducer from './reducer_tasks';
 import EmployeeReducer from './reducer_employees';
+import EmployeeViewReducer from './reducer_employeeview';
 import FundingViewReducer from './reducer_fundingview';
 import IndexViewReducer from './reducer_indexview';
 import ProjectViewReducer from './reducer_projectview';
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     deliverables: DeliverablesReducer,
     tasks: TasksReducer,
     employees: EmployeeReducer,
+    employeeViewData: EmployeeViewReducer,
     fundingViewData: FundingViewReducer,
     indexViewData: IndexViewReducer,
     projectViewData: ProjectViewReducer,

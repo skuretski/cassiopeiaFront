@@ -9,6 +9,7 @@ exports.DELIVERABLES = `${api}/deliverables`;
 exports.TASKS = `${api}/tasks`;
 exports.ASSIGNMENTS = `${api}/assignments`;
 exports.FUNDING = `${api}/funding`;
+exports.EMPLOYEEVIEW = `${api}/employeeView`;
 exports.FUNDINGVIEW = `${api}/fundingView`;
 exports.INDEXVIEW = `${api}/indexView`;
 exports.PROJECTVIEW = `${api}/projectView`;
