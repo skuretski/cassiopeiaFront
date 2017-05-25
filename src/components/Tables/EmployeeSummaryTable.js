@@ -7,6 +7,11 @@ class EmployeeSummaryTable extends Component {
         super(props);        
     }
 
+    dateHelper(date) {
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return (months[parseInt(date.substring(5, 7)) - 1] + '-' + date.substring(0, 4));
+    }
+
     render() {
         // Don't bother rendering the table if we don't have data
         if (!this.props.data) {
@@ -19,9 +24,9 @@ class EmployeeSummaryTable extends Component {
                 <td>{this.props.data.employees[i].last}</td>
                 <td>{this.props.data.employees[i].first}</td>
                 <td>{this.props.data.employees[i].discipline}</td>
-                <td>Yes</td>
-                <td>{this.props.data.employees[i].active_start_date}</td>
-                <td>{this.props.data.employees[i].active_end_date}</td>
+                <td>{this.props.data.employees[i].active}</td>
+                <td>{this.dateHelper(this.props.data.employees[i].active_start_date)}</td>
+                <td>{this.dateHelper(this.props.data.employees[i].active_end_date)}</td>
                 </tr>);
         }
 
