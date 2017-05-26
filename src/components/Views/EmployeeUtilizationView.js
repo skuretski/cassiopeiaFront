@@ -4,7 +4,7 @@ import EmployeeSummaryTable from '../Tables/EmployeeSummaryTable';
 import NavTabs from '../Navigation/NavTabs';
 import { getEmployeeViewData } from '../../actions';
 
-class EmployeeView extends Component{
+class EmployeeUtilizationView extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -31,9 +31,9 @@ class EmployeeView extends Component{
                 <div className="container">
                     <NavTabs/>
                     <div className="chart-title">
-                        <h4><b>Employee List</b></h4>
+                        <h4><b>Employee Utilization</b></h4>
                     </div>
-                    {<EmployeeSummaryTable data={this.props.employeeViewData}/>}
+                    {/**<EmployeeSummaryTable data={this.props.employeeViewData}/>**/}
                 </div>
             );
         }
@@ -46,4 +46,4 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps)(EmployeeView);
+export default connect(mapStateToProps)(EmployeeUtilizationView);

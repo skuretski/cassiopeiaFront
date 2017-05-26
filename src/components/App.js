@@ -12,7 +12,8 @@ import TaskView from './Views/TaskView';
 import IndexView from './Views/IndexView';
 import FundingProjectView from './Views/FundingProjectView';
 import FundingTypeView from './Views/FundingTypeView';
-import EmployeeView from './Views/EmployeeView';
+import EmployeeListView from './Views/EmployeeListView';
+import EmployeeUtilizationView from './Views/EmployeeUtilizationView';
 import My404View from './Views/My404View';
 
 class App extends Component{
@@ -40,7 +41,8 @@ class App extends Component{
                     <Route path="/projects/:project_id" component={ProjectView} />
                     <Route path="/funding/project" component={FundingProjectView} />
                     <Route path="/funding/type" component={FundingTypeView} />
-                    <Route path="/employees" component={EmployeeView} />
+                    <Route path="/employees/list" component={EmployeeListView} />
+                    <Route path="/employees/utilization" component={EmployeeUtilizationView} />
                     <Route exact path="/" component={IndexView} />
                     <Route path="*" component={My404View} />
                 </Switch>

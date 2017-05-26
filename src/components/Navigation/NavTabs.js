@@ -22,7 +22,14 @@ class NavTabs extends Component{
                 <nav className="navbar navbar-inverse navbar-fixed-top">
                     <ul className="nav nav-pills">
                         <li><NavLink exact={true} activeClassName="selected" to='/'><span className="glyphicon glyphicon-home"></span>  Home</NavLink></li>
-                        <li><NavLink exact={true} activeClassName="selected" to="/employees">Employees</NavLink></li>
+                        <li className="dropdown">
+                            <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                            aria-expanded="false">Employees<span className="caret"></span></a>
+                            <ul className="dropdown-menu">
+                                <li><NavLink exact={true} activeClassName="selected" to="/employees/list">Employee List</NavLink></li>
+                                <li><NavLink exact={true} activeClassName="selected" to="/employees/utilization">Employee Utilization</NavLink></li>
+                            </ul>
+                        </li>
                         <li className="dropdown">
                             <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                             aria-expanded="false">Funding<span className="caret"></span></a>
