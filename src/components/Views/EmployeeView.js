@@ -17,6 +17,7 @@ class EmployeeView extends Component{
             this.setState({loading: false});
         })
     }
+
     render(){
         if(this.state.loading === true){
             return(
