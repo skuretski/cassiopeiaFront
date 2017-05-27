@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import EmployeeSummaryTable from '../Tables/EmployeeSummaryTable';
+import EmployeeUtilizationTable from '../Tables/EmployeeUtilizationTable';
 import NavTabs from '../Navigation/NavTabs';
 import { getEmployeeViewData } from '../../actions';
 
@@ -33,7 +33,7 @@ class EmployeeUtilizationView extends Component{
                     <div className="chart-title">
                         <h4><b>Employee Utilization</b></h4>
                     </div>
-                    {/**<EmployeeSummaryTable data={this.props.employeeViewData}/>**/}
+                    {/**<EmployeeUtilizationTable data={this.props.employeeViewData}/>**/}
                 </div>
             );
         }

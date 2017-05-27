@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TableRow from './TableComponents/TableRow';
 import _ from 'lodash';
 
-class EmployeeSummaryTable extends Component {
+class EmployeeListTable extends Component {
     constructor(props) {
         super(props);    
 
@@ -22,6 +22,11 @@ class EmployeeSummaryTable extends Component {
         this.handleUpdateEmployeeClick = this.handleUpdateEmployeeClick.bind(this);
         this.handleDeleteEmployeeClick = this.handleDeleteEmployeeClick.bind(this);
         this.handleAddNewEmployeeClick = this.handleAddNewEmployeeClick.bind(this);
+
+        this.idToDiscMap = new Object();
+        for (var i = 0; i < this.props.data.disciplines.length; i++) {
+            this.idToDiscMap[this.props.data.disciplines[i].id] = this.props.data.disciplines[i].title;
+        }
     }
 
     dateHelper(date) {
@@ -123,15 +128,16 @@ class EmployeeSummaryTable extends Component {
 
         var rows = [];
         for (var i = 0; i < this.props.data.employees.length; i++) {
-            rows.push(<tr key={this.props.data.employees[i].id}>
+            this.props.data.employees[i].discipline = this.idToDiscMap[this.props.data.employees[i].disc_id];
+            rows.push(<tr key={this.props.data.employees[i].emp_id}>
                 <td>{this.props.data.employees[i].last}</td>
                 <td>{this.props.data.employees[i].first}</td>
                 <td>{this.props.data.employees[i].discipline}</td>
                 <td>{this.props.data.employees[i].active}</td>
                 <td>{this.dateHelper(this.props.data.employees[i].active_start_date)}</td>
                 <td>{this.dateHelper(this.props.data.employees[i].active_end_date)}</td>
-                <td><button id={this.props.data.employees[i].id} onClick={this.handleUpdateEmployeeClick}>Update</button></td>
-                <td><button id={this.props.data.employees[i].id} onClick={this.handleDeleteEmployeeClick}>Delete</button></td>
+                <td><button id={this.props.data.employees[i].emp_id} onClick={this.handleUpdateEmployeeClick}>Update</button></td>
+                <td><button id={this.props.data.employees[i].emp_id} onClick={this.handleDeleteEmployeeClick}>Delete</button></td>
                 </tr>);
         }
 
@@ -156,4 +162,4 @@ class EmployeeSummaryTable extends Component {
     }
 }
 
-export default EmployeeSummaryTable;
+export default EmployeeListTable;
