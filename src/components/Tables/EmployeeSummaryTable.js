@@ -19,6 +19,9 @@ class EmployeeSummaryTable extends Component {
         this.handleActiveClick = this.handleActiveClick.bind(this);
         this.handleActiveStartDateClick = this.handleActiveStartDateClick.bind(this);
         this.handleActiveEndDateClick = this.handleActiveEndDateClick.bind(this);
+        this.handleUpdateEmployeeClick = this.handleUpdateEmployeeClick.bind(this);
+        this.handleDeleteEmployeeClick = this.handleDeleteEmployeeClick.bind(this);
+        this.handleAddNewEmployeeClick = this.handleAddNewEmployeeClick.bind(this);
     }
 
     dateHelper(date) {
@@ -98,6 +101,20 @@ class EmployeeSummaryTable extends Component {
         this.forceUpdate();
     }
 
+    handleUpdateEmployeeClick(event) {
+        const {id} = event.target;
+        console.log("update employee w/ id=" + id);
+    }
+
+    handleDeleteEmployeeClick(event) {
+        const {id} = event.target;
+        console.log("delete employee w/ id=" + id);
+    }
+
+    handleAddNewEmployeeClick() {
+        console.log("add new employee");
+    }
+
     render() {
         // Don't bother rendering the table if we don't have data
         if (!this.props.data) {
@@ -113,6 +130,8 @@ class EmployeeSummaryTable extends Component {
                 <td>{this.props.data.employees[i].active}</td>
                 <td>{this.dateHelper(this.props.data.employees[i].active_start_date)}</td>
                 <td>{this.dateHelper(this.props.data.employees[i].active_end_date)}</td>
+                <td><button id={this.props.data.employees[i].id} onClick={this.handleUpdateEmployeeClick}>Update</button></td>
+                <td><button id={this.props.data.employees[i].id} onClick={this.handleDeleteEmployeeClick}>Update</button></td>
                 </tr>);
         }
 
@@ -126,6 +145,7 @@ class EmployeeSummaryTable extends Component {
                         <th><button onClick={this.handleActiveClick}>Active</button></th>
                         <th><button onClick={this.handleActiveStartDateClick}>Active Start Date</button></th>
                         <th><button onClick={this.handleActiveEndDateClick}>Active End Date</button></th>
+                        <th colSpan="2"><button onClick={this.handleAddNewEmployeeClick}>Add New Employee</button></th>
                     </tr>
                 </thead>
                 <tbody>
