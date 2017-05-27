@@ -2,10 +2,17 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { getEmployeesByDiscipline } from '../../actions';
-import { createAssignment } from '../../actions';
+import { createAssignment,
+         getEmployeesByDiscipline,
+         getTaskViewData } from '../../actions';
 
 class AddAssignmentForm extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { message: '' };
+    }
+
     componentDidMount() {
         this.props.getEmployeesByDiscipline(this.props.discipline_id);
         // Add task_id to the fields values
@@ -59,30 +66,55 @@ class AddAssignmentForm extends Component {
     // * Clear form on submit
     // * Figure out if submit was successful? How can I know...?
     onSubmit(values) {
-        console.log('Values:', values);
         var startMonth = parseInt(values.assignmentStartMonth),
-            startYear = values.assignmentStartYear,
+            startYear = parseInt(values.assignmentStartYear),
             endMonth = parseInt(values.assignmentEndMonth),
-            endYear = values.assignmentEndYear,
+            endYear = parseInt(values.assignmentEndYear),
             effort = values.assignmentEffort,
             emp_id = values.assignmentEmployee,
             task_id = values.assignmentTaskID;
-             
-        if (startMonth < 10) {
-            startMonth = '0' + startMonth.toString();
-        }
-        if (endMonth < 10) {
-            endMonth = '0' + endMonth.toString();
-        }
-        var data = {};
-        // Date format is YYYY-MM-DD
-        data.start_date = startYear + '-' + startMonth + '-01';
-        data.end_date = endYear + '-' + endMonth + '-01';
-        data.effort = effort;
-        data.employee_id = emp_id;
-        data.task_id = task_id;
 
-        this.props.createAssignment(data);
+        var year = startYear;
+        var month = startMonth;
+        var data = {};
+        while (year <= endYear) {
+            // Set data to POST
+            data.effort = effort;
+            data.employee_id = emp_id;
+            data.task_id = task_id;
+            if (month < 10) {
+                data.start_date = year + '-0' + month + '-01';
+            } else {
+                data.start_date = year + '-' + month + '-01';
+            }
+            data.end_date = data.start_date;
+
+            if (year === endYear) {
+                if (month > endMonth) {
+                    break;
+                } else if (month === endMonth) {
+                    this.props.createAssignment(data, (response) => {
+                        if (response.status === 200) {
+                            this.props.getTaskViewData(this.props.task_id);
+                        } else {
+                            this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
+                        }
+                    });
+                } else {
+                    // Not last POST, no callback
+                    this.props.createAssignment(data);
+                }
+            } else {
+                // Not last POST, no callback
+                this.props.createAssignment(data);
+            }
+
+            month += 1;
+            if (month > 12) {
+                month = 1;
+                year += 1;
+            }
+        }
     }
 
     renderEmployeeOptions() {
@@ -191,6 +223,7 @@ class AddAssignmentForm extends Component {
                 </div>
                     
                 <button type="submit" className="btn btn-primary">Submit</button>
+                <div>{this.state.message}</div>
 
             </form>
             </fieldset>
@@ -261,12 +294,14 @@ AddAssignmentForm = reduxForm({
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getEmployeesByDiscipline,
-        createAssignment }, dispatch);
+        createAssignment,
+        getTaskViewData }, dispatch);
 }
 
 function mapStateToProps(state) {
     return {
-        employees: state.employees
+        employees: state.employees,
+        result: state.assignments
     }
 }
 

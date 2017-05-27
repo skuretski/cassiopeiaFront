@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ASSIGNMENTS } from '../../api';
 
-export function createAssignment(data) {
+export function createAssignment(data, callback) {
     console.log('Data in action:', data);
     const request = axios.post(ASSIGNMENTS, {
         start_date: data.start_date,
@@ -9,7 +9,7 @@ export function createAssignment(data) {
         effort: data.effort,
         employee_id: data.employee_id,
         task_id: data.task_id
-    });
+    }).then( (value) => callback(value));
 
     return {
         type: 'ADD_ASSIGNMENT',
