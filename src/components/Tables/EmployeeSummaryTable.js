@@ -131,7 +131,7 @@ class EmployeeSummaryTable extends Component {
                 <td>{this.dateHelper(this.props.data.employees[i].active_start_date)}</td>
                 <td>{this.dateHelper(this.props.data.employees[i].active_end_date)}</td>
                 <td><button id={this.props.data.employees[i].id} onClick={this.handleUpdateEmployeeClick}>Update</button></td>
-                <td><button id={this.props.data.employees[i].id} onClick={this.handleDeleteEmployeeClick}>Update</button></td>
+                <td><button id={this.props.data.employees[i].id} onClick={this.handleDeleteEmployeeClick}>Delete</button></td>
                 </tr>);
         }
 
