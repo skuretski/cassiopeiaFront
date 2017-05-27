@@ -3,6 +3,7 @@ export * from './actions_tables/actions_disciplines';
 export * from './actions_tables/actions_employees';
 export * from './actions_tables/actions_projects';
 export * from './actions_tables/actions_tasks';
+export * from './actions_tables/actions_assignments';
 
 export * from './actions_views/actions_employeeview';
 export * from './actions_views/actions_fundingview';

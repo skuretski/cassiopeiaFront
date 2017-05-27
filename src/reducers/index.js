@@ -4,6 +4,7 @@ import DisciplinesReducer from './reducer_disciplines';
 import DeliverablesReducer from './reducer_deliverables';
 import TasksReducer from './reducer_tasks';
 import EmployeeReducer from './reducer_employees';
+import AssignmentsReducer from './reducer_assignments';
 import EmployeeViewReducer from './reducer_employeeview';
 import FundingViewReducer from './reducer_fundingview';
 import IndexViewReducer from './reducer_indexview';
@@ -18,13 +19,14 @@ const rootReducer = combineReducers({
     deliverables: DeliverablesReducer,
     tasks: TasksReducer,
     employees: EmployeeReducer,
+    assignments: AssignmentsReducer,
     employeeViewData: EmployeeViewReducer,
     fundingViewData: FundingViewReducer,
     indexViewData: IndexViewReducer,
     projectViewData: ProjectViewReducer,
     deliverableViewData: DeliverableViewReducer,
     taskViewData: TaskViewReducer,
-    form: formReducer
+    form: formReducer,
 });
 
 export default rootReducer;

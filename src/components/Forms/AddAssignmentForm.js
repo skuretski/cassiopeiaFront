@@ -3,11 +3,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { getEmployeesByDiscipline } from '../../actions';
+import { createAssignment } from '../../actions';
 
 class AddAssignmentForm extends Component {
     componentDidMount() {
         this.props.getEmployeesByDiscipline(this.props.discipline_id);
-        // this.props.dispatch(getEmployeesByDiscipline(this.props.discipline_id));
+        // Add task_id to the fields values
+        this.props.change('assignmentTaskID', this.props.task_id);
     }
 
     renderField(field) {
@@ -53,8 +55,34 @@ class AddAssignmentForm extends Component {
         }
     }
 
+    // TODO:
+    // * Clear form on submit
+    // * Figure out if submit was successful? How can I know...?
     onSubmit(values) {
-        console.log(values);
+        console.log('Values:', values);
+        var startMonth = parseInt(values.assignmentStartMonth),
+            startYear = values.assignmentStartYear,
+            endMonth = parseInt(values.assignmentEndMonth),
+            endYear = values.assignmentEndYear,
+            effort = values.assignmentEffort,
+            emp_id = values.assignmentEmployee,
+            task_id = values.assignmentTaskID;
+             
+        if (startMonth < 10) {
+            startMonth = '0' + startMonth.toString();
+        }
+        if (endMonth < 10) {
+            endMonth = '0' + endMonth.toString();
+        }
+        var data = {};
+        // Date format is YYYY-MM-DD
+        data.start_date = startYear + '-' + startMonth + '-01';
+        data.end_date = endYear + '-' + endMonth + '-01';
+        data.effort = effort;
+        data.employee_id = emp_id;
+        data.task_id = task_id;
+
+        this.props.createAssignment(data);
     }
 
     renderEmployeeOptions() {
@@ -227,11 +255,13 @@ function validate(values) {
 
 AddAssignmentForm = reduxForm({
     validate,
-    form: 'AddAssignmentForm'
+    form: 'AddAssignmentForm',
 })(AddAssignmentForm)
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ getEmployeesByDiscipline }, dispatch);
+    return bindActionCreators({
+        getEmployeesByDiscipline,
+        createAssignment }, dispatch);
 }
 
 function mapStateToProps(state) {
