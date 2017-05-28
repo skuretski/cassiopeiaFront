@@ -71,15 +71,15 @@ li .btn-primary{
 }
 
 li .btn-primary:hover {
-    background-color: #eee;
-    color: #222;
-    border-color: #222;
+    background-color: #eee !important;
+    color: #222 !important;
+    border-color: #222 !important;
 }
 
 li .btn-primary:focus{
-    background-color: #eee;
-    color: #222;
-    border-color: #222;
+    background-color: #eee !important;
+    color: #222 !important;
+    border-color: #222 !important;
 }
 
 #verticalButton{

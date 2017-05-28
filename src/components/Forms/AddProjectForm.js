@@ -27,17 +27,15 @@ class AddProjectForm extends Component{
         );
     }
     onSubmit(project){
-        if(!errors){
-            // this.props.dispatch(addProject(project)).then(() => {
-            //     this.setState({added: true});
-            //     this.props.reset();
-               // this.props.history.push('/projects/');
-           // });
+        if(project.title != '' && project.description != ''){
+            this.props.dispatch(addProject(project)).then(() => {
+                this.setState({added: true});
+                this.props.reset();
+           });
         }
-
     }
     render(){
-        const { handleSubmit } = this.props;
+        const { handleSubmit, reset } = this.props; 
         return(
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))} >
                 <Field
@@ -53,14 +51,14 @@ class AddProjectForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add New Project
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal" onClick={this.props.reset}>Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
             </form>
         )
     }
 }
 
-var validateProjects = (formProps) => {
-    var errors = {};
+function validate(formProps){
+    const errors = {};
     if(!formProps.title){
         errors.title = "Project title is required.";
     }
@@ -77,6 +75,6 @@ function mapStateToProps(state){
 
 export default reduxForm({
     form: 'AddProjectForm',
-    validate: validateProjects
+    validate: validate
 
 }, mapStateToProps, null)(AddProjectForm);

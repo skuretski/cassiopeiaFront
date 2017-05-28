@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
-import { addDeliverable } from '../../actions';
+import { addTask } from '../../actions';
 
-class AddDeliverableForm extends Component{
+class AddTaskForm extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -26,31 +26,36 @@ class AddDeliverableForm extends Component{
             </div>
         );
     }
-    onSubmit(deliverable){
-        if(deliverable.title != '' && deliverable.description != ''){
-            deliverable.project_id = this.props.projectId;
-            this.props.dispatch(addDeliverable(deliverable)).then(() => {
+    onSubmit(task){
+        if(task.title != '' && task.description != ''){
+            task.deliverable_id = this.props.deliverableId;
+            this.props.dispatch(addTask(task)).then(() => {
                 this.setState({added: true});
                 this.props.reset();
-           });          
-       }
+           });
+        }
     }
     render(){
-        const { handleSubmit, reset, projectId, projects } = this.props;
+        const { handleSubmit, reset } = this.props; 
         return(
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))} >
                 <Field
-                    label="Deliverable Title"
+                    label="Task Title"
                     name="title"
                     component={this.renderField}
                     />
                 <Field
-                    label="Deliverable Description"
+                    label="Task Description"
                     name="description"
                     component={this.renderField}
                     />
+                <Field
+                    label="Task Committed"
+                    name="committed"
+                    component={this.renderField}
+                />
                 <button type="submit" className="btn btn-primary">
-                    Add Deliverable to {projects[projectId].title}
+                    Add New Task
                 </button>
                 <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
             </form>
@@ -58,25 +63,24 @@ class AddDeliverableForm extends Component{
     }
 }
 
-var validateDelivs = (formProps) => {
-    var errors = {};
+function validate(formProps){
+    const errors = {};
     if(!formProps.title){
-        errors.title = "Deliverable title is required.";
+        errors.title = "Task title is required.";
     }
     if(!formProps.description){
-        errors.description = "Deliverable description is required.";
+        errors.description = "Task description is required.";
     }
     return errors;
 }
 function mapStateToProps(state){
     return{
-        projects: state.projects,
-        deliverables: state.deliverables
-    }
+        tasks: state.tasks
+    }  
 }
 
 export default reduxForm({
-    form: 'AddDeliverableForm',
-    validate: validateDelivs
+    form: 'AddTaskForm',
+    validate: validate
 
-}, mapStateToProps, null)(AddDeliverableForm);
+}, mapStateToProps, null)(AddTaskForm);

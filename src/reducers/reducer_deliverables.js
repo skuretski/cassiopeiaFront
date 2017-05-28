@@ -5,6 +5,7 @@ export default function(state = {}, action){
         case 'GET_DELIVERABLES':
             return _.mapKeys(action.deliverables, 'id');
         case 'ADD_DELIVERABLE':
+            console.log(action.deliverable);
             return {
                 ...state,
                 [action.deliverable.id]: {

@@ -5,6 +5,7 @@ import { getDeliverableViewData, getTaskViewData } from '../../actions';
 import DeliverableViewChart from '../Charts/DeliverableViewChart';
 import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
+import AddTaskForm from '../Forms/AddTaskForm';
 import DeliverableSummaryTable from '../Tables/DeliverableSummaryTable';
 import _ from 'lodash';
 
@@ -52,8 +53,8 @@ class DeliverableView extends Component{
                     <div className="container-fluid">
                         <NavTabs type='project' tabList={this.props.projects}/>
                     </div>
+                    {/* START ADDPROJECTFORM MODAL */}
                     <div className="container-fluid">
-                        {/* START ADDPROJECTFORM MODAL */}
                         <div className="modal fade bs-project-modal-lg" tabIndex="-1" role="dialog">
                             <div className="modal-dialog modal-lg" role="document">
                                 <div className="modal-content">
@@ -65,7 +66,7 @@ class DeliverableView extends Component{
                             </div>
                         </div>
                     </div>
-                        {/* END ADD_PROJECT_FORM MODAL */}
+                    {/* END ADD_PROJECT_FORM MODAL */}
                     {/* START ADD_DELIV_FORM MODAL */}
                     <div className="container-fluid">
                         <div className="modal fade bs-deliverable-modal-lg" tabIndex="-1" role="dialog">
@@ -80,6 +81,20 @@ class DeliverableView extends Component{
                         </div> 
                     </div>
                     {/* END ADD_DELIV_FORM MODAL */}
+                    {/* START ADD_TASK_FORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-task-modal-lg" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog modal-lg" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <h2>Add a Task to {this.props.deliverables[this.props.match.params.deliv_id].title}</h2>
+                                    <AddTaskForm deliverableId={this.props.match.params.deliv_id} deliverables={this.props.deliverables}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END ADD_TASK_FORM MODAL */}
                     <div className="container-fluid">
                         <div className="row">
                             <div className= "col-md-2">

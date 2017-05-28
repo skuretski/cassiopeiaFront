@@ -74,6 +74,7 @@ class NavTabs extends Component{
                         <ul className = 'nav nav-tabs' id="verticalUL">
                             <li><h3 className="navbar-brand" id="navLabel"><strong>Tasks</strong></h3></li>
                             {this.renderOneTab(this.props)}
+                            <li><button type="button" className="btn btn-primary" id="verticalButton" data-toggle="modal" data-target=".bs-task-modal-lg">Add Task</button></li>
                         </ul>
                 </nav>
             );
