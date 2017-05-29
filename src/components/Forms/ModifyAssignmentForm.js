@@ -9,7 +9,7 @@ import { createAssignment,
          getEmployeesByDiscipline,
          getTaskViewData } from '../../actions';
 
-class AddAssignmentForm extends Component {
+class ModifyAssignmentForm extends Component {
     constructor(props) {
         super(props);
 
@@ -357,10 +357,10 @@ function validate(values) {
     return errors;
 }
 
-AddAssignmentForm = reduxForm({
+ModifyAssignmentForm = reduxForm({
     validate,
-    form: 'AddAssignmentForm',
-})(AddAssignmentForm)
+    form: 'ModifyAssignmentForm',
+})(ModifyAssignmentForm)
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
@@ -379,4 +379,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddAssignmentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ModifyAssignmentForm);
