@@ -32,6 +32,7 @@ class AddDeliverableForm extends Component{
             this.props.dispatch(addDeliverable(deliverable)).then(() => {
                 this.setState({added: true});
                 this.props.reset();
+                $('.bs-deliverable-modal-lg').modal('hide');
            });          
        }
     }
@@ -70,8 +71,8 @@ var validateDelivs = (formProps) => {
 }
 function mapStateToProps(state){
     return{
-        projects: state.projects,
-        deliverables: state.deliverables
+        deliverables: state.deliverables,
+        projects: state.projects
     }
 }
 

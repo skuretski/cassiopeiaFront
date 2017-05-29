@@ -30,6 +30,16 @@ class ProjectView extends Component{
     componentWillUnmount(){
         this.setState({loading: true});
     }
+    getProjectDeliverables(projectId, deliverables){
+        var projDelivs = [];
+        _.map(deliverables, function(deliverable){
+            if(deliverable.project_id == projectId){
+                projDelivs.push(deliverable)
+                return deliverable;
+            }        
+        });
+        return projDelivs;
+    }
     render(){
         if(this.state.loading === true){
             return(
@@ -74,7 +84,11 @@ class ProjectView extends Component{
                             <div className="col-md-2">
                                 <div className="sidebar-nav">
                                     <div className="well">
-                                        <NavTabs type='deliverable' tabList={this.props.projectViewData.deliverables} projectId={this.props.match.params.project_id}/>
+                                        <NavTabs 
+                                            type='deliverable' 
+                                            tabList={this.getProjectDeliverables(this.props.match.params.project_id, this.props.deliverables)} 
+                                            projectId={this.props.match.params.project_id}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -97,6 +111,8 @@ function mapStateToProps(state){
     return{
         projectViewData: state.projectViewData,
         projects: state.projects,
+        deliverables: state.deliverables,
+        tasks: state.tasks
     }
 }
 export default connect(mapStateToProps)(ProjectView);

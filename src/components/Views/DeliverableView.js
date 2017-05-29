@@ -119,7 +119,7 @@ class DeliverableView extends Component{
                                 <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
                             </div>
                             <div className="col-md-2">
-                                <div className="sidebar-nav pull-rightx">
+                                <div className="sidebar-nav pull-right">
                                     <div className="well">
                                         <NavTabs 
                                             type='task' 
@@ -145,6 +145,7 @@ function mapStateToProps(state){
         projects: state.projects,
         deliverables: state.deliverables,
         deliverableViewData: state.deliverableViewData,
+        tasks: state.tasks
     }
 }
 export default connect(mapStateToProps)(DeliverableView);

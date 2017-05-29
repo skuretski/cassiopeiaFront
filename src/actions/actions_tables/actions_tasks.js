@@ -10,11 +10,27 @@ export function getTasks(dispatch){
     });
 }
 
-export function selectTask(task_id){
+export function addTask(task){
     return function(dispatch){
-        dispatch(selectOneTask(task_id));
+        if(task.title === '' || task.description === '' || task.committed === '' || task.discipline_id === ''){
+            console.log("Error. Fields must be filled out.");
+        }
+        else{
+            return axios.post(TASKS, {
+                title: task.title,
+                description: task.description,
+                committed: task.committed,
+                discipline_id: task.discipline_id,
+                deliverable_id: task.deliverable_id
+            }).then((response) => {
+                dispatch(createTask(response.data[0]));
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
     }
 }
+
 export const setTasks = (tasks) => {
     return{
         type: 'GET_TASKS',
@@ -22,9 +38,9 @@ export const setTasks = (tasks) => {
     }
 }
 
-export const selectOneTask = (task_id) => {
+export const createTask = (newTask) => {
     return{
-        type: 'SELECT_TASK',
-        task_id
+        type: 'ADD_TASK',
+        task: newTask
     }
 }

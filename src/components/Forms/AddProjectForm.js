@@ -31,6 +31,7 @@ class AddProjectForm extends Component{
             this.props.dispatch(addProject(project)).then(() => {
                 this.setState({added: true});
                 this.props.reset();
+                $('.bs-project-modal-lg').modal('hide');
            });
         }
     }
@@ -69,7 +70,8 @@ function validate(formProps){
 }
 function mapStateToProps(state){
     return{
-        projects: state.projects
+        projects: state.projects,
+        deliverables: state.deliverables
     }  
 }
 
