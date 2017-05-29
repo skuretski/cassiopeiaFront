@@ -4,7 +4,7 @@ import NavTabs from '../Navigation/NavTabs';
 import { getTaskViewData } from '../../actions';
 import TaskViewChart from '../Charts/TaskViewChart';
 import TaskSummaryTable from '../Tables/TaskSummaryTable';
-import AddAssignmentForm from '../Forms/AddAssignmentForm';
+import ModifyAssignmentForm from '../Forms/ModifyAssignmentForm';
 import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import AddTaskForm from '../Forms/AddTaskForm';
@@ -126,7 +126,8 @@ class TaskView extends Component{
                             </div>
                             <TaskViewChart data={this.props.taskViewData}/>
                             <TaskSummaryTable data={this.props.taskViewData} url={this.props.match.url}/>
-                            <AddAssignmentForm discipline_id={this.props.taskViewData.task[0].discipline_id}
+                            <h3>ADD/UPDATE ASSIGNMENTS:</h3>
+                            <ModifyAssignmentForm discipline_id={this.props.taskViewData.task[0].discipline_id}
                                                task_id={parseInt(this.props.match.params.task_id)}
                             />
                         </div>

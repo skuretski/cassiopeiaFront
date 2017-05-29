@@ -3,6 +3,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { createAssignment,
+         updateAssignment,
+         deleteAssignment,
+         searchAssignments,
          getEmployeesByDiscipline,
          getTaskViewData } from '../../actions';
 
@@ -62,53 +65,121 @@ class AddAssignmentForm extends Component {
         }
     }
 
+    createAssignmentHelper(data, last_entry) {
+        this.props.createAssignment(data, (response) => {
+            if (response.status === 200) {
+                if (last_entry) {
+                    // Refresh chart data
+                    this.props.getTaskViewData(this.props.task_id);
+                }
+            } else {
+                this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
+            }
+        });
+    }
+
+    updateAssignmentHelper(data, id, last_entry) {
+        this.props.updateAssignment({ effort: data.effort, id }, (response) => {
+            if (response.status === 200) {
+                if (last_entry) {
+                    // Refresh chart data
+                    this.props.getTaskViewData(this.props.task_id);
+                }
+            } else {
+                this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
+            }
+        });
+    }
+
+    deleteAssignmentHelper(id, last_entry) {
+        this.props.deleteAssignment({ id }, (response) => {
+            if (response.status === 200) {
+                if (last_entry) {
+                    // Refresh chart data
+                    this.props.getTaskViewData(this.props.task_id);
+                }
+            } else {
+                this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
+            }
+        });
+    }
+
+    numDaysInMonth(month, year) {
+        var daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var days = daysInMonths[month - 1];
+        // Account for leap years
+        // Years divisible by 4 are leap years
+        if ( (month === 2) && (year % 4 === 0)) {
+            // But only if the years aren't divisible by 100
+            if (year % 100 !== 0) {
+                days += 1;
+            } else {
+                // Unless the year is also divisible by 400
+                if (year % 400 === 0) {
+                    days += 1;
+                }
+            }
+        }
+        return days;
+    }
+
     // TODO:
-    // * Clear form on submit
-    // * Figure out if submit was successful? How can I know...?
     onSubmit(values) {
         var startMonth = parseInt(values.assignmentStartMonth),
             startYear = parseInt(values.assignmentStartYear),
             endMonth = parseInt(values.assignmentEndMonth),
             endYear = parseInt(values.assignmentEndYear),
-            effort = values.assignmentEffort,
-            emp_id = values.assignmentEmployee,
-            task_id = values.assignmentTaskID;
+            effort = parseFloat(values.assignmentEffort),
+            employee_id = parseInt(values.assignmentEmployee),
+            task_id = parseInt(values.assignmentTaskID);
 
         var year = startYear;
         var month = startMonth;
         var data = {};
+        var data_out = {};
+        var last_entry = false;
         while (year <= endYear) {
-            // Set data to POST
-            data.effort = effort;
-            data.employee_id = emp_id;
-            data.task_id = task_id;
-            if (month < 10) {
-                data.start_date = year + '-0' + month + '-01';
-            } else {
-                data.start_date = year + '-' + month + '-01';
-            }
-            data.end_date = data.start_date;
-
+            // Terminate once we're past the end date
             if (year === endYear) {
                 if (month > endMonth) {
                     break;
                 } else if (month === endMonth) {
-                    this.props.createAssignment(data, (response) => {
-                        if (response.status === 200) {
-                            this.props.getTaskViewData(this.props.task_id);
-                        } else {
-                            this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
-                        }
-                    });
-                } else {
-                    // Not last POST, no callback
-                    this.props.createAssignment(data);
+                    last_entry = true;
                 }
-            } else {
-                // Not last POST, no callback
-                this.props.createAssignment(data);
             }
 
+            // Create object containing table entry data
+            data.effort = effort;
+            data.employee_id = employee_id;
+            data.task_id = task_id;
+            if (month < 10) {
+                data.start_date = year + '-0' + month + '-01';
+                data.end_date = year + '-0' + month + '-' + this.numDaysInMonth(month);
+            } else {
+                data.start_date = year + '-' + month + '-01';
+                data.end_date = year + '-' + month + '-' + this.numDaysInMonth(month);
+            }
+
+            // Create a shallow copy to pass around
+            data_out = Object.assign({}, data);
+
+            // See if there is an existing assignment for this employee/task/date
+            this.props.searchAssignments(data_out, (response, data_ret) => {
+                if (response.data.length !== 0) { // Existing record
+                    const assignment_id = response.data[0].id;
+                    if (data_ret.effort !== 0) { // UPDATE
+                        this.updateAssignmentHelper(data_ret, assignment_id, last_entry);
+                    } else { // DELETE
+                        this.deleteAssignmentHelper(assignment_id, last_entry);
+                    }
+                } else { // No existing record
+                    if (data_ret.effort !== 0) { // CREATE
+                        this.createAssignmentHelper(data_ret, last_entry);
+                    }
+                }
+            });
+
+            // Increment date forward 1 month
             month += 1;
             if (month > 12) {
                 month = 1;
@@ -295,6 +366,9 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getEmployeesByDiscipline,
         createAssignment,
+        updateAssignment,
+        deleteAssignment,
+        searchAssignments,
         getTaskViewData }, dispatch);
 }
 
