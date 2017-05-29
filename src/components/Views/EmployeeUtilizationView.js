@@ -33,7 +33,7 @@ class EmployeeUtilizationView extends Component{
                     <div className="chart-title">
                         <h4><b>Employee Utilization</b></h4>
                     </div>
-                    {/**<EmployeeUtilizationTable data={this.props.employeeViewData}/>**/}
+                    <EmployeeUtilizationTable data={this.props.employeeViewData}/>
                 </div>
             );
         }
