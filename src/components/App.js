@@ -6,7 +6,6 @@ import { getProjects, getTasks, getDeliverables } from '../actions';
 
 
 import DeliverableView from './Views/DeliverableView';
-import FormView from './Views/FormView';
 import ProjectView from './Views/ProjectView';
 import TaskView from './Views/TaskView';
 import IndexView from './Views/IndexView';
