@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { createAssignment,
-         updateAssignment,
-         deleteAssignment,
-         searchAssignments,
-         getEmployeesByDiscipline,
+import { createSOW,
+         updateSOW,
+         deleteSOW,
+         searchSOW,
          getTaskViewData } from '../../actions';
 
-class ModifyAssignmentForm extends Component {
+class ModifySOWForm extends Component {
     constructor(props) {
         super(props);
 
@@ -17,9 +16,8 @@ class ModifyAssignmentForm extends Component {
     }
 
     componentDidMount() {
-        this.props.getEmployeesByDiscipline(this.props.discipline_id);
         // Add task_id to the fields values
-        this.props.change('assignmentTaskID', this.props.task_id);
+        this.props.change('SOWTaskID', this.props.task_id);
     }
 
     renderField(field) {
@@ -65,8 +63,8 @@ class ModifyAssignmentForm extends Component {
         }
     }
 
-    createAssignmentHelper(data, last_entry) {
-        this.props.createAssignment(data, (response) => {
+    createSOWHelper(data, last_entry) {
+        this.props.createSOW(data, (response) => {
             if (response.status === 200) {
                 if (last_entry) {
                     // Refresh chart data
@@ -78,8 +76,9 @@ class ModifyAssignmentForm extends Component {
         });
     }
 
-    updateAssignmentHelper(data, id, last_entry) {
-        this.props.updateAssignment({ effort: data.effort, id }, (response) => {
+    updateSOWHelper(data, id, last_entry) {
+        console.log(data, id);
+        this.props.updateSOW({ man_mo: data.man_mo, id }, (response) => {
             if (response.status === 200) {
                 if (last_entry) {
                     // Refresh chart data
@@ -91,8 +90,8 @@ class ModifyAssignmentForm extends Component {
         });
     }
 
-    deleteAssignmentHelper(id, last_entry) {
-        this.props.deleteAssignment({ id }, (response) => {
+    deleteSOWHelper(id, last_entry) {
+        this.props.deleteSOW({ id }, (response) => {
             if (response.status === 200) {
                 if (last_entry) {
                     // Refresh chart data
@@ -125,13 +124,12 @@ class ModifyAssignmentForm extends Component {
 
     // TODO:
     onSubmit(values) {
-        var startMonth = parseInt(values.assignmentStartMonth),
-            startYear = parseInt(values.assignmentStartYear),
-            endMonth = parseInt(values.assignmentEndMonth),
-            endYear = parseInt(values.assignmentEndYear),
-            effort = parseFloat(values.assignmentEffort),
-            employee_id = parseInt(values.assignmentEmployee),
-            task_id = parseInt(values.assignmentTaskID);
+        var startMonth = parseInt(values.SOWStartMonth),
+            startYear = parseInt(values.SOWStartYear),
+            endMonth = parseInt(values.SOWEndMonth),
+            endYear = parseInt(values.SOWEndYear),
+            manMonths = parseFloat(values.SOWManMonths),
+            task_id = parseInt(values.SOWTaskID);
 
         var year = startYear;
         var month = startMonth;
@@ -149,8 +147,7 @@ class ModifyAssignmentForm extends Component {
             }
 
             // Create object containing table entry data
-            data.effort = effort;
-            data.employee_id = employee_id;
+            data.man_mo = manMonths;
             data.task_id = task_id;
             if (month < 10) {
                 data.start_date = year + '-0' + month + '-01';
@@ -163,18 +160,22 @@ class ModifyAssignmentForm extends Component {
             // Create a shallow copy to pass around
             data_out = Object.assign({}, data);
 
-            // See if there is an existing assignment for this employee/task/date
-            this.props.searchAssignments(data_out, (response, data_ret) => {
+            // See if there is an existing SOW for this task/date
+            this.props.searchSOW(data_out, (response, data_ret) => {
+                console.log(response, data_ret);
                 if (response.data.length !== 0) { // Existing record
-                    const assignment_id = response.data[0].id;
-                    if (data_ret.effort !== 0) { // UPDATE
-                        this.updateAssignmentHelper(data_ret, assignment_id, last_entry);
+                    const sow_id = response.data[0].id;
+                    if (data_ret.man_mo !== 0) { // UPDATE
+                        console.log('UPDATE');
+                        this.updateSOWHelper(data_ret, sow_id, last_entry);
                     } else { // DELETE
-                        this.deleteAssignmentHelper(assignment_id, last_entry);
+                        console.log('DELETE');
+                        this.deleteSOWHelper(sow_id, last_entry);
                     }
                 } else { // No existing record
-                    if (data_ret.effort !== 0) { // CREATE
-                        this.createAssignmentHelper(data_ret, last_entry);
+                    if (data_ret.man_mo !== 0) { // CREATE
+                        console.log('CREATE');
+                        this.createSOWHelper(data_ret, last_entry);
                     }
                 }
             });
@@ -186,16 +187,6 @@ class ModifyAssignmentForm extends Component {
                 year += 1;
             }
         }
-    }
-
-    renderEmployeeOptions() {
-        var employees = this.props.employees;
-        var opts = [];
-        opts.push(<option key={0} value={0}>Select Employee...</option>)
-        employees.map( e => {
-            opts.push(<option key={e.id} value={e.id}>{e.last + ', ' + e.first}</option>)
-        })
-        return opts;
     }
 
     renderMonthOptions() {
@@ -225,36 +216,11 @@ class ModifyAssignmentForm extends Component {
             <fieldset>
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <div className="row">
-                    <div className="col-md-6">
-                        {/* Employee Field */}
-                        <Field
-                            label="Employee"
-                            name="assignmentEmployee"
-                            type="select"
-                            selectOptions={this.renderEmployeeOptions()}
-                            component={this.renderField}
-                        />
-                    </div>
-                    <div className="col-md-6">
-                        {/* Effort Field */}
-                        <Field
-                            label="Effort"
-                            name="assignmentEffort"
-                            type="number"
-                            min="0.0"
-                            step="0.1"
-                            max="1.0"
-                            component={this.renderField}
-                        />
-                    </div>
-                </div>
-
-                <div className="row">
                     {/* Start Date Fields */}
                     <div className="col-md-6">
                         <Field
                             label="Start Month"
-                            name="assignmentStartMonth"
+                            name="SOWStartMonth"
                             type="select"
                             selectOptions={this.renderMonthOptions()}
                             component={this.renderField}
@@ -263,7 +229,7 @@ class ModifyAssignmentForm extends Component {
                     <div className="col-md-6">
                         <Field
                             label="Start Year"
-                            name="assignmentStartYear"
+                            name="SOWStartYear"
                             type="select"
                             selectOptions={this.renderYearOptions()}
                             component={this.renderField}
@@ -276,7 +242,7 @@ class ModifyAssignmentForm extends Component {
                     <div className="col-md-6">
                         <Field
                             label="End Month"
-                            name="assignmentEndMonth"
+                            name="SOWEndMonth"
                             type="select"
                             selectOptions={this.renderMonthOptions()}
                             component={this.renderField}
@@ -285,17 +251,31 @@ class ModifyAssignmentForm extends Component {
                     <div className="col-md-6">
                         <Field
                             label="End Year"
-                            name="assignmentEndYear"
+                            name="SOWEndYear"
                             type="select"
                             selectOptions={this.renderYearOptions()}
                             component={this.renderField}
                         />
                     </div>
                 </div>
-                    
+
+                <div className="row">
+                    <div className="col-md-12">
+                        {/* Man-Months Field */}
+                        <Field
+                            label="Man-Months"
+                            name="SOWManMonths"
+                            type="number"
+                            min="0.0"
+                            step="0.1"
+                            max="100.0"
+                            component={this.renderField}
+                        />
+                    </div>
+                </div>
+
                 <button type="submit" className="btn btn-primary">Submit</button>
                 <div>{this.state.message}</div>
-
             </form>
             </fieldset>
         );
@@ -304,52 +284,42 @@ class ModifyAssignmentForm extends Component {
 
 function validate(values) {
     const errors = {};
-    //TODO:
-    // * Validate that input start date is in today's month/year or later
-    // * Validate that end date is after start date
-    // * Validate that effort is in range [0, 1]
-    // Validate the inputs from 'values'
-    const employee = parseInt(values.assignmentEmployee);
-    const effort = values.assignmentEffort;
-    const startMonth = parseInt(values.assignmentStartMonth);
-    const startYear = parseInt(values.assignmentStartYear);
-    const endMonth = parseInt(values.assignmentEndMonth);
-    const endYear = parseInt(values.assignmentEndYear);
+    const manMonths = values.SOWManMonths;
+    const startMonth = parseInt(values.SOWStartMonth);
+    const startYear = parseInt(values.SOWStartYear);
+    const endMonth = parseInt(values.SOWEndMonth);
+    const endYear = parseInt(values.SOWEndYear);
 
-    if (!employee) {
-        errors.assignmentEmployee = "Select an employee.";
-    }
-
-    if (!effort) {
-        errors.assignmentEffort = "Enter an effort amount.";
-    } else if (effort < 0.0 || effort > 1.0) {
-        errors.assignmentEffort = "Must be between 0 and 1."
+    if (!manMonths) {
+        errors.SOWManMonths = "Enter a man-months amount.";
+    } else if (manMonths < 0.0 || manMonths > 100.0) {
+        errors.SOWManMonths = "Must be between 0 and 100.";
     }
 
     if (!startMonth) {
-        errors.assignmentStartMonth = "Select a start month.";
+        errors.SOWStartMonth = "Select a start month.";
     }
 
     if (!startYear) {
-        errors.assignmentStartYear = "Select a start year.";
+        errors.SOWStartYear = "Select a start year.";
     }
 
     if (!endMonth) {
-        errors.assignmentEndMonth = "Select an end month.";
+        errors.SOWEndMonth = "Select an end month.";
     }
 
     if (!endYear) {
-        errors.assignmentEndYear = "Select an end year.";
+        errors.SOWEndYear = "Select an end year.";
     }
 
     if (startMonth && startYear && endMonth && endYear) {
         if (startYear > endYear) {
-            errors.assignmentStartYear = "Start year must be before end year.";
-            errors.assignmentEndYear = "End year must be after start year.";
+            errors.SOWStartYear = "Start year must be before end year.";
+            errors.SOWEndYear = "End year must be after start year.";
         } else if (startYear == endYear) {
             if (startMonth > endMonth) {
-                errors.assignmentStartMonth = "Start month must be before end month.";
-                errors.assignmentEndMonth = "End month must be after start month.";
+                errors.SOWStartMonth = "Start month must be before end month.";
+                errors.SOWEndMonth = "End month must be after start month.";
             }
         }
     }
@@ -357,26 +327,18 @@ function validate(values) {
     return errors;
 }
 
-ModifyAssignmentForm = reduxForm({
+ModifySOWForm = reduxForm({
     validate,
-    form: 'ModifyAssignmentForm',
-})(ModifyAssignmentForm)
+    form: 'ModifySOWForm',
+})(ModifySOWForm)
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        getEmployeesByDiscipline,
-        createAssignment,
-        updateAssignment,
-        deleteAssignment,
-        searchAssignments,
+        createSOW,
+        updateSOW,
+        deleteSOW,
+        searchSOW,
         getTaskViewData }, dispatch);
 }
 
-function mapStateToProps(state) {
-    return {
-        employees: state.employees,
-        result: state.assignments
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ModifyAssignmentForm);
+export default connect(null, mapDispatchToProps)(ModifySOWForm);

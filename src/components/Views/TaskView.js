@@ -5,6 +5,7 @@ import { getTaskViewData } from '../../actions';
 import TaskViewChart from '../Charts/TaskViewChart';
 import TaskSummaryTable from '../Tables/TaskSummaryTable';
 import ModifyAssignmentForm from '../Forms/ModifyAssignmentForm';
+import ModifySOWForm from '../Forms/ModifySOWForm';
 import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import AddTaskForm from '../Forms/AddTaskForm';
@@ -126,10 +127,18 @@ class TaskView extends Component{
                             </div>
                             <TaskViewChart data={this.props.taskViewData}/>
                             <TaskSummaryTable data={this.props.taskViewData} url={this.props.match.url}/>
-                            <h3>ADD/UPDATE ASSIGNMENTS:</h3>
-                            <ModifyAssignmentForm discipline_id={this.props.taskViewData.task[0].discipline_id}
-                                               task_id={parseInt(this.props.match.params.task_id)}
-                            />
+                            <div className="row">
+                                <div className="col-md-5">
+                                    <h3 className="text-center">ADD/UPDATE ASSIGNMENTS</h3>
+                                    <ModifyAssignmentForm discipline_id={this.props.taskViewData.task[0].discipline_id}
+                                                    task_id={parseInt(this.props.match.params.task_id)}
+                                    />
+                                </div>
+                                <div className="col-md-5 col-md-offset-2">
+                                    <h3 className="text-center">ADD/UPDATE STATEMENT OF WORK</h3>
+                                    <ModifySOWForm task_id={parseInt(this.props.match.params.task_id)}/>
+                                </div>
+                            </div>
                         </div>
                         <div className="col-md-2">
                             <div className="sidebar-nav pull-right">
