@@ -2,7 +2,6 @@ import axios from 'axios';
 import { ASSIGNMENTS } from '../../api';
 
 export function createAssignment(data, callback) {
-    console.log('CREATE ACTION', data);
     const request = axios.post(ASSIGNMENTS, {
         start_date: data.start_date,
         end_date: data.end_date,
