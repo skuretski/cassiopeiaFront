@@ -31,7 +31,7 @@ export function deleteAssignment(data, callback) {
         .then( (value) => callback(value));
 
     return {
-        type: 'UPDATE_ASSIGNMENT',
+        type: 'DELETE_ASSIGNMENT',
         payload: request
     }
 }
