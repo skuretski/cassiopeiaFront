@@ -3,7 +3,7 @@ import ProjectsReducer from './reducer_projects';
 import DisciplinesReducer from './reducer_disciplines';
 import DeliverablesReducer from './reducer_deliverables';
 import TasksReducer from './reducer_tasks';
-import EmployeeReducer from './reducer_employees';
+import * as EmployeeReducer from './reducer_employees';
 import AssignmentsReducer from './reducer_assignments';
 import EmployeeViewReducer from './reducer_employeeview';
 import FundingViewReducer from './reducer_fundingview';
@@ -18,7 +18,10 @@ const rootReducer = combineReducers({
     disciplines: DisciplinesReducer,
     deliverables: DeliverablesReducer,
     tasks: TasksReducer,
-    employees: EmployeeReducer,
+    createEmployeeHasErrored: EmployeeReducer.createEmployeeHasErrored,
+    createEmployeeIsSending: EmployeeReducer.createEmployeeIsSending,
+    createEmployeeID: EmployeeReducer.createEmployeeSuccess,
+    employeesByDiscipline: EmployeeReducer.getEmployeesByDiscipline,
     assignments: AssignmentsReducer,
     employeeViewData: EmployeeViewReducer,
     fundingViewData: FundingViewReducer,

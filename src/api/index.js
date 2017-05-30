@@ -6,6 +6,7 @@ exports.EMPLOYEES = `${api}/employees`;
 exports.PROJECTS = `${api}/projects`;
 exports.SOW = `${api}/sow`;
 exports.DELIVERABLES = `${api}/deliverables`;
+exports.DISCIPLINES = `${api}/disciplines`;
 exports.TASKS = `${api}/tasks`;
 exports.ASSIGNMENTS = `${api}/assignments`;
 exports.FUNDING = `${api}/funding`;

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import TableRow from './TableComponents/TableRow';
+import AddEmployeeForm from '../Forms/AddEmployeeForm';
 import _ from 'lodash';
 
 class EmployeeListTable extends Component {
     constructor(props) {
         super(props);    
-
+    
         this.LastNameOrder = 0; // 0 for ascending, 1 for descending
         this.FirstNameOrder = 0;
         this.DisciplineOrder = 0;
@@ -136,28 +137,44 @@ class EmployeeListTable extends Component {
                 <td>{this.props.data.employees[i].active}</td>
                 <td>{this.dateHelper(this.props.data.employees[i].active_start_date)}</td>
                 <td>{this.dateHelper(this.props.data.employees[i].active_end_date)}</td>
-                <td><button id={this.props.data.employees[i].emp_id} onClick={this.handleUpdateEmployeeClick}>Update</button></td>
-                <td><button id={this.props.data.employees[i].emp_id} onClick={this.handleDeleteEmployeeClick}>Delete</button></td>
+                <td><button className="btn btn-default sharp" id={this.props.data.employees[i].emp_id} onClick={this.handleUpdateEmployeeClick}>Update</button></td>
+                <td><button className="btn btn-default sharp btn-danger-text" id={this.props.data.employees[i].emp_id} onClick={this.handleDeleteEmployeeClick}>Delete</button></td>
                 </tr>);
         }
 
         return (
-            <table className="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th><button onClick={this.handleLastNameClick}>Last Name</button></th>
-                        <th><button onClick={this.handleFirstNameClick}>First Name</button></th>
-                        <th><button onClick={this.handleDisciplineClick}>Discipline</button></th>
-                        <th><button onClick={this.handleActiveClick}>Active</button></th>
-                        <th><button onClick={this.handleActiveStartDateClick}>Active Start Date</button></th>
-                        <th><button onClick={this.handleActiveEndDateClick}>Active End Date</button></th>
-                        <th colSpan="2"><button onClick={this.handleAddNewEmployeeClick}>Add New Employee</button></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows}
-                </tbody>
-            </table>
+            <div>
+                <table className="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleLastNameClick}>Last Name</button></th>
+                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleFirstNameClick}>First Name</button></th>
+                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleDisciplineClick}>Discipline</button></th>
+                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleActiveClick}>Active</button></th>
+                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleActiveStartDateClick}>Active Start Date</button></th>
+                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleActiveEndDateClick}>Active End Date</button></th>
+                            <th colSpan="2">
+                                <button type="button" className="btn btn-primary sharp" data-toggle="modal" data-target=".bs-employee-modal-lg">
+                                    Add New Employee
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+                <div className="modal fade bs-employee-modal-lg" role="dialog">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="container-fluid">
+                                <h2>Add an Employee</h2>
+                                <AddEmployeeForm/>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
         );
     }
 }

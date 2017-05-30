@@ -14,7 +14,7 @@ class AddTaskForm extends Component{
     renderDropDown(field){
         return(
             <div>
-                <select {...field.input}>
+                <select className="padded-select" {...field.input}>
                     <option value="">Select Discipline</option>
                     {field.disciplines.map((discipline) => {
                         return(

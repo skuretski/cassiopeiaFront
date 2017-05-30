@@ -1,38 +1,42 @@
 import axios from 'axios';
 import { EMPLOYEES, EMPLOYEES_BY_DISCIPLINE, ONE_EMPLOYEE } from '../../api';
 
-export function postEmployees(data){
-    return axios.post(EMPLOYEES, {
-        first: data.first,
-        last: data.last,
-        discipline_id: data.discipline_id
-    }).then((response) => {
-        dispatch(createEmployee(response.data));
-    }).catch((error) => {
-        console.log(error);
-    });
+export function createEmployee(data) {
+    return dispatch => {
+        dispatch(createEmployeeHasErrored(false));
+        dispatch(createEmployeeIsSending(true));
+        return axios.post(EMPLOYEES, data)
+            .then( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(createEmployeeIsSending(false));
+                dispatch(createEmployeeSuccess(response.data.insertId));
+            }).catch( error => {
+                dispatch(createEmployeeHasErrored(true));
+                console.log(error);
+            });
+    };
 }
 
-export function getEmployees(dispatch){
-    return axios.get(EMPLOYEES)
-    .then((response) => {
-        dispatch(setEmployees(response.data));
-    }).catch((error) => {
-        console.log(error);
-    });
-}
-
-var createEmployee = (newEmployee) => {
+export function createEmployeeIsSending(bool) {
     return {
-        type: 'ADD_EMPLOYEE',
-        employee: newEmployee.data
-    }
+        type: 'CREATE_EMPLOYEE_IS_SENDING',
+        isSending: bool
+    };
 }
 
-export var setEmployees = (employees) => {
+export function createEmployeeHasErrored(bool) {
     return {
-        type: 'GET_EMPLOYEES',
-        employees
+        type: 'CREATE_EMPLOYEE_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function createEmployeeSuccess(employee_id) {
+    return {
+        type: 'CREATE_EMPLOYEE_SUCCESS',
+        employee_id
     }
 }
 

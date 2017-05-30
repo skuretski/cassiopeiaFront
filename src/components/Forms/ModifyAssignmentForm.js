@@ -374,7 +374,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     return {
-        employees: state.employees,
+        employees: state.employeesByDiscipline,
         result: state.assignments
     }
 }
