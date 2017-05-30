@@ -42,6 +42,16 @@ class DeliverableView extends Component{
         });
         return projDelivs;
     }
+    getDeliverableTasks(delivId, tasks){
+        var delivTasks = [];
+        _.map(tasks, function(task){
+            if(task.deliverable_id == delivId){
+                delivTasks.push(task);
+                return task;
+            }
+        });
+        return delivTasks;
+    }
     render(){
         if(this.state.loading === true){
             return(
@@ -88,7 +98,7 @@ class DeliverableView extends Component{
                                 <div className="modal-content">
                                     <div className="container-fluid">
                                     <h2>Add a Task to {this.props.deliverables[this.props.match.params.deliv_id].title}</h2>
-                                    <AddTaskForm deliverableId={this.props.match.params.deliv_id} deliverables={this.props.deliverables}/>
+                                    <AddTaskForm deliverableId={this.props.match.params.deliv_id} deliverables={this.props.deliverables} disciplines={this.props.disciplines}/>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +133,7 @@ class DeliverableView extends Component{
                                     <div className="well">
                                         <NavTabs 
                                             type='task' 
-                                            tabList={this.props.deliverableViewData.tasks}
+                                            tabList={this.getDeliverableTasks(this.props.match.params.deliv_id, this.props.tasks)}
                                             projectId={this.props.match.params.project_id}
                                             delivId={this.props.match.params.deliv_id}
                                             taskId={this.props.match.params.task_id}
@@ -145,7 +155,8 @@ function mapStateToProps(state){
         projects: state.projects,
         deliverables: state.deliverables,
         deliverableViewData: state.deliverableViewData,
-        tasks: state.tasks
+        tasks: state.tasks,
+        disciplines: state.disciplines
     }
 }
 export default connect(mapStateToProps)(DeliverableView);

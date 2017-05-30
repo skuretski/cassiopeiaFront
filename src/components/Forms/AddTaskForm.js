@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
 import { addTask } from '../../actions';
+import _ from 'lodash';
 
 class AddTaskForm extends Component{
     constructor(props){
@@ -9,6 +10,20 @@ class AddTaskForm extends Component{
         this.state = {
             added: false
         }
+    }
+    renderDropDown(field){
+        return(
+            <div>
+                <select {...field.input}>
+                    <option value="">Select Discipline</option>
+                    {field.disciplines.map((discipline) => {
+                        return(
+                            <option key={discipline.id}value={discipline.id}>{discipline.title}</option>
+                        );
+                    })}
+                </select>
+            </div>
+        )
     }
     renderField(field){
         const { meta: { touched, error} } = field;
@@ -21,7 +36,7 @@ class AddTaskForm extends Component{
                     {...field.input}
                 />
                 <div className="text-help">
-                {touched ? error : ''}
+                    {touched ? error : ''}
                 </div>
             </div>
         );
@@ -29,9 +44,11 @@ class AddTaskForm extends Component{
     onSubmit(task){
         if(task.title != '' && task.description != ''){
             task.deliverable_id = this.props.deliverableId;
+            task.committed = 0;
             this.props.dispatch(addTask(task)).then(() => {
                 this.setState({added: true});
                 this.props.reset();
+                $('.bs-task-modal-lg').modal('hide');
            });
         }
     }
@@ -50,9 +67,10 @@ class AddTaskForm extends Component{
                     component={this.renderField}
                     />
                 <Field
-                    label="Task Committed"
-                    name="committed"
-                    component={this.renderField}
+                    label="Discipline"
+                    name="discipline_id"
+                    disciplines={this.props.disciplines}
+                    component={this.renderDropDown}
                 />
                 <button type="submit" className="btn btn-primary">
                     Add New Task
@@ -75,7 +93,8 @@ function validate(formProps){
 }
 function mapStateToProps(state){
     return{
-        tasks: state.tasks
+        tasks: state.tasks,
+        disciplines: state.disciplines
     }  
 }
 

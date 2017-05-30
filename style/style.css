@@ -68,6 +68,7 @@ a.active{
 li .btn-primary{
     background-color: #222;
     border-color: #222;
+    align-content: center;
 }
 
 li .btn-primary:hover {
@@ -84,6 +85,14 @@ li .btn-primary:focus{
 
 #verticalButton{
     margin-top: 50px;
+    margin-right: 10px;
 }
 
+form .btn-primary{
+    margin-right: 10px;
+}
 
+form select{
+    margin-top: 20px;
+    margin-bottom: 40px;
+}

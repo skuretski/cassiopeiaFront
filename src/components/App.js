@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route, withRouter } from 'react-router-dom';
 
-import { getProjects, getTasks, getDeliverables } from '../actions';
+import { getProjects, getTasks, getDeliverables, getDisciplines } from '../actions';
 
 
 import DeliverableView from './Views/DeliverableView';
@@ -27,7 +27,8 @@ class App extends Component{
         Promise.all([
             this.props.dispatch(getProjects),
             this.props.dispatch(getDeliverables),
-            this.props.dispatch(getTasks)
+            this.props.dispatch(getTasks),
+            this.props.dispatch(getDisciplines)
         ]).then(() => this.setState({loading: false}))
         .catch((error) => console.log(error));
     }
@@ -54,7 +55,8 @@ function mapStateToProps(state){
     return{
         projects: state.projects,
         deliverables: state.deliverables,
-        tasks: state.tasks
+        tasks: state.tasks, 
+        disciplines: state.disciplines
     }
 }
 export default withRouter(connect(mapStateToProps)(App));

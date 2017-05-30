@@ -96,7 +96,7 @@ class TaskView extends Component{
                                 <div className="modal-content">
                                     <div className="container-fluid">
                                     <h2>Add a Task to {this.props.deliverables[this.props.match.params.deliv_id].title}</h2>
-                                    <AddTaskForm deliverableId={this.props.match.params.deliv_id} deliverables={this.props.deliverables}/>
+                                    <AddTaskForm deliverableId={this.props.match.params.deliv_id} deliverables={this.props.deliverables} disciplines={this.props.disciplines}/>
                                     </div>
                                 </div>
                             </div>
@@ -167,6 +167,7 @@ function mapStateToProps(state){
         deliverables: state.deliverables,
         tasks: state.tasks,
         taskViewData: state.taskViewData,
+        disciplines: state.disciplines
     }
 }
 export default connect(mapStateToProps)(TaskView);
