@@ -17,9 +17,9 @@ class ModifyAssignmentForm extends Component {
     }
 
     componentDidMount() {
-        this.props.getEmployeesByDiscipline(this.props.discipline_id);
         // Add task_id to the fields values
         this.props.change('assignmentTaskID', this.props.task_id);
+        this.props.getEmployeesByDiscipline(this.props.discipline_id);
     }
 
     renderField(field) {
@@ -192,9 +192,9 @@ class ModifyAssignmentForm extends Component {
         var employees = this.props.employees;
         var opts = [];
         opts.push(<option key={0} value={0}>Select Employee...</option>)
-        employees.map( e => {
-            opts.push(<option key={e.id} value={e.id}>{e.last + ', ' + e.first}</option>)
-        })
+            employees.map( e => {
+                opts.push(<option key={e.id} value={e.id}>{e.last + ', ' + e.first}</option>)
+            })
         return opts;
     }
 
@@ -221,6 +221,9 @@ class ModifyAssignmentForm extends Component {
 
     render() {
         const { handleSubmit } = this.props;
+        if (!this.props.employees) {
+            return <div>Loading...</div>
+        }
         return (
             <fieldset>
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>

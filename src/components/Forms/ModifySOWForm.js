@@ -77,7 +77,6 @@ class ModifySOWForm extends Component {
     }
 
     updateSOWHelper(data, id, last_entry) {
-        console.log(data, id);
         this.props.updateSOW({ man_mo: data.man_mo, id }, (response) => {
             if (response.status === 200) {
                 if (last_entry) {
@@ -162,19 +161,15 @@ class ModifySOWForm extends Component {
 
             // See if there is an existing SOW for this task/date
             this.props.searchSOW(data_out, (response, data_ret) => {
-                console.log(response, data_ret);
                 if (response.data.length !== 0) { // Existing record
                     const sow_id = response.data[0].id;
                     if (data_ret.man_mo !== 0) { // UPDATE
-                        console.log('UPDATE');
                         this.updateSOWHelper(data_ret, sow_id, last_entry);
                     } else { // DELETE
-                        console.log('DELETE');
                         this.deleteSOWHelper(sow_id, last_entry);
                     }
                 } else { // No existing record
                     if (data_ret.man_mo !== 0) { // CREATE
-                        console.log('CREATE');
                         this.createSOWHelper(data_ret, last_entry);
                     }
                 }
