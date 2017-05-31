@@ -85,7 +85,7 @@ class EmployeeUtilizationTable extends Component {
                 util = []; j = 0;
                 curTaskID = this.props.data.assignmentsByTask[i].task_id;
                 util.push(<td key={uuid.v4()} colSpan="3"></td>);     
-                util.push(<td className="left-align" key={uuid.v4()}>Task: {this.props.data.tasks[taskMap[curTaskID]].title}</td>);     
+                util.push(<td className="left-align" key={uuid.v4()}>&nbsp;&nbsp;&nbsp;Task: {this.props.data.tasks[taskMap[curTaskID]].title}</td>);     
             }
             while (!(mo[j] == this.props.data.assignmentsByTask[i].mo && yr[j] == this.props.data.assignmentsByTask[i].yr)) {
                 util.push(<td key={uuid.v4()}>0</td>);   
@@ -135,7 +135,7 @@ class EmployeeUtilizationTable extends Component {
                 util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={uuid.v4()}>[-]</button></td>);     
                 curDelID = this.props.data.assignmentsByDel[i].deliverable_id;
                 util.push(<td key={uuid.v4()}></td>);     
-                util.push(<td className="left-align" colSpan="2" key={uuid.v4()}>Del: {this.props.data.deliverables[delMap[curDelID]].title}</td>);     
+                util.push(<td className="left-align" colSpan="2" key={uuid.v4()}>&nbsp;&nbsp;&nbsp;Del: {this.props.data.deliverables[delMap[curDelID]].title}</td>);     
             }
             while (!(mo[j] == this.props.data.assignmentsByDel[i].mo && yr[j] == this.props.data.assignmentsByDel[i].yr)) {
                 util.push(<td key={uuid.v4()}>0</td>);   
@@ -183,7 +183,7 @@ class EmployeeUtilizationTable extends Component {
                 util = []; j = 0;
                 util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={uuid.v4()}>[-]</button></td>);     
                 curProjID = this.props.data.assignmentsByProj[i].project_id;
-                util.push(<td className="left-align" colSpan="3" key={uuid.v4()}>Proj: {this.props.data.projects[projMap[curProjID]].title}</td>);     
+                util.push(<td className="left-align" colSpan="3" key={uuid.v4()}>&nbsp;&nbsp;&nbsp;Proj: {this.props.data.projects[projMap[curProjID]].title}</td>);     
             }
             while (!(mo[j] == this.props.data.assignmentsByProj[i].mo && yr[j] == this.props.data.assignmentsByProj[i].yr)) {
                 util.push(<td key={uuid.v4()}>0</td>);   
