@@ -54,13 +54,47 @@ class AddEmployeeForm extends Component{
         return opts;
     }
 
+    renderMonthOptions() {
+        var opts = [];
+        opts.push(<option key={0} value={0}>Select Month...</option>)
+        const months = ['January','February','March','April','May','June','July',
+         'August','September','October','November','December'];
+        months.map( (name, num) => {
+            opts.push(<option key={num+1} value={num+1}>{name}</option>)
+        });
+        return opts;
+    }
+
+    renderYearOptions() {
+        var yr = new Date().getFullYear();
+        var opts = [];
+        opts.push(<option key={0} value={0}>Select Year...</option>)
+        for (var i = 0; i <= 40; ++i) {
+            opts.push(<option key={yr+i} value={yr+i}>{yr+i}</option>);
+        }
+        return opts;
+    }
+
     onSubmit(employee){
-        this.props.createEmployee(employee).then(() => {
+        var { first, last, discipline_id, startMonth, startYear, endMonth, endYear } = employee;
+        var data = { first, last, discipline_id };
+        if (startMonth < 10) {
+            startMonth = '0' + startMonth;
+        }
+        if (endMonth < 10) {
+            endMonth = '0' + endMonth;
+        }
+
+        data.active_start_date = startYear + '-' + startMonth + '-01';
+        data.active_end_date = endYear + '-' + endMonth + '-01';
+        
+        this.props.createEmployee(data).then(() => {
             if (this.props.hasErrored) {
                 this.setState({message: 'Woops! Something went wrong. Try again.'})
             } else {
                 this.setState({message: ''})
                 this.props.reset();
+                this.props.dispatch(getEmployeeViewData);
                 $('.bs-employee-modal-lg').modal('hide');
             }
         })
@@ -86,13 +120,59 @@ class AddEmployeeForm extends Component{
                         />
                     </div>
                 </div>
-                <Field
-                    label="Discipline"
-                    name="discipline_id"
-                    type="select"
-                    selectOptions={this.renderDisciplineOptions()}
-                    component={this.renderField}
-                    />
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            label="Discipline"
+                            name="discipline_id"
+                            type="select"
+                            selectOptions={this.renderDisciplineOptions()}
+                            component={this.renderField}
+                        />
+                    </div>
+                </div>
+                {/* Start Date Fields */}
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            label="Active Start Month"
+                            name="startMonth"
+                            type="select"
+                            selectOptions={this.renderMonthOptions()}
+                            component={this.renderField}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <Field
+                            label="Active Start Year"
+                            name="startYear"
+                            type="select"
+                            selectOptions={this.renderYearOptions()}
+                            component={this.renderField}
+                        />
+                    </div>
+                </div>   
+                {/* End Date Fields */}
+                <div className="row">
+                    <div className="col-md-6">
+                        <Field
+                            label="Active End Month"
+                            name="endMonth"
+                            type="select"
+                            selectOptions={this.renderMonthOptions()}
+                            component={this.renderField}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <Field
+                            label="Active End Year"
+                            name="endYear"
+                            type="select"
+                            selectOptions={this.renderYearOptions()}
+                            component={this.renderField}
+                        />
+                    </div>
+                </div>
                 <button type="submit" className="btn btn-primary">
                     Add Employee
                 </button>
@@ -105,15 +185,41 @@ class AddEmployeeForm extends Component{
 
 function validate(values){
     const errors = {};
-    if(!values.first){
+    const { first, last, discipline_id,
+        startMonth, startYear, endMonth, endYear } = values;
+    if(!first){
         errors.first = "First name is required.";
     }
-    if(!values.last){
+    if(!last){
         errors.last = "Last name is required.";
     }
-    if (values.discipline_id == 0) {
+    if (discipline_id == 0) {
         errors.discipline_id = "Discipline is required.";
     }
+    if (!startMonth) {
+        errors.startMonth = "Start month is required.";
+    }
+    if (!startYear) {
+        errors.startYear = "Start year is required.";
+    }
+    if (!endMonth) {
+        errors.endMonth = "End month is required.";
+    }
+    if (!endYear) {
+        errors.endYear = "End year is required.";
+    }
+    if (startMonth && startYear && endMonth && endYear) {
+        if (startYear > endYear) {
+            errors.startYear = "Start year must be before end year.";
+            errors.endYear = "End year must be after start year.";
+        } else if (startYear == endYear) {
+            if (startMonth > endMonth) {
+                errors.startMonth = "Start month must be before end month.";
+                errors.endMonth = "End month must be after start month.";
+            }
+        }
+    }
+
     return errors;
 }
 
@@ -125,17 +231,8 @@ AddEmployeeForm = reduxForm({
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         createEmployee,
-        getEmployeeViewData
     }, dispatch);
 }
-
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//         getDisciplines: () => dispatch(getDisciplines()),
-//         createEmployee: (employee) => dispatch(createEmployee(employee)),
-//         getEmployeeViewData: () => dispatch(getEmployeeViewData())
-//     };
-// }
 
 const mapStateToProps = (state) => {
     return {
