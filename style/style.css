@@ -1,6 +1,6 @@
 .spacer {
     min-height: 10px;
-    background-color: gray;
+    background-color: lightgray;
     border-collapse: collapse;
 }
 
@@ -14,6 +14,16 @@ td, th {
     vertical-align: middle !important;
     text-align: center !important;
     white-space:nowrap;
+}
+
+.underutil {
+    background-color: yellow;
+}
+.levelutil {
+    background-color: green;
+}
+.overutil {
+    background-color: red;
 }
 
 body{

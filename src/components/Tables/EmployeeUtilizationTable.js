@@ -298,7 +298,7 @@ class EmployeeUtilizationTable extends Component {
                         rows.push(this.getProjectDrillDown(curEmpID, mo, yr));
                     }
                     while (j < mo.length) {
-                        util.push(<td key={uuid.v4()}>0</td>);
+                        util.push(<td className="underutil" key={uuid.v4()}>0</td>);
                         j++;             
                     }
                 }
@@ -319,11 +319,19 @@ class EmployeeUtilizationTable extends Component {
                 util.push(<td key={uuid.v4()}>{this.props.data.disciplines[discMap[this.props.data.employees[empMap[curEmpID]].disc_id]].title}</td>);     
             }
             while (!(mo[j] == this.props.data.assignments[i].mo && yr[j] == this.props.data.assignments[i].yr)) {
-                util.push(<td key={uuid.v4()}>0</td>);   
+                util.push(<td className="underutil" key={uuid.v4()}>0</td>);   
                 j++;             
             }
             if (mo[j] == this.props.data.assignments[i].mo && yr[j] == this.props.data.assignments[i].yr) {
-                util.push(<td key={uuid.v4()}>{this.props.data.assignments[i].sum_effort}</td>);
+                if (this.props.data.assignments[i].sum_effort < 1) {
+                    util.push(<td className="underutil" key={uuid.v4()}>{this.props.data.assignments[i].sum_effort}</td>);
+                }
+                else if (this.props.data.assignments[i].sum_effort == 1) {
+                    util.push(<td className="levelutil" key={uuid.v4()}>{this.props.data.assignments[i].sum_effort}</td>);
+                }
+                else {
+                    util.push(<td className="overutil" key={uuid.v4()}>{this.props.data.assignments[i].sum_effort}</td>);
+                }
                 j++;            
             }
             i++;
@@ -334,7 +342,7 @@ class EmployeeUtilizationTable extends Component {
             rows.push(this.getProjectDrillDown(curEmpID, mo, yr));
         }
         while (j < mo.length) {
-            util.push(<td key={uuid.v4()}>0</td>);   
+            util.push(<td className="underutil" key={uuid.v4()}>0</td>);   
             j++;             
         }
 
