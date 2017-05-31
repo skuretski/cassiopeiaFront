@@ -1,3 +1,7 @@
+td.spacer {
+    background-color: gray;
+}
+
 td.left-align {
     vertical-align: middle !important;
     text-align: left !important;

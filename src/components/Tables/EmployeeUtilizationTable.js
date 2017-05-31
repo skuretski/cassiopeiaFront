@@ -49,6 +49,15 @@ class EmployeeUtilizationTable extends Component {
         return map;
     }
 
+    getDiscMap() {
+        var map = new Object();
+        for (var i = 0; i < this.props.data.disciplines.length; i++){
+            map[this.props.data.disciplines[i].id] = i;
+            // map the id of the task to the index of where the task resides
+        }
+        return map;
+    }
+
     getTaskDrillDown(curEmpID, curProjID, curDelID, mo, yr) {
 
         var rows = [];
@@ -206,7 +215,7 @@ class EmployeeUtilizationTable extends Component {
         var yr = [];
         colHdrs.push(<th key={uuid.v4()}>Last Name</th>);
         colHdrs.push(<th key={uuid.v4()}>First Name</th>);
-        colHdrs.push(<th key={uuid.v4()}>Level</th>);
+        colHdrs.push(<th key={uuid.v4()}>Discipline</th>);
         var someMo = this.props.data.date_range[0].mo;
         var someYr = this.props.data.date_range[0].yr;
         var endMo = this.props.data.date_range[this.props.data.date_range.length - 1].mo;
@@ -230,6 +239,7 @@ class EmployeeUtilizationTable extends Component {
 
         var rows = [];
         var empMap = this.getEmpMap();
+        var discMap = this.getDiscMap();
         var util = [];
 
         var curEmpID = -1;
@@ -238,7 +248,7 @@ class EmployeeUtilizationTable extends Component {
         while (i < this.props.data.assignments.length) {
             if (curEmpID != this.props.data.assignments[i].employee_id) {
                 if (util.length > 0) {
-                    rows.push(<tr key={uuid.v4()}><td colSpan={(mo.length + 3).toString()}></td></tr>);
+                    rows.push(<tr key={uuid.v4()}><td className="spacer" colSpan={(mo.length + 3).toString()}><div style={{'height': 1 + 'px'}}></div></td></tr>);
                     rows.push(<tr key={curEmpID}>{util}</tr>);
                     rows.push(this.getProjectDrillDown(curEmpID, mo, yr));
                     while (j < mo.length) {
@@ -250,7 +260,7 @@ class EmployeeUtilizationTable extends Component {
                 curEmpID = this.props.data.assignments[i].employee_id;
                 util.push(<td key={uuid.v4()}>{this.props.data.employees[empMap[curEmpID]].last}</td>);     
                 util.push(<td key={uuid.v4()}>{this.props.data.employees[empMap[curEmpID]].first}</td>);     
-                util.push(<td key={uuid.v4()}>Overall Total</td>);     
+                util.push(<td key={uuid.v4()}>{this.props.data.disciplines[discMap[this.props.data.employees[empMap[curEmpID]].disc_id]].title}</td>);     
             }
             while (!(mo[j] == this.props.data.assignments[i].mo && yr[j] == this.props.data.assignments[i].yr)) {
                 util.push(<td key={uuid.v4()}>0</td>);   
@@ -262,7 +272,7 @@ class EmployeeUtilizationTable extends Component {
             }
             i++;
         }
-        rows.push(<tr key={uuid.v4()}><td colSpan={(mo.length + 2).toString()}></td></tr>);
+        rows.push(<tr key={uuid.v4()}><td className="spacer" colSpan={(mo.length + 2).toString()}><div style={{'height': 1 + 'px'}}></div></td></tr>);
         rows.push(<tr key={curEmpID}>{util}</tr>);
         rows.push(this.getProjectDrillDown(curEmpID, mo, yr));
         while (j < mo.length) {
