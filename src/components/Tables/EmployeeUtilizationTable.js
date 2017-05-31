@@ -49,6 +49,54 @@ class EmployeeUtilizationTable extends Component {
         return map;
     }
 
+    getDeliverableDrillDown(curEmpID, curProjID, mo, yr) {
+
+        var rows = [];
+        var delMap = this.getDelMap();
+        var util = [];
+
+        var curDelID = -1;
+        var i = 0; // deliverable index
+        var j = 0; // month/year index
+        while (i < this.props.data.assignmentsByDel.length) {
+            if (this.props.data.assignmentsByDel[i].employee_id != curEmpID || this.props.data.assignmentsByDel[i].project_id != curProjID) {
+                i++;
+                continue;
+            }
+            if (curDelID != this.props.data.assignmentsByDel[i].deliverable_id) {
+                if (util.length > 0) {
+                    rows.push(<tr key={curDelID}>{util}</tr>);
+                    {/**rows.push(this.getDeliverableDrillDown(curProjID, mo, yr));**/}
+                    while (j < mo.length) {
+                        util.push(<td key={uuid.v4()}>0</td>);
+                        j++;             
+                    }
+                }
+                util = []; j = 0;
+                curDelID = this.props.data.assignmentsByDel[i].deliverable_id;
+                util.push(<td key={uuid.v4()}></td>);     
+                util.push(<td className="left-align" colSpan="2" key={uuid.v4()}>Del: {this.props.data.deliverables[delMap[curDelID]].title}</td>);     
+            }
+            while (!(mo[j] == this.props.data.assignmentsByDel[i].mo && yr[j] == this.props.data.assignmentsByDel[i].yr)) {
+                util.push(<td key={uuid.v4()}>0</td>);   
+                j++;             
+            }
+            if (mo[j] == this.props.data.assignmentsByDel[i].mo && yr[j] == this.props.data.assignmentsByDel[i].yr) {
+                util.push(<td key={uuid.v4()}>{this.props.data.assignmentsByDel[i].sum_effort}</td>);
+                j++;            
+            }
+            i++;
+        }
+        rows.push(<tr key={curDelID}>{util}</tr>);
+        {/**rows.push(this.getDeliverableDrillDown(curProjID, mo, yr));**/}
+        while (j < mo.length) {
+            util.push(<td key={uuid.v4()}>0</td>);
+            j++;             
+        }
+
+        return (rows);
+    }
+
     getProjectDrillDown(curEmpID, mo, yr) {
 
         var rows = [];
@@ -66,6 +114,7 @@ class EmployeeUtilizationTable extends Component {
             if (curProjID != this.props.data.assignmentsByProj[i].project_id) {
                 if (util.length > 0) {
                     rows.push(<tr key={curProjID}>{util}</tr>);
+                    rows.push(this.getDeliverableDrillDown(curEmpID, curProjID, mo, yr));
                     while (j < mo.length) {
                         util.push(<td key={uuid.v4()}>0</td>);
                         j++;             
@@ -86,6 +135,7 @@ class EmployeeUtilizationTable extends Component {
             i++;
         }
         rows.push(<tr key={curProjID}>{util}</tr>);
+        rows.push(this.getDeliverableDrillDown(curEmpID, curProjID, mo, yr));
         while (j < mo.length) {
             util.push(<td key={uuid.v4()}>0</td>);
             j++;             
