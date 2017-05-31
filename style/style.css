@@ -17,13 +17,13 @@ td, th {
 }
 
 .underutil {
-    background-color: yellow;
+    background-color: #B7B329;
 }
 .levelutil {
-    background-color: green;
+    background-color: #1F8A37;
 }
 .overutil {
-    background-color: red;
+    background-color: #B73629;
 }
 
 body{
