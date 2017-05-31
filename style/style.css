@@ -1,7 +1,15 @@
+td.left-align {
+    vertical-align: middle !important;
+    text-align: left !important;
+    white-space:nowrap;
+}
+
 td, th {
     vertical-align: middle !important;
     text-align: center !important;
+    white-space:nowrap;
 }
+
 body{
     padding-top: 120px;
 }
