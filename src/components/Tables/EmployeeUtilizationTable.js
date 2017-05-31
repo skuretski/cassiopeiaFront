@@ -49,6 +49,56 @@ class EmployeeUtilizationTable extends Component {
         return map;
     }
 
+    getTaskDrillDown(curEmpID, curProjID, curDelID, mo, yr) {
+
+        var rows = [];
+        var taskMap = this.getTaskMap();
+        var util = [];
+
+        var curTaskID = -1;
+        var i = 0; // task index
+        var j = 0; // month/year index
+        while (i < this.props.data.assignmentsByTask.length) {
+            if (this.props.data.assignmentsByTask[i].employee_id != curEmpID ||
+                this.props.data.assignmentsByTask[i].project_id != curProjID ||
+                this.props.data.assignmentsByTask[i].deliverable_id != curDelID) {
+                i++;
+                continue;
+            }
+            if (curTaskID != this.props.data.assignmentsByTask[i].task_id) {
+                if (util.length > 0) {
+                    rows.push(<tr key={curTaskID}>{util}</tr>);
+                    while (j < mo.length) {
+                        util.push(<td key={uuid.v4()}>0</td>);
+                        j++;             
+                    }
+                }
+                util = []; j = 0;
+                curTaskID = this.props.data.assignmentsByTask[i].task_id;
+                util.push(<td key={uuid.v4()}></td>);     
+                util.push(<td key={uuid.v4()}></td>);     
+                util.push(<td className="left-align" key={uuid.v4()}>Task: {this.props.data.tasks[taskMap[curTaskID]].title}</td>);     
+            }
+            while (!(mo[j] == this.props.data.assignmentsByTask[i].mo && yr[j] == this.props.data.assignmentsByTask[i].yr)) {
+                util.push(<td key={uuid.v4()}>0</td>);   
+                j++;             
+            }
+            if (mo[j] == this.props.data.assignmentsByTask[i].mo && yr[j] == this.props.data.assignmentsByTask[i].yr) {
+                util.push(<td key={uuid.v4()}>{this.props.data.assignmentsByTask[i].sum_effort}</td>);
+                j++;            
+            }
+            i++;
+        }
+        rows.push(<tr key={curTaskID}>{util}</tr>);
+        while (j < mo.length) {
+            util.push(<td key={uuid.v4()}>0</td>);
+            j++;             
+        }
+
+        return (rows);
+    }
+
+
     getDeliverableDrillDown(curEmpID, curProjID, mo, yr) {
 
         var rows = [];
@@ -59,14 +109,15 @@ class EmployeeUtilizationTable extends Component {
         var i = 0; // deliverable index
         var j = 0; // month/year index
         while (i < this.props.data.assignmentsByDel.length) {
-            if (this.props.data.assignmentsByDel[i].employee_id != curEmpID || this.props.data.assignmentsByDel[i].project_id != curProjID) {
+            if (this.props.data.assignmentsByDel[i].employee_id != curEmpID ||
+                this.props.data.assignmentsByDel[i].project_id != curProjID) {
                 i++;
                 continue;
             }
             if (curDelID != this.props.data.assignmentsByDel[i].deliverable_id) {
                 if (util.length > 0) {
                     rows.push(<tr key={curDelID}>{util}</tr>);
-                    {/**rows.push(this.getDeliverableDrillDown(curProjID, mo, yr));**/}
+                    rows.push(this.getTaskDrillDown(curEmpID, curProjID, curDelID, mo, yr));
                     while (j < mo.length) {
                         util.push(<td key={uuid.v4()}>0</td>);
                         j++;             
@@ -88,7 +139,7 @@ class EmployeeUtilizationTable extends Component {
             i++;
         }
         rows.push(<tr key={curDelID}>{util}</tr>);
-        {/**rows.push(this.getDeliverableDrillDown(curProjID, mo, yr));**/}
+        rows.push(this.getTaskDrillDown(curEmpID, curProjID, curDelID, mo, yr));
         while (j < mo.length) {
             util.push(<td key={uuid.v4()}>0</td>);
             j++;             
