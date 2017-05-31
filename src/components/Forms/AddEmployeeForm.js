@@ -94,6 +94,7 @@ class AddEmployeeForm extends Component{
             } else {
                 this.setState({message: ''})
                 this.props.reset();
+                this.props.dispatch(getEmployeeViewData);
                 $('.bs-employee-modal-lg').modal('hide');
             }
         })
@@ -230,7 +231,6 @@ AddEmployeeForm = reduxForm({
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         createEmployee,
-        getEmployeeViewData
     }, dispatch);
 }
 
