@@ -84,8 +84,7 @@ class EmployeeUtilizationTable extends Component {
                 }
                 util = []; j = 0;
                 curTaskID = this.props.data.assignmentsByTask[i].task_id;
-                util.push(<td key={uuid.v4()}></td>);     
-                util.push(<td key={uuid.v4()}></td>);     
+                util.push(<td key={uuid.v4()} colSpan="3"></td>);     
                 util.push(<td className="left-align" key={uuid.v4()}>Task: {this.props.data.tasks[taskMap[curTaskID]].title}</td>);     
             }
             while (!(mo[j] == this.props.data.assignmentsByTask[i].mo && yr[j] == this.props.data.assignmentsByTask[i].yr)) {
@@ -133,6 +132,7 @@ class EmployeeUtilizationTable extends Component {
                     }
                 }
                 util = []; j = 0;
+                util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={uuid.v4()}>[-]</button></td>);     
                 curDelID = this.props.data.assignmentsByDel[i].deliverable_id;
                 util.push(<td key={uuid.v4()}></td>);     
                 util.push(<td className="left-align" colSpan="2" key={uuid.v4()}>Del: {this.props.data.deliverables[delMap[curDelID]].title}</td>);     
@@ -181,6 +181,7 @@ class EmployeeUtilizationTable extends Component {
                     }
                 }
                 util = []; j = 0;
+                util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={uuid.v4()}>[-]</button></td>);     
                 curProjID = this.props.data.assignmentsByProj[i].project_id;
                 util.push(<td className="left-align" colSpan="3" key={uuid.v4()}>Proj: {this.props.data.projects[projMap[curProjID]].title}</td>);     
             }
@@ -213,6 +214,7 @@ class EmployeeUtilizationTable extends Component {
         var colHdrs = [];
         var mo = [];
         var yr = [];
+        colHdrs.push(<th key={uuid.v4()}>+/-</th>);
         colHdrs.push(<th key={uuid.v4()}>Last Name</th>);
         colHdrs.push(<th key={uuid.v4()}>First Name</th>);
         colHdrs.push(<th key={uuid.v4()}>Discipline</th>);
@@ -248,7 +250,7 @@ class EmployeeUtilizationTable extends Component {
         while (i < this.props.data.assignments.length) {
             if (curEmpID != this.props.data.assignments[i].employee_id) {
                 if (util.length > 0) {
-                    rows.push(<tr key={uuid.v4()}><td className="spacer" colSpan={(mo.length + 3).toString()}><div style={{'height': 1 + 'px'}}></div></td></tr>);
+                    rows.push(<tr key={uuid.v4()}><td colSpan={(mo.length + 4).toString()}><div className="spacer"></div></td></tr>);
                     rows.push(<tr key={curEmpID}>{util}</tr>);
                     rows.push(this.getProjectDrillDown(curEmpID, mo, yr));
                     while (j < mo.length) {
@@ -258,6 +260,7 @@ class EmployeeUtilizationTable extends Component {
                 }
                 util = []; j = 0;
                 curEmpID = this.props.data.assignments[i].employee_id;
+                util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={uuid.v4()}>[-]</button></td>);     
                 util.push(<td key={uuid.v4()}>{this.props.data.employees[empMap[curEmpID]].last}</td>);     
                 util.push(<td key={uuid.v4()}>{this.props.data.employees[empMap[curEmpID]].first}</td>);     
                 util.push(<td key={uuid.v4()}>{this.props.data.disciplines[discMap[this.props.data.employees[empMap[curEmpID]].disc_id]].title}</td>);     
@@ -272,7 +275,7 @@ class EmployeeUtilizationTable extends Component {
             }
             i++;
         }
-        rows.push(<tr key={uuid.v4()}><td className="spacer" colSpan={(mo.length + 2).toString()}><div style={{'height': 1 + 'px'}}></div></td></tr>);
+        rows.push(<tr key={uuid.v4()}><td colSpan={(mo.length + 4).toString()}><div className="spacer"></div></td></tr>);
         rows.push(<tr key={curEmpID}>{util}</tr>);
         rows.push(this.getProjectDrillDown(curEmpID, mo, yr));
         while (j < mo.length) {

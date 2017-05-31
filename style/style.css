@@ -1,5 +1,7 @@
-td.spacer {
+.spacer {
+    min-height: 10px;
     background-color: gray;
+    border-collapse: collapse;
 }
 
 td.left-align {
@@ -107,6 +109,16 @@ form .btn-primary{
 form select.padded-select {
     margin-top: 20px;
     margin-bottom: 40px;
+}
+
+.btn.btn-default.sharp.expcol {
+    padding-top: 0px;
+    padding-bottom: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 3px;
+    background-color: lightgray;
+    border-color: darkgray;
 }
 
 .btn.btn-default.sharp {
