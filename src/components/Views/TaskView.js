@@ -54,7 +54,7 @@ class TaskView extends Component{
     render(){
         if (this.state.loading === true) {
             return(
-                <div>Loading...</div>
+                <div className="text-center load-spinner" />
             );
         }
 

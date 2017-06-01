@@ -222,7 +222,7 @@ class ModifyAssignmentForm extends Component {
     render() {
         const { handleSubmit } = this.props;
         if (!this.props.employees) {
-            return <div>Loading...</div>
+            return <div className="text-center load-spinner" />
         }
         return (
             <fieldset>

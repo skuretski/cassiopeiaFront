@@ -22,7 +22,7 @@ class FundingProjectView extends Component{
         if(this.state.loading === true){
             return(
                 <div className="container-fluid">
-                <h3>Loading...</h3>
+                    <div className="text-center load-spinner" />;
                 </div>
             )
         }
