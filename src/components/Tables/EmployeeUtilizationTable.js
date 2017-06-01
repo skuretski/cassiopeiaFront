@@ -97,8 +97,12 @@ class EmployeeUtilizationTable extends Component {
                 }
                 util = []; j = 0;
                 curTaskID = this.props.data.assignmentsByTask[i].task_id;
-                util.push(<td key={uuid.v4()} colSpan="3"></td>);     
-                util.push(<td className="left-align" key={uuid.v4()}>&nbsp;&nbsp;&nbsp;Task: {this.props.data.tasks[taskMap[curTaskID]].title}</td>);     
+                util.push(<td className="left-align" colSpan="4" key={uuid.v4()}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;
+                    Task: {this.props.data.tasks[taskMap[curTaskID]].title}
+                    </td>);     
             }
             while (!(mo[j] == this.props.data.assignmentsByTask[i].mo && yr[j] == this.props.data.assignmentsByTask[i].yr)) {
                 util.push(<td key={uuid.v4()}>0</td>);   
@@ -128,6 +132,7 @@ class EmployeeUtilizationTable extends Component {
 
         var curDelID = -1;
         var expKey;
+        var expCol;
         var i = 0; // deliverable index
         var j = 0; // month/year index
         while (i < this.props.data.assignmentsByDel.length) {
@@ -154,13 +159,17 @@ class EmployeeUtilizationTable extends Component {
                     this.expandMap[expKey] = 0;
                 }
                 if (this.expandMap[expKey] == 0) {
-                    util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>[+]</button></td>);     
+                    expCol = '[+]';
                 }
                 else {
-                    util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>[-]</button></td>);     
+                    expCol = '[-]';
                 }
-                util.push(<td key={uuid.v4()}></td>);     
-                util.push(<td className="left-align" colSpan="2" key={uuid.v4()}>&nbsp;&nbsp;&nbsp;Del: {this.props.data.deliverables[delMap[curDelID]].title}</td>);     
+                util.push(<td className="left-align" colSpan="4" key={uuid.v4()}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>{expCol}</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    Del: {this.props.data.deliverables[delMap[curDelID]].title}
+                    </td>);     
             }
             while (!(mo[j] == this.props.data.assignmentsByDel[i].mo && yr[j] == this.props.data.assignmentsByDel[i].yr)) {
                 util.push(<td key={uuid.v4()}>0</td>);   
@@ -192,6 +201,7 @@ class EmployeeUtilizationTable extends Component {
 
         var curProjID = -1;
         var expKey;
+        var expCol;
         var i = 0; // project index
         var j = 0; // month/year index
         while (i < this.props.data.assignmentsByProj.length) {
@@ -217,12 +227,17 @@ class EmployeeUtilizationTable extends Component {
                     this.expandMap[expKey] = 0;
                 }
                 if (this.expandMap[expKey] == 0) {
-                    util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>[+]</button></td>);     
+                    expCol = '[+]';
                 }
                 else {
-                    util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>[-]</button></td>);     
+                    expCol = '[-]';
                 }
-                util.push(<td className="left-align" colSpan="3" key={uuid.v4()}>&nbsp;&nbsp;&nbsp;Proj: {this.props.data.projects[projMap[curProjID]].title}</td>);     
+                util.push(<td className="left-align" colSpan="4" key={uuid.v4()}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>{expCol}</button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    Proj: {this.props.data.projects[projMap[curProjID]].title}
+                    </td>);     
             }
             while (!(mo[j] == this.props.data.assignmentsByProj[i].mo && yr[j] == this.props.data.assignmentsByProj[i].yr)) {
                 util.push(<td key={uuid.v4()}>0</td>);   
@@ -292,7 +307,7 @@ class EmployeeUtilizationTable extends Component {
         while (i < this.props.data.assignments.length) {
             if (curEmpID != this.props.data.assignments[i].employee_id) {
                 if (util.length > 0) {
-                    rows.push(<tr key={uuid.v4()}><td colSpan={(mo.length + 4).toString()}><div className="spacer"></div></td></tr>);
+                    {/**rows.push(<tr key={uuid.v4()}><td colSpan={(mo.length + 4).toString()}><div className="spacer"></div></td></tr>);**/}
                     rows.push(<tr key={curEmpID}>{util}</tr>);
                     if (this.expandMap[expKey] == 1) {
                         rows.push(this.getProjectDrillDown(curEmpID, mo, yr));
@@ -309,10 +324,10 @@ class EmployeeUtilizationTable extends Component {
                     this.expandMap[expKey] = 0;
                 }
                 if (this.expandMap[expKey] == 0) {
-                    util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>[+]</button></td>);     
+                    util.push(<td className="left-align" key={uuid.v4()}><button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>[+]</button></td>);     
                 }
                 else {
-                    util.push(<td key={uuid.v4()}><button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>[-]</button></td>);     
+                    util.push(<td className="left-align" key={uuid.v4()}><button className="btn btn-default sharp expcol" id={expKey} onClick={this.handleExpandClick}>[-]</button></td>);     
                 }
                 util.push(<td key={uuid.v4()}>{this.props.data.employees[empMap[curEmpID]].last}</td>);     
                 util.push(<td key={uuid.v4()}>{this.props.data.employees[empMap[curEmpID]].first}</td>);     
@@ -336,7 +351,7 @@ class EmployeeUtilizationTable extends Component {
             }
             i++;
         }
-        rows.push(<tr key={uuid.v4()}><td colSpan={(mo.length + 4).toString()}><div className="spacer"></div></td></tr>);
+        {/**rows.push(<tr key={uuid.v4()}><td colSpan={(mo.length + 4).toString()}><div className="spacer"></div></td></tr>);**/}
         rows.push(<tr key={curEmpID}>{util}</tr>);
         if (this.expandMap[expKey] == 1) {
             rows.push(this.getProjectDrillDown(curEmpID, mo, yr));
