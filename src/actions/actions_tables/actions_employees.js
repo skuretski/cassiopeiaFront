@@ -30,7 +30,6 @@ export function updateEmployee(data) {
                 }
                 dispatch(updateEmployeeIsSending(false));
                 dispatch(updateEmployeeSuccess(response.data.changedRows));
-                console.log('Response:', response);
             }).catch( error => {
                 dispatch(createEmployeeHasErrored(true));
                 console.log(error);
