@@ -188,13 +188,21 @@ function indexViewChartData(apiData) {
     //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
     // -----------------------------------------------------------------------------
-    // Get active  employee data to be plotted into chart datasets
+    // Get actual assigned employee data to be plotted into chart datasets
     // -----------------------------------------------------------------------------
     dataset.data = new Array(chartData.labels.length).fill(0);
+    var j = 0;
+    for (var i = 0; i < apiData.assigned_employees.length; i++) { // for each entry in apiData.funding
+        someDate = dateHelper(apiData.assigned_employees[i].mo, apiData.assigned_employees[i].yr); // mo/yr of some entry in funding result from api
+        while (someDate != chartData.labels[j]) {
+            j++;
+        }
+        dataset.data[j] += apiData.assigned_employees[i].sum_effort;
+    }
     chartData.datasets.unshift(dataset);
 
     // -----------------------------------------------------------------------------
-    // Create chart datasets for assigned employees
+    // Create chart datasets for active employees
     // -----------------------------------------------------------------------------
     var ae_color = '#090F0E';
     var dataset = new Object();
@@ -210,7 +218,7 @@ function indexViewChartData(apiData) {
     //dataset.radius = 0; // this makes the points go away (negates the above 2 entries)
 
     // -----------------------------------------------------------------------------
-    // Get actual assigned employee data to be plotted into chart datasets
+    // Get active employee data to be plotted into chart datasets
     // assumes all employees in database have active start <= active end
     // assumes all act_emp values returned from db will be >= 0 (non-negative)
     // -----------------------------------------------------------------------------

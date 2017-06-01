@@ -172,7 +172,7 @@ function deliverableViewChartData(apiData) {
         while (someDate != chartData.labels[j]) {
             j++;
         }
-        dataset.data[j] += apiData.assigned_employees[i].effort;
+        dataset.data[j] += apiData.assigned_employees[i].sum_effort;
     }
     chartData.datasets.unshift(dataset);
 
