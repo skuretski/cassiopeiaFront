@@ -37,6 +37,25 @@ export function updateEmployee(data) {
     };
 }
 
+export function deleteEmployee(employee_id) {
+    return dispatch => {
+        dispatch(deleteEmployeeHasErrored(false));
+        dispatch(deleteEmployeeIsSending(true));
+        const url = `${EMPLOYEES}/${employee_id}`;
+        return axios.delete(url)
+            .then( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(deleteEmployeeIsSending(false));
+                dispatch(deleteEmployeeSuccess(response.data.affectedRows));
+            }).catch( error => {
+                dispatch(deleteEmployeeHasErrored(true));
+                console.log(error);
+            });
+    };
+}
+
 export function getEmployeeById(employee_id) {
     return dispatch => {
         dispatch(getEmployeeHasErrored(false));
@@ -95,6 +114,27 @@ export function updateEmployeeSuccess(changedRows) {
     return {
         type: 'UPDATE_EMPLOYEE_SUCCESS',
         changedRows
+    }
+}
+
+export function deleteEmployeeIsSending(bool) {
+    return {
+        type: 'DELETE_EMPLOYEE_IS_SENDING',
+        isSending: bool
+    };
+}
+
+export function deleteEmployeeHasErrored(bool) {
+    return {
+        type: 'DELETE_EMPLOYEE_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function deleteEmployeeSuccess(affectedRows) {
+    return {
+        type: 'DELETE_EMPLOYEE_SUCCESS',
+        affectedRows
     }
 }
 

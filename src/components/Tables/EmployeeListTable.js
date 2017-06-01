@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TableRow from './TableComponents/TableRow';
 import AddEmployeeForm from '../Forms/AddEmployeeForm';
 import UpdateEmployeeForm from '../Forms/UpdateEmployeeForm';
+import DeleteEmployeeForm from '../Forms/DeleteEmployeeForm';
 import _ from 'lodash';
 
 class EmployeeListTable extends Component {
@@ -31,6 +32,7 @@ class EmployeeListTable extends Component {
 
         this.state = {
             updateId: 0,
+            deleteId: 0
         }
     }
 
@@ -113,13 +115,14 @@ class EmployeeListTable extends Component {
 
     handleUpdateEmployeeClick(event) {
         const {id} = event.target;
-        this.setState( { updateId: id });
+        this.setState({ updateId: id });
         $('.bs-update-modal-lg').modal('show');
     }
 
     handleDeleteEmployeeClick(event) {
         const {id} = event.target;
-        console.log("delete employee w/ id=" + id);
+        this.setState({ deleteId: id });
+        $('.bs-delete-modal-lg').modal('show');
     }
 
 
@@ -185,7 +188,16 @@ class EmployeeListTable extends Component {
                             </div>
                         </div>
                     </div>
-                </div>  
+                </div>
+                <div className="modal fade bs-delete-modal-lg" role="dialog">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="container-fluid">
+                                <DeleteEmployeeForm id={this.state.deleteId}/>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
             </div>
         );
     }

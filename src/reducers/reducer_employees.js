@@ -52,6 +52,33 @@ exports.updateEmployeeSuccess = function (state = [], action) {
     }
 }
 
+exports.deleteEmployeeHasErrored = function (state = false, action) {
+    switch (action.type) {
+        case 'DELETE_EMPLOYEE_HAS_ERRORED':
+            return action.hasErrored;
+        default:
+            return state;
+    }
+}
+
+exports.deleteEmployeeIsSending = function (state = false, action) {
+    switch (action.type) {
+        case 'DELETE_EMPLOYEE_IS_SENDING':
+            return action.isSending;
+        default:
+            return state;
+    }
+}
+
+exports.deleteEmployeeSuccess = function (state = [], action) {
+    switch (action.type) {
+        case 'DELETE_EMPLOYEE_SUCCESS':
+            return action.affectedRows;
+        default:
+            return state;
+    }
+}
+
 exports.getEmployeeHasErrored = function (state = false, action) {
     switch (action.type) {
         case 'GET_EMPLOYEE_HAS_ERRORED':

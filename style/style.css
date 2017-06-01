@@ -116,6 +116,10 @@ form .btn-primary{
     margin-right: 10px;
 }
 
+form .btn-danger{
+    margin-right: 10px;
+}
+
 form select.padded-select {
     margin-top: 20px;
     margin-bottom: 40px;
