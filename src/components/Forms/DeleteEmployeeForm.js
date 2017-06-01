@@ -36,7 +36,7 @@ class DeleteEmployeeForm extends Component{
                 this.props.reset();
                 // Re-fetch the employee view data, since we've changed it
                 this.props.dispatch(getEmployeeViewData);
-                $('.bs-delete-modal-lg').modal('hide');
+                $('.bs-delete-modal-md').modal('hide');
             }
         })
     }
@@ -44,7 +44,7 @@ class DeleteEmployeeForm extends Component{
     render() {
         const { handleSubmit, reset } = this.props; 
         return(
-            <div>
+            <div className="text-center">
                 <h3>You are about to delete:</h3>
                 <h4>{this.state.employeeName}</h4>
                 <h3>Are you sure?</h3>

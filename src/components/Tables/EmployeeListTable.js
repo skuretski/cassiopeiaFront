@@ -122,7 +122,7 @@ class EmployeeListTable extends Component {
     handleDeleteEmployeeClick(event) {
         const {id} = event.target;
         this.setState({ deleteId: id });
-        $('.bs-delete-modal-lg').modal('show');
+        $('.bs-delete-modal-md').modal('show');
     }
 
 
@@ -189,8 +189,8 @@ class EmployeeListTable extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="modal fade bs-delete-modal-lg" role="dialog">
-                    <div className="modal-dialog modal-lg" role="document">
+                <div className="modal fade bs-delete-modal-md" role="dialog">
+                    <div className="modal-dialog modal-md" role="document">
                         <div className="modal-content">
                             <div className="container-fluid">
                                 <DeleteEmployeeForm id={this.state.deleteId}/>
