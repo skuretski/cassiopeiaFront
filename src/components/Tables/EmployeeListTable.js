@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TableRow from './TableComponents/TableRow';
 import AddEmployeeForm from '../Forms/AddEmployeeForm';
+import UpdateEmployeeForm from '../Forms/UpdateEmployeeForm';
 import _ from 'lodash';
 
 class EmployeeListTable extends Component {
@@ -22,11 +23,14 @@ class EmployeeListTable extends Component {
         this.handleActiveEndDateClick = this.handleActiveEndDateClick.bind(this);
         this.handleUpdateEmployeeClick = this.handleUpdateEmployeeClick.bind(this);
         this.handleDeleteEmployeeClick = this.handleDeleteEmployeeClick.bind(this);
-        this.handleAddNewEmployeeClick = this.handleAddNewEmployeeClick.bind(this);
 
         this.idToDiscMap = new Object();
         for (var i = 0; i < this.props.data.disciplines.length; i++) {
             this.idToDiscMap[this.props.data.disciplines[i].id] = this.props.data.disciplines[i].title;
+        }
+
+        this.state = {
+            updateId: 0,
         }
     }
 
@@ -109,7 +113,8 @@ class EmployeeListTable extends Component {
 
     handleUpdateEmployeeClick(event) {
         const {id} = event.target;
-        console.log("update employee w/ id=" + id);
+        this.setState( { updateId: id });
+        $('.bs-update-modal-lg').modal('show');
     }
 
     handleDeleteEmployeeClick(event) {
@@ -117,9 +122,6 @@ class EmployeeListTable extends Component {
         console.log("delete employee w/ id=" + id);
     }
 
-    handleAddNewEmployeeClick() {
-        console.log("add new employee");
-    }
 
     render() {
         // Don't bother rendering the table if we don't have data
@@ -170,6 +172,16 @@ class EmployeeListTable extends Component {
                             <div className="container-fluid">
                                 <h2>Add an Employee</h2>
                                 <AddEmployeeForm/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="modal fade bs-update-modal-lg" role="dialog">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="container-fluid">
+                                <h2>Update an Employee</h2>
+                                <UpdateEmployeeForm id={this.state.updateId}/>
                             </div>
                         </div>
                     </div>
