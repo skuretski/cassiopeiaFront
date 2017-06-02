@@ -109,12 +109,3 @@ exports.getEmployeeSuccess = function (state = [], action) {
             return state;
     }
 }
-
-exports.getEmployeesByDiscipline = function (state = [], action) {
-    switch (action.type) {
-        case 'GET_EMPLOYEES_BY_DISCIPLINE':
-            return action.payload.data
-        default:
-            return state;
-    }
-}

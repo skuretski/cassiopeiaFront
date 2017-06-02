@@ -14,22 +14,31 @@ import TaskViewReducer from './reducer_taskview';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
+    // PROJECTS
     projects: ProjectsReducer.defaultReducer, // refactor this one if we have time
     getProjectHasErrored: ProjectsReducer.getProjectHasErrored,
     getProject: ProjectsReducer.getProjectSuccess,
     updateProjectHasErrored: ProjectsReducer.updateProjectHasErrored,
     updateProjectChangedRows: ProjectsReducer.updateProjectSuccess,
+
+    // DISCIPLINES
     disciplines: DisciplinesReducer,
+
+    // DELIVERABLES
     deliverables: DeliverablesReducer.defaultReducer, // refactor this one if we have time
     getDeliverableHasErrored: DeliverablesReducer.getDeliverableHasErrored,
     getDeliverable: DeliverablesReducer.getDeliverableSuccess,
     updateDeliverableHasErrored: DeliverablesReducer.updateDeliverableHasErrored,
     updateDeliverableChangedRows: DeliverablesReducer.updateDeliverableSuccess,
+
+    // TASKS
     tasks: TasksReducer.defaultReducer, // refactor this one if we have time
     getTaskHasErrored: TasksReducer.getTaskHasErrored,
     getTask: TasksReducer.getTaskSuccess,
     updateTaskHasErrored: TasksReducer.updateTaskHasErrored,
     updateTaskChangedRows: TasksReducer.updateTaskSuccess,
+
+    // EMPLOYEES
     createEmployeeHasErrored: EmployeeReducer.createEmployeeHasErrored,
     createEmployeeIsSending: EmployeeReducer.createEmployeeIsSending,
     createEmployeeID: EmployeeReducer.createEmployeeSuccess,
@@ -38,18 +47,23 @@ const rootReducer = combineReducers({
     updateEmployeeChangedRows: EmployeeReducer.updateEmployeeSuccess,
     deleteEmployeeHasErrored: EmployeeReducer.deleteEmployeeHasErrored,
     deleteEmployeeIsSending: EmployeeReducer.deleteEmployeeIsSending,
-    deleteAffectedRows: EmployeeReducer.deleteEmployeeSuccess,
+    deleteEmployeeAffectedRows: EmployeeReducer.deleteEmployeeSuccess,
     getEmployeeHasErrored: EmployeeReducer.getEmployeeHasErrored,
     getEmployeeIsSending: EmployeeReducer.getEmployeeIsSending,
     getEmployee: EmployeeReducer.getEmployeeSuccess,
-    employeesByDiscipline: EmployeeReducer.getEmployeesByDiscipline,
+
+    // ASSIGNMENTS
     assignments: AssignmentsReducer,
+
+    // VIEWS
     employeeViewData: EmployeeViewReducer,
     fundingViewData: FundingViewReducer,
     indexViewData: IndexViewReducer,
     projectViewData: ProjectViewReducer,
     deliverableViewData: DeliverableViewReducer,
     taskViewData: TaskViewReducer,
+
+    // REDUX-FORM
     form: formReducer,
 });
 

@@ -75,6 +75,25 @@ export function getEmployeeById(employee_id) {
     };
 }
 
+export function getEmployeesByDiscipline(discipline_id) {
+    return dispatch => {
+        dispatch(getEmployeeHasErrored(false));
+        dispatch(getEmployeeIsSending(true));
+        const url = `${EMPLOYEES_BY_DISCIPLINE}/${discipline_id}`;
+        return axios.get(url)
+            .then( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(getEmployeeIsSending(false));
+                dispatch(getEmployeeSuccess(response.data));
+            }).catch( error => {
+                dispatch(getEmployeeHasErrored(true));
+                console.log(error);
+            });
+    };
+}
+
 export function createEmployeeIsSending(bool) {
     return {
         type: 'CREATE_EMPLOYEE_IS_SENDING',
@@ -157,13 +176,4 @@ export function getEmployeeSuccess(employee) {
         type: 'GET_EMPLOYEE_SUCCESS',
         employee
     }
-}
-
-export function getEmployeesByDiscipline(discipline_id) {
-    const url = `${EMPLOYEES_BY_DISCIPLINE}/${discipline_id}`;
-    const request = axios.get(url);
-    return {
-        type: 'GET_EMPLOYEES_BY_DISCIPLINE',
-        payload: request
-    };
 }
