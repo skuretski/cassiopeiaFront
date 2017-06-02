@@ -70,7 +70,7 @@ class ProjectView extends Component{
                     {/* END ADDPROJECTFORM MODAL */}
                     {/* START UPDATEPROJECTFORM MODAL */}
                     <div className="container-fluid">
-                        <div className="modal fade bs-update-project-modal-md" tabIndex="-1" role="dialog">
+                        <div className="modal fade bs-update-project-modal-md" role="dialog">
                             <div className="modal-dialog modal-md" role="document">
                                 <div className="modal-content">
                                     <div className="container-fluid">
