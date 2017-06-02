@@ -7,6 +7,7 @@ import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import AddTaskForm from '../Forms/AddTaskForm';
 import DeliverableSummaryTable from '../Tables/DeliverableSummaryTable';
+import UpdateDeliverableForm from '../Forms/UpdateDeliverableForm';
 import _ from 'lodash';
 
 class DeliverableView extends Component{
@@ -91,6 +92,20 @@ class DeliverableView extends Component{
                         </div> 
                     </div>
                     {/* END ADD_DELIV_FORM MODAL */}
+                    {/* START UPDATE_DELIV_FORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-update-deliverable-modal-md" role="dialog">
+                            <div className="modal-dialog modal-md" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <h2>Update Deliverable</h2>
+                                    <UpdateDeliverableForm id={this.props.match.params.deliv_id} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END UPDATE_DELIV_FORM MODAL */}
                     {/* START ADD_TASK_FORM MODAL */}
                     <div className="container-fluid">
                         <div className="modal fade bs-task-modal-lg" tabIndex="-1" role="dialog">
@@ -123,7 +138,12 @@ class DeliverableView extends Component{
                             <div className="col-md-8">
                                 <div className="chart-title">
                                     <h4><b>Project: {this.props.deliverableViewData.project[0].title}</b></h4>
-                                    <h4><b>Deliverable: {this.props.deliverableViewData.deliverable[0].title}</b></h4>
+                                    <h4>
+                                        <b>Deliverable: {this.props.deliverableViewData.deliverable[0].title}</b>
+                                        <a className="glyphicon glyphicon-pencil"
+                                           onClick={() => $('.bs-update-deliverable-modal-md').modal('show')}
+                                        />
+                                    </h4>
                                 </div>
                                 <DeliverableViewChart data={this.props.deliverableViewData}/>
                                 <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
