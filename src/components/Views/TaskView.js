@@ -9,6 +9,7 @@ import ModifySOWForm from '../Forms/ModifySOWForm';
 import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import AddTaskForm from '../Forms/AddTaskForm';
+import UpdateTaskForm from '../Forms/UpdateTaskForm';
 
 class TaskView extends Component{
     constructor(props){
@@ -103,6 +104,20 @@ class TaskView extends Component{
                         </div> 
                     </div>
                 {/* END ADD_TASK_FORM MODAL */}
+                {/* START UPDATE_TASK_FORM MODAL */}
+                <div className="container-fluid">
+                    <div className="modal fade bs-update-task-modal-md" role="dialog">
+                        <div className="modal-dialog modal-md" role="document">
+                            <div className="modal-content">
+                                <div className="container-fluid">
+                                <h2>Update Task</h2>
+                                <UpdateTaskForm id={this.props.match.params.task_id} />
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                {/* END UPDATE_TASK_FORM MODAL */}
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-md-2">
@@ -122,7 +137,12 @@ class TaskView extends Component{
                             <div className="chart-title">
                                 <h4><b>Project: {this.props.taskViewData.project[0].title}</b></h4>
                                 <h4><b>Deliverable: {this.props.taskViewData.deliverable[0].title}</b></h4>
-                                <h4><b>Task: {this.props.taskViewData.task[0].title}</b></h4>
+                                <h4>
+                                    <b>Task: {this.props.taskViewData.task[0].title}</b>
+                                    <a className="glyphicon glyphicon-pencil"
+                                       onClick={() => $('.bs-update-task-modal-md').modal('show')}
+                                    />
+                                </h4>
                                 <h4><b>Responsible Discipline: {this.props.taskViewData.task[0].discipline}</b></h4>
                             </div>
                             <TaskViewChart data={this.props.taskViewData}/>

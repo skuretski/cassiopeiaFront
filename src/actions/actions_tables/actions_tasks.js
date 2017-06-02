@@ -31,6 +31,67 @@ export function addTask(task){
     }
 }
 
+export function updateTask(data) {
+    return dispatch => {
+        dispatch(updateTaskHasErrored(false));
+        return axios.put(TASKS, data)
+            .then ( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(updateTaskSuccess(response.data.changedRows));
+            }).catch( error => {
+                dispatch(updateTaskHasErrored(true));
+                console.log(error);
+            });
+    }
+}
+
+export function getTaskById(task_id) {
+    return dispatch => {
+        dispatch(getTaskHasErrored(false));
+        const url = `${TASKS}/${task_id}`;
+        return axios.get(url)
+            .then( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(getTaskSuccess(response.data[0]));
+            }).catch( error => {
+                dispatch(getTaskHasErrored(true));
+                console.log(error);
+            });
+    };
+}
+
+export function getTaskHasErrored(bool) {
+    return {
+        type: 'GET_TASK_HAS_ERRORED',
+        hasErrored: bool
+    }
+}
+
+export function getTaskSuccess(task) {
+    return {
+        type: 'GET_TASK_SUCCESS',
+        task
+    }
+}
+
+export function updateTaskHasErrored(bool) {
+    return {
+        type: 'UPDATE_TASK_HAS_ERRORED',
+        hasErrored: bool
+    }
+}
+
+export function updateTaskSuccess(changedRows) {
+    return {
+        type: 'UPDATE_TASK_SUCCESS',
+        changedRows
+    }
+}
+
 export const setTasks = (tasks) => {
     return{
         type: 'GET_TASKS',
