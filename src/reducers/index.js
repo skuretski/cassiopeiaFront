@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import ProjectsReducer from './reducer_projects';
+import * as ProjectsReducer from './reducer_projects';
 import DisciplinesReducer from './reducer_disciplines';
 import DeliverablesReducer from './reducer_deliverables';
 import TasksReducer from './reducer_tasks';
@@ -14,7 +14,11 @@ import TaskViewReducer from './reducer_taskview';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
-    projects: ProjectsReducer,
+    projects: ProjectsReducer.defaultReducer, // refactor this one if we have time
+    getProjectHasErrored: ProjectsReducer.getProjectHasErrored,
+    getProject: ProjectsReducer.getProjectSuccess,
+    updateProjectHasErrored: ProjectsReducer.updateProjectHasErrored,
+    updateProjectChangedRows: ProjectsReducer.updateProjectSuccess,
     disciplines: DisciplinesReducer,
     deliverables: DeliverablesReducer,
     tasks: TasksReducer,
@@ -23,7 +27,7 @@ const rootReducer = combineReducers({
     createEmployeeID: EmployeeReducer.createEmployeeSuccess,
     updateEmployeeHasErrored: EmployeeReducer.updateEmployeeHasErrored,
     updateEmployeeIsSending: EmployeeReducer.updateEmployeeIsSending,
-    updateChangedRows: EmployeeReducer.updateEmployeeSuccess,
+    updateEmployeeChangedRows: EmployeeReducer.updateEmployeeSuccess,
     deleteEmployeeHasErrored: EmployeeReducer.deleteEmployeeHasErrored,
     deleteEmployeeIsSending: EmployeeReducer.deleteEmployeeIsSending,
     deleteAffectedRows: EmployeeReducer.deleteEmployeeSuccess,

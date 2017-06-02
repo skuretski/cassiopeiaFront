@@ -28,6 +28,67 @@ export function addProject(project){
     }
 }
 
+export function updateProject(data) {
+    return dispatch => {
+        dispatch(updateProjectHasErrored(false));
+        return axios.put(PROJECTS, data)
+            .then ( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(updateProjectSuccess(response.data.changedRows));
+            }).catch( error => {
+                dispatch(updateProjectHasErrored(true));
+                console.log(error);
+            });
+    }
+}
+
+export function getProjectById(project_id) {
+    return dispatch => {
+        dispatch(getProjectHasErrored(false));
+        const url = `${PROJECTS}/${project_id}`;
+        return axios.get(url)
+            .then( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(getProjectSuccess(response.data[0]));
+            }).catch( error => {
+                dispatch(getProjectHasErrored(true));
+                console.log(error);
+            });
+    };
+}
+
+export function getProjectHasErrored(bool) {
+    return {
+        type: 'GET_PROJECT_HAS_ERRORED',
+        hasErrored: bool
+    }
+}
+
+export function getProjectSuccess(project) {
+    return {
+        type: 'GET_PROJECT_SUCCESS',
+        project
+    }
+}
+
+export function updateProjectHasErrored(bool) {
+    return {
+        type: 'UPDATE_PROJECT_HAS_ERRORED',
+        hasErrored: bool
+    }
+}
+
+export function updateProjectSuccess(changedRows) {
+    return {
+        type: 'UPDATE_PROJECT_SUCCESS',
+        changedRows
+    }
+}
+
 export const setProjects = (projects) => {
     return{
         type: 'GET_PROJECTS',

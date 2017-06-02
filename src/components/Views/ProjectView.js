@@ -6,6 +6,7 @@ import NavTabs from '../Navigation/NavTabs';
 import { getProjectViewData } from '../../actions';
 import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
+import UpdateProjectForm from '../Forms/UpdateProjectForm';
 
 class ProjectView extends Component{
     constructor(props){
@@ -67,6 +68,20 @@ class ProjectView extends Component{
                         </div> 
                     </div>
                     {/* END ADDPROJECTFORM MODAL */}
+                    {/* START UPDATEPROJECTFORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-update-project-modal-md" tabIndex="-1" role="dialog">
+                            <div className="modal-dialog modal-md" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <h2>Update Project</h2>
+                                    <UpdateProjectForm id={this.props.match.params.project_id} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END ADDPROJECTFORM MODAL */}
                     {/* START ADD_DELIV_FORM MODAL */}
                     <div className="container-fluid">
                         <div className="modal fade bs-deliverable-modal-lg" tabIndex="-1" role="dialog">
@@ -96,7 +111,12 @@ class ProjectView extends Component{
                             </div>
                             <div className="col-md-8">
                                 <div className="chart-title">
-                                    <h4><b>Project: {this.props.projectViewData.project[0].title}</b></h4>
+                                    <h4>
+                                        <b>Project: {this.props.projectViewData.project[0].title}</b>
+                                        <a className="glyphicon glyphicon-pencil"
+                                           onClick={() => $('.bs-update-project-modal-md').modal('show')}
+                                        />
+                                    </h4>
                                 </div>
                                 <ProjectViewChart data={this.props.projectViewData}/>
                                 <ProjectSummaryTable data={this.props.projectViewData} url={this.props.match.url}/>                        
