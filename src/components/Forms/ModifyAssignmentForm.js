@@ -26,7 +26,8 @@ class ModifyAssignmentForm extends Component {
     componentWillUpdate(nextProps) {
         // New discipline --> refresh employee list
         if (this.props.discipline_id != nextProps.discipline_id) {
-            this.props.getEmployeesByDiscipline(nextProps.discipline_id);
+            this.props.getEmployeesByDiscipline(nextProps.discipline_id)
+            .then(this.props.reset());
         }
     }
 
