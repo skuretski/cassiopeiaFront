@@ -20,14 +20,12 @@ class ModifyAssignmentForm extends Component {
         // Add task_id to the fields values
         this.props.change('assignmentTaskID', this.props.task_id);
         // Get initial employee list
-        console.log('DISCIPLINE: ', this.props.discipline_id);
         this.props.getEmployeesByDiscipline(this.props.discipline_id);
     }
 
     componentWillUpdate(nextProps) {
         // New discipline --> refresh employee list
         if (this.props.discipline_id != nextProps.discipline_id) {
-            console.log('UPDATING...');
             this.props.getEmployeesByDiscipline(nextProps.discipline_id);
         }
     }
