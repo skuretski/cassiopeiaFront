@@ -9,14 +9,38 @@ class FundingTypeView extends Component{
     constructor(props){
         super(props);
         this.state = {
-            loading: true
+            loading: true,
+            selected_project: -1
         }
+        this.handleDropDownChange = this.handleDropDownChange.bind(this);
     }
     componentWillMount(){
         this.setState({loading: true});     
             this.props.dispatch(getFundingViewData).then(() =>{
             this.setState({loading: false});
         });               
+    }
+
+    handleDropDownChange(event) {
+        this.setState({selected_project: event.target.value});
+    }
+
+    renderDropdown(projects){
+        return(
+            <div>
+                <select className="padded-select" value={this.state.selected_project} onChange={this.handleDropDownChange}>
+                    <option value='-1'>All Projects</option>
+                    {this.renderItem(projects)}
+                </select>
+            </div>
+        )
+    }
+    renderItem(projects){
+        return _.map(projects, project => {
+            return(
+                <option key={project.id} value={project.id}>{project.title}</option>
+            );
+        })
     }
     render(){
         if(this.state.loading === true){
@@ -30,6 +54,7 @@ class FundingTypeView extends Component{
             return (
                 <div className="container">
                     <NavTabs/>                     
+                    {this.renderDropdown(this.props.fundingViewData.project)}
                     <div className="chart-title">
                         <h4><b>Funding Overview (By Type)</b></h4>
                     </div>

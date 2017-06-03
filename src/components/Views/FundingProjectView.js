@@ -10,29 +10,37 @@ class FundingProjectView extends Component{
     constructor(props){
         super(props);
         this.state = {
-            loading: true
+            loading: true,
+            selected_type: -1
         }
+        this.handleDropDownChange = this.handleDropDownChange.bind(this);
     }
+
     componentWillMount(){
         this.setState({loading: true});     
             this.props.dispatch(getFundingViewData).then(() =>{
             this.setState({loading: false});
         });               
     }
-    renderDropdown(projects){
+
+    handleDropDownChange(event) {
+        this.setState({selected_type: event.target.value});
+    }
+
+    renderDropdown(types){
         return(
             <div>
-                <select className="padded-select">
-                    <option value="">Select Project</option>
-                    {this.renderItem(projects)}
+                <select className="padded-select" value={this.state.selected_type} onChange={this.handleDropDownChange}>
+                    <option value='-1'>All Funding Types</option>
+                    {this.renderItem(types)}
                 </select>
             </div>
         )
     }
-    renderItem(projects){
-        return _.map(projects, project => {
+    renderItem(types){
+        return _.map(types, type => {
             return(
-                <option key={project.id} value={project.id}>{project.title}</option>
+                <option key={type.id} value={type.id}>{type.title}</option>
             );
         })
     }
@@ -48,7 +56,7 @@ class FundingProjectView extends Component{
             return (
                 <div className="container">
                     <NavTabs/>
-                    {this.renderDropdown(this.props.projects)}
+                    {this.renderDropdown(this.props.fundingViewData.type)}
                     <div className="chart-title">
                         <h4><b>Funding Overview (By Project)</b></h4>
                     </div>
@@ -63,7 +71,6 @@ class FundingProjectView extends Component{
 function mapStateToProps(state){
     return{
         fundingViewData: state.fundingViewData,
-        projects: state.projects
     }
 }
 
