@@ -11,7 +11,6 @@ import TaskView from './Views/TaskView';
 import IndexView from './Views/IndexView';
 import DisciplineListView from './Views/DisciplineListView';
 import FundingProjectView from './Views/FundingProjectView';
-import FundingProjectTypeView from './Views/FundingProjectTypeView';
 import FundingTypeView from './Views/FundingTypeView';
 import EmployeeListView from './Views/EmployeeListView';
 import EmployeeUtilizationView from './Views/EmployeeUtilizationView';
@@ -42,7 +41,6 @@ class App extends Component{
                     <Route path="/projects/:project_id/deliverables/:deliv_id" component={DeliverableView} />   
                     <Route path="/projects/:project_id" component={ProjectView} />
                     <Route path="/funding/project" component={FundingProjectView} />
-                    <Route path="/funding/projecttype" component={FundingProjectTypeView} />
                     <Route path="/funding/type" component={FundingTypeView} />
                     <Route path="/disciplines" component={DisciplineListView} />
                     <Route path="/employees/list" component={EmployeeListView} />
