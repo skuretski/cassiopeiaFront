@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import * as ProjectsReducer from './reducer_projects';
-import DisciplinesReducer from './reducer_disciplines';
+import * as DisciplinesReducer from './reducer_disciplines';
 import * as DeliverablesReducer from './reducer_deliverables';
 import * as TasksReducer from './reducer_tasks';
 import * as EmployeeReducer from './reducer_employees';
@@ -22,7 +22,11 @@ const rootReducer = combineReducers({
     updateProjectChangedRows: ProjectsReducer.updateProjectSuccess,
 
     // DISCIPLINES
-    disciplines: DisciplinesReducer,
+    disciplines: DisciplinesReducer.getDisciplines,
+    createDisciplineHasErrored: DisciplinesReducer.createDisciplineHasErrored,
+    createDisciplineID: DisciplinesReducer.createDisciplineSuccess,
+    updateDisciplineHasErrored: DisciplinesReducer.updateDisciplineHasErrored,
+    updateDisciplineChangedRows: DisciplinesReducer.updateDisciplineSuccess,
 
     // DELIVERABLES
     deliverables: DeliverablesReducer.defaultReducer, // refactor this one if we have time

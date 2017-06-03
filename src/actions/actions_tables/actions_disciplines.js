@@ -16,3 +16,63 @@ export const setDisciplines = (disciplines) => {
         disciplines
     }
 }
+
+export function createDiscipline(data) {
+    return dispatch => {
+        dispatch(createDisciplineHasErrored(false));
+        return axios.post(DISCIPLINES, data)
+        .then( response => {
+            if (response.status !== 200) {
+                throw Error(response.statusText);
+            }
+            dispatch(createDisciplineSuccess(response.data.insertId));
+        }).catch( error => {
+            dispatch(createDisciplineHasErrored(true));
+            console.log(error);
+        });
+    };
+}
+
+export function createDisciplineHasErrored(bool) {
+    return {
+        type: 'CREATE_DISCIPLINE_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function createDisciplineSuccess(discipline_id) {
+    return {
+        type: 'CREATE_DISCIPLINE_SUCCESS',
+        discipline_id
+    }
+}
+
+export function updateDiscipline(data) {
+    return dispatch => {
+        dispatch(updateDisciplineHasErrored(false));
+        return axios.put(DISCIPLINES, data)
+            .then( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(updateDisciplineSuccess(response.data.changedRows));
+            }).catch( error => {
+                dispatch(createDisciplineHasErrored(true));
+                console.log(error);
+            });
+    };
+}
+
+export function updateDisciplineHasErrored(bool) {
+    return {
+        type: 'UPDATE_DISCIPLINE_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function updateDisciplineSuccess(changedRows) {
+    return {
+        type: 'UPDATE_DISCIPLINE_SUCCESS',
+        changedRows
+    }
+}
