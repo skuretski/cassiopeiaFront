@@ -102,8 +102,8 @@ function taskViewChartData(apiData) {
             someMo = 1;
         }
         chartData.labels.push(dateHelper(someMo, someYr));
-        
-        if (someMo == endMo && someYr == endYr) {
+
+        if (someMo >= endMo && someYr == endYr) {
             break;
         }
     }

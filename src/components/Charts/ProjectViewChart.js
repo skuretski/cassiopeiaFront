@@ -103,7 +103,7 @@ function projectViewChartData(apiData) {
         }
         chartData.labels.push(dateHelper(someMo, someYr));
         
-        if (someMo == endMo && someYr == endYr) {
+        if (someMo >= endMo && someYr == endYr) {
             break;
         }
     }

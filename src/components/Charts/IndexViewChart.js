@@ -101,7 +101,7 @@ function indexViewChartData(apiData) {
         cdlMo.push(someMo[0]); cdlYr.push(someMo[1]);
         chartData.labels.push(dateHelper(someMo[0], someMo[1]));
         
-        if (someMo[0] == endMo && someMo[1] == endYr) {
+        if (someMo[0] >= endMo && someMo[1] == endYr) {
             break;
         }
     }
