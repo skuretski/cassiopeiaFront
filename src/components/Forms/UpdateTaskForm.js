@@ -37,9 +37,9 @@ class UpdateTaskForm extends Component{
     }
 
     initializeForm(task) {
-        // Set form field values
-        const {title, description, discipline_id } = task;
-        const data = { title, description, discipline_id };
+        // Set form field value
+        const {title, description } = task;
+        const data = { title, description };
         this.props.initialize(data);
     }
 
@@ -51,18 +51,6 @@ class UpdateTaskForm extends Component{
                 <div className={customClass}>
                     <label>{label}</label>
                     <textarea className="form-control" {...field.input}/>
-                    <div className="text-help">
-                        {touched ? error : ''}
-                    </div>
-                </div>
-            );
-        } else if (field.type === 'select') {
-            return (
-                <div className={customClass}>
-                    <label>{field.label}</label>
-                    <select className="form-control" {...field.input}>
-                        {field.selectOptions}
-                    </select>
                     <div className="text-help">
                         {touched ? error : ''}
                     </div>
@@ -84,25 +72,16 @@ class UpdateTaskForm extends Component{
         }
     }
 
-    renderDisciplineOptions() {
-        var disciplines = this.props.disciplines;
-        var opts = [];
-        opts.push(<option key={0} value={0}>Select Discipline...</option>);
-        disciplines.map( d => {
-            opts.push(<option key={d.id} value={d.id}>{d.title}</option>);
-        })
-        return opts;
-    }
-
     onSubmit(task){
-        const { title, description, discipline_id } = task;
+        const { title, description } = task;
+        const { discipline_id, committed, deliverable_id } = this.props.task;
         const data = { 
             title,
             description,
             discipline_id,
+            committed,
+            deliverable_id,
             id: this.props.id,
-            committed: this.props.task.committed, // leave unchanged since we aren't really using it yet...
-            deliverable_id: this.props.task.deliverable_id
         };
         this.props.updateTask(data).then(() => {
             if (this.props.updateHasErrored) {
@@ -137,13 +116,6 @@ class UpdateTaskForm extends Component{
                     label="Description"
                     name="description"
                     type="textarea"
-                    component={this.renderField}
-                />
-                <Field
-                    label="Discipline"
-                    name="discipline_id"
-                    type="select"
-                    selectOptions={this.renderDisciplineOptions()}
                     component={this.renderField}
                 />
                 <button type="submit" className="btn btn-primary">
@@ -187,7 +159,6 @@ const mapStateToProps = (state) => {
         task: state.getTask,
         getHasErrored: state.getTaskHasErrored,
         updateHasErrored: state.updateTaskHasErrored,
-        disciplines: state.disciplines
     }
 }
 
