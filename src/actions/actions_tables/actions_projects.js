@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { PROJECTS } from '../../api';
+import { addAlert, deleteAlert } from '../../actions';
 
 export function getProjects(dispatch){
     return axios.get(PROJECTS)
@@ -12,17 +13,19 @@ export function getProjects(dispatch){
 
 export function addProject(project){
     return function(dispatch){
-        if(project.title === '' || project.description === ''){
-            console.log("Error. Fields must be filled out.");
+        if(project.title == "" || project.description == "" || project.title == null || project.description == null){
+            dispatch(addAlert("Error. Fields must be filled out."));
         }
         else{
             return axios.post(PROJECTS, {
                 title: project.title,
                 description: project.description
             }).then((response) => {
-                dispatch(createProject(response.data[0]));
+                console.log(response.id);
+                return dispatch(createProject(response.data[0]));
             }).catch((error) => {
                 console.log(error);
+                dispatch(addAlert(error.data));
             });
          }
     }

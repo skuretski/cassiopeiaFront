@@ -4,6 +4,7 @@ import FundingViewByProjectChart from '../Charts/FundingViewByProjectChart';
 import FundingByProjectSummaryTable from '../Tables/FundingByProjectSummaryTable';
 import NavTabs from '../Navigation/NavTabs';
 import { getFundingViewData } from '../../actions';
+import _ from 'lodash';
 
 class FundingProjectView extends Component{
     constructor(props){
@@ -18,11 +19,28 @@ class FundingProjectView extends Component{
             this.setState({loading: false});
         });               
     }
+    renderDropdown(projects){
+        return(
+            <div>
+                <select className="padded-select">
+                    <option value="">Select Project</option>
+                    {this.renderItem(projects)}
+                </select>
+            </div>
+        )
+    }
+    renderItem(projects){
+        return _.map(projects, project => {
+            return(
+                <option key={project.id} value={project.id}>{project.title}</option>
+            );
+        })
+    }
     render(){
         if(this.state.loading === true){
             return(
                 <div className="container-fluid">
-                    <div className="text-center load-spinner" />;
+                    <div className="text-center load-spinner" />
                 </div>
             )
         }
@@ -30,6 +48,7 @@ class FundingProjectView extends Component{
             return (
                 <div className="container">
                     <NavTabs/>
+                    {this.renderDropdown(this.props.projects)}
                     <div className="chart-title">
                         <h4><b>Funding Overview (By Project)</b></h4>
                     </div>
@@ -43,7 +62,8 @@ class FundingProjectView extends Component{
 
 function mapStateToProps(state){
     return{
-        fundingViewData: state.fundingViewData
+        fundingViewData: state.fundingViewData,
+        projects: state.projects
     }
 }
 

@@ -49,6 +49,7 @@ class AddTaskForm extends Component{
                 this.setState({added: true});
                 this.props.reset();
                 $('.bs-task-modal-lg').modal('hide');
+                this.props.history.push("/projects/8");
            });
         }
     }

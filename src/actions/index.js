@@ -12,3 +12,5 @@ export * from './actions_views/actions_deliverableview';
 export * from './actions_views/actions_indexview';
 export * from './actions_views/actions_projectview';
 export * from './actions_views/actions_taskview';
+
+export * from './actions_alerts/actions_alert';

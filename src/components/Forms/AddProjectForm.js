@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
-import { addProject } from '../../actions';
+import { addProject, addAlert, deleteAlert } from '../../actions';
+import Alert from '../Alerts/Alert';
+import _ from 'lodash';
 
 class AddProjectForm extends Component{
     constructor(props){
@@ -9,6 +11,9 @@ class AddProjectForm extends Component{
         this.state = {
             added: false
         }
+    }
+    componentWillUnmount(){
+        this.props.reset();
     }
     renderField(field){
         const { meta: { touched, error} } = field;
@@ -27,16 +32,25 @@ class AddProjectForm extends Component{
         );
     }
     onSubmit(project){
-        if(project.title != '' && project.description != ''){
-            this.props.dispatch(addProject(project)).then(() => {
-                this.setState({added: true});
-                this.props.reset();
-                $('.bs-project-modal-lg').modal('hide');
-           });
+        if(!_.isEmpty(project)){
+            if(project.title != '' || project.description != '' || project.title != null || project.description != null){
+                this.props.dispatch(addProject(project))
+                    .then((project) => {
+                        this.setState({added: true});
+                        this.props.reset();
+                        $('.bs-project-modal-lg').modal('hide');
+                    })
+                    .catch((error) => {
+                        this.props.dispatch(addAlert(error));
+                    });                     
+            }
+        } else{
+            // console.log(this.props);
+            // validate(project);
         }
     }
     render(){
-        const { handleSubmit, reset } = this.props; 
+        const { handleSubmit, reset } = this.props;
         return(
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))} >
                 <Field
@@ -52,9 +66,9 @@ class AddProjectForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add New Project
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
-            </form>
-        )
+                <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </form>  
+        );
     }
 }
 
@@ -79,4 +93,4 @@ export default reduxForm({
     form: 'AddProjectForm',
     validate: validate
 
-}, mapStateToProps, null)(AddProjectForm);
+}, mapStateToProps)(AddProjectForm);
