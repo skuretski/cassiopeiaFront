@@ -26,16 +26,17 @@ class NavTabs extends Component{
                             <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                             aria-expanded="false">Employees<span className="caret"></span></a>
                             <ul className="dropdown-menu">
-                                <li><NavLink exact={true} activeClassName="selected" to="/employees/list">Employee List</NavLink></li>
-                                <li><NavLink exact={true} activeClassName="selected" to="/employees/utilization">Employee Utilization</NavLink></li>
+                                <li><NavLink exact={true} activeClassName="selected" to="/employees/list">List</NavLink></li>
+                                <li><NavLink exact={true} activeClassName="selected" to="/employees/utilization">Utilization</NavLink></li>
                             </ul>
                         </li>
                         <li className="dropdown">
                             <a className="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                             aria-expanded="false">Funding<span className="caret"></span></a>
                             <ul className="dropdown-menu">
-                                <li><NavLink exact={true} activeClassName="selected" to="/funding/project">Funding By Project</NavLink></li>
-                                <li><NavLink exact={true} activeClassName="selected" to="/funding/type">Funding By Type</NavLink></li>
+                                <li><NavLink exact={true} activeClassName="selected" to="/funding/project">By Project</NavLink></li>
+                                <li><NavLink exact={true} activeClassName="selected" to="/funding/type">By Type</NavLink></li>
+                                <li><NavLink exact={true} activeClassName="selected" to="/funding/projecttype">By Project By Type</NavLink></li>
                             </ul>
                         </li>
                         <li><NavLink exact={true} activeClassName="selected" to='/disciplines'>Disciplines</NavLink></li>
