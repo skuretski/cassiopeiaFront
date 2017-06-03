@@ -9,6 +9,7 @@ import DeliverableView from './Views/DeliverableView';
 import ProjectView from './Views/ProjectView';
 import TaskView from './Views/TaskView';
 import IndexView from './Views/IndexView';
+import DisciplineListView from './Views/DisciplineListView';
 import FundingProjectView from './Views/FundingProjectView';
 import FundingTypeView from './Views/FundingTypeView';
 import EmployeeListView from './Views/EmployeeListView';
@@ -41,6 +42,7 @@ class App extends Component{
                     <Route path="/projects/:project_id" component={ProjectView} />
                     <Route path="/funding/project" component={FundingProjectView} />
                     <Route path="/funding/type" component={FundingTypeView} />
+                    <Route path="/disciplines" component={DisciplineListView} />
                     <Route path="/employees/list" component={EmployeeListView} />
                     <Route path="/employees/utilization" component={EmployeeUtilizationView} />
                     <Route exact path="/" component={IndexView} />

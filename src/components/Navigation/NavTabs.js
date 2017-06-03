@@ -38,6 +38,7 @@ class NavTabs extends Component{
                                 <li><NavLink exact={true} activeClassName="selected" to="/funding/type">Funding By Type</NavLink></li>
                             </ul>
                         </li>
+                        <li><NavLink exact={true} activeClassName="selected" to='/disciplines'>Disciplines</NavLink></li>
                     </ul>
                 </nav>
             </div>
