@@ -1,23 +1,33 @@
 import React, { Component } from 'react';
 import TableRow from './TableComponents/TableRow';
 import _ from 'lodash';
+import AddDisciplineForm from '../Forms/AddDisciplineForm';
+// import UpdateDisciplineForm from '../Forms/UpdateDisciplineForm';
+// import DeleteDisciplineForm from '../Forms/DeleteDisciplineForm';
 
 class DisciplineListTable extends Component {
     constructor(props) {
         super(props);    
 
+        this.handleUpdateDisciplineClick = this.handleUpdateDisciplineClick.bind(this);
+        this.handleDeleteDisciplineClick = this.handleDeleteDisciplineClick.bind(this);
+
+        this.state = {
+            updateId: 0,
+            deleteId: 0
+        }
     }
 
-    handleUpdateDisciplneClick(event) {
+    handleUpdateDisciplineClick(event) {
         const {id} = event.target;
         this.setState({ updateId: id });
-        $('.bs-update-modal-lg').modal('show');
+        $('.bs-update-disc-modal-lg').modal('show');
     }
 
-    handleDeleteDisciplneClick(event) {
+    handleDeleteDisciplineClick(event) {
         const {id} = event.target;
         this.setState({ deleteId: id });
-        $('.bs-delete-modal-md').modal('show');
+        $('.bs-delete-disc-modal-md').modal('show');
     }
 
     render() {
@@ -44,7 +54,7 @@ class DisciplineListTable extends Component {
                         <tr>
                             <th>Title</th>
                             <th colSpan="2">
-                                <button type="button" className="btn btn-primary sharp" data-toggle="modal" data-target="kyle do your magic here">
+                                <button type="button" className="btn btn-primary sharp" data-toggle="modal" data-target=".bs-add-disc-modal-lg">
                                     Add New Discipline
                                 </button>
                             </th>
@@ -54,6 +64,36 @@ class DisciplineListTable extends Component {
                         {rows}
                     </tbody>
                 </table>
+                <div className="modal fade bs-add-disc-modal-lg" role="dialog">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="container-fluid">
+                                <h2>Add Discipline</h2>
+                                <AddDisciplineForm/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="modal fade bs-update-disc-modal-lg" role="dialog">
+                    <div className="modal-dialog modal-lg" role="document">
+                        <div className="modal-content">
+                            <div className="container-fluid">
+                                <h2>Update Discipline</h2>
+                                {/*<UpdateDisciplineForm id={this.state.updateId}/>*/}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="modal fade bs-delete-disc-modal-md" role="dialog">
+                    <div className="modal-dialog modal-md" role="document">
+                        <div className="modal-content">
+                            <div className="container-fluid">
+                                <h2>Delete Discipline</h2>
+                                {/*<DeleteDisciplineForm id={this.state.deleteId}/>*/}
+                            </div>
+                        </div>
+                    </div>
+                </div> 
             </div>
         );
     }
