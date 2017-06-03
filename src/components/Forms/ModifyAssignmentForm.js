@@ -17,8 +17,6 @@ class ModifyAssignmentForm extends Component {
     }
 
     componentDidMount() {
-        // Add task_id to the fields values
-        this.props.change('assignmentTaskID', this.props.task_id);
         // Get initial employee list
         this.props.getEmployeesByDiscipline(this.props.discipline_id);
     }
@@ -132,7 +130,24 @@ class ModifyAssignmentForm extends Component {
         return days;
     }
 
-    // TODO:
+    submitAssignment(data_out, last_entry) {
+        // See if there is an existing assignment for this employee/task/date
+        this.props.searchAssignments(data_out, (response, data_ret) => {
+            if (response.data.length !== 0) { // Existing record
+                const assignment_id = response.data[0].id;
+                if (data_ret.effort !== 0) { // UPDATE
+                    this.updateAssignmentHelper(data_ret, assignment_id, last_entry);
+                } else { // DELETE
+                    this.deleteAssignmentHelper(assignment_id, last_entry);
+                }
+            } else { // No existing record
+                if (data_ret.effort !== 0) { // CREATE
+                    this.createAssignmentHelper(data_ret, last_entry);
+                }
+            }
+        });
+    }
+
     onSubmit(values) {
         var startMonth = parseInt(values.assignmentStartMonth),
             startYear = parseInt(values.assignmentStartYear),
@@ -140,7 +155,7 @@ class ModifyAssignmentForm extends Component {
             endYear = parseInt(values.assignmentEndYear),
             effort = parseFloat(values.assignmentEffort),
             employee_id = parseInt(values.assignmentEmployee),
-            task_id = parseInt(values.assignmentTaskID);
+            task_id = parseInt(this.props.task_id);
 
         var year = startYear;
         var month = startMonth;
@@ -172,21 +187,7 @@ class ModifyAssignmentForm extends Component {
             // Create a shallow copy to pass around
             data_out = Object.assign({}, data);
 
-            // See if there is an existing assignment for this employee/task/date
-            this.props.searchAssignments(data_out, (response, data_ret) => {
-                if (response.data.length !== 0) { // Existing record
-                    const assignment_id = response.data[0].id;
-                    if (data_ret.effort !== 0) { // UPDATE
-                        this.updateAssignmentHelper(data_ret, assignment_id, last_entry);
-                    } else { // DELETE
-                        this.deleteAssignmentHelper(assignment_id, last_entry);
-                    }
-                } else { // No existing record
-                    if (data_ret.effort !== 0) { // CREATE
-                        this.createAssignmentHelper(data_ret, last_entry);
-                    }
-                }
-            });
+            this.submitAssignment(data_out, last_entry);
 
             // Increment date forward 1 month
             month += 1;
