@@ -7,13 +7,17 @@ class FundingByTypeSummaryTable extends Component {
         super(props);        
     }
 
-    sumHelper(data, comparison_value, comparison_key, accum_key) {
+    sumHelper(data, comparison_value_1, comparison_key_1, comparison_value_2, comparison_key_2, accum_key) {
         // Sum over the data only if data points comparison key value matches
         // the comparison value. In this case, it's project_id == id
         var sum = _.reduce(data, (total, point) => {
-            if (point[comparison_key] == comparison_value) {
+            if (comparison_value_2 == -1 && point[comparison_key_1] == comparison_value_1) {
                 return total + point[accum_key];
-            } else {
+            }
+            else if (point[comparison_key_1] == comparison_value_1 && point[comparison_key_2] == comparison_value_2) {
+                return total + point[accum_key];
+            }
+            else {
                 return total;
             }
         }, 0);
@@ -22,9 +26,9 @@ class FundingByTypeSummaryTable extends Component {
         return _.round(sum, 1);
     }
 
-    sumData(id, data) {
+    sumData(id, data, selProj) {
         // Compute the sum for the provided id for SOW, funding, and employees
-        var funding_sum = this.sumHelper(data.by_type, id, 'fundingType_id', 'funding_amt');
+        var funding_sum = this.sumHelper(data.by_type, id, 'fundingType_id', selProj, 'project_id', 'funding_amt');
 
         return funding_sum;
     }
@@ -36,7 +40,7 @@ class FundingByTypeSummaryTable extends Component {
         const types = this.props.data.type;
         types.map( t => {
             const id = t.id;
-            typeFunding[id] = this.sumData(id, this.props.data);
+            typeFunding[id] = this.sumData(id, this.props.data, this.props.selProj);
             fundingTotal += typeFunding[id];
         })
 

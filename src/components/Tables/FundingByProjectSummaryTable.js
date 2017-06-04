@@ -4,16 +4,21 @@ import _ from 'lodash';
 
 class FundingByProjectSummaryTable extends Component {
     constructor(props) {
-        super(props);        
+        super(props);
+
     }
 
-    sumHelper(data, comparison_value, comparison_key, accum_key) {
+    sumHelper(data, comparison_value_1, comparison_key_1, comparison_value_2, comparison_key_2, accum_key) {
         // Sum over the data only if data points comparison key value matches
         // the comparison value. In this case, it's project_id == id
         var sum = _.reduce(data, (total, point) => {
-            if (point[comparison_key] == comparison_value) {
+            if (comparison_value_2 == -1 && point[comparison_key_1] == comparison_value_1) {
                 return total + point[accum_key];
-            } else {
+            }
+            else if (point[comparison_key_1] == comparison_value_1 && point[comparison_key_2] == comparison_value_2) {
+                return total + point[accum_key];
+            }
+            else {
                 return total;
             }
         }, 0);
@@ -22,9 +27,9 @@ class FundingByProjectSummaryTable extends Component {
         return _.round(sum, 1);
     }
 
-    sumData(id, data) {
+    sumData(id, data, selType) {
         // Compute the sum for the provided id for funding amount 
-        var funding_sum = this.sumHelper(data.by_project, id, 'project_id', 'funding_amt');
+        var funding_sum = this.sumHelper(data.by_project, id, 'project_id', selType, 'fundingType_id', 'funding_amt');
 
         return funding_sum;
     }
@@ -36,7 +41,7 @@ class FundingByProjectSummaryTable extends Component {
         const projects = this.props.data.project;
         projects.map( p => {
             const id = p.id;
-            projectFunding[id] = this.sumData(id, this.props.data);
+            projectFunding[id] = this.sumData(id, this.props.data, this.props.selType);
             fundingTotal += projectFunding[id];
         })
 
