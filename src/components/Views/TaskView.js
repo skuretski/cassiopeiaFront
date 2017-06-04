@@ -10,7 +10,6 @@ import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import AddTaskForm from '../Forms/AddTaskForm';
 import UpdateTaskForm from '../Forms/UpdateTaskForm';
-import Alert from '../Alerts/Alert';
 
 class TaskView extends Component{
     constructor(props){
@@ -72,7 +71,6 @@ class TaskView extends Component{
                                 <div className="container-fluid">
                                 <h2>Add a Project</h2>
                                 <AddProjectForm/>
-                                <Alert />
                                 </div>
                             </div>
                         </div>

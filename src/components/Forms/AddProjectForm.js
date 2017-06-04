@@ -85,7 +85,8 @@ function validate(formProps){
 function mapStateToProps(state){
     return{
         projects: state.projects,
-        deliverables: state.deliverables
+        deliverables: state.deliverables,
+        alerts: state.alerts
     }  
 }
 

@@ -21,7 +21,6 @@ export function addProject(project){
                 title: project.title,
                 description: project.description
             }).then((response) => {
-                console.log(response.id);
                 return dispatch(createProject(response.data[0]));
             }).catch((error) => {
                 console.log(error);

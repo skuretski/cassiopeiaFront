@@ -53,7 +53,7 @@ class AddDeliverableForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add Deliverable to {projects[projectId].title}
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
             </form>
         )
     }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
 import { addTask } from '../../actions';
+import Alert from '../Alerts/Alert';
 import _ from 'lodash';
 
 class AddTaskForm extends Component{
@@ -49,7 +50,6 @@ class AddTaskForm extends Component{
                 this.setState({added: true});
                 this.props.reset();
                 $('.bs-task-modal-lg').modal('hide');
-                this.props.history.push("/projects/8");
            });
         }
     }
@@ -76,7 +76,7 @@ class AddTaskForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add New Task
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
             </form>
         )
     }
