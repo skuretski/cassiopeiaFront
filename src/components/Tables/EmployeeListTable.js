@@ -9,6 +9,7 @@ class EmployeeListTable extends Component {
     constructor(props) {
         super(props);    
     
+        this.EmployeeIdOrder = 0;
         this.LastNameOrder = 0; // 0 for ascending, 1 for descending
         this.FirstNameOrder = 0;
         this.DisciplineOrder = 0;
@@ -16,6 +17,7 @@ class EmployeeListTable extends Component {
         this.ActiveStartDateOrder = 0;
         this.ActiveEndDateOrder = 0;
         
+        this.handleEmployeeIdClick = this.handleEmployeeIdClick.bind(this);
         this.handleLastNameClick = this.handleLastNameClick.bind(this);
         this.handleFirstNameClick = this.handleFirstNameClick.bind(this);
         this.handleDisciplineClick = this.handleDisciplineClick.bind(this);
@@ -39,6 +41,18 @@ class EmployeeListTable extends Component {
     dateHelper(date) {
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return (months[parseInt(date.substring(5, 7)) - 1] + '-' + date.substring(0, 4));
+    }
+
+    handleEmployeeIdClick() {
+        if (this.EmployeeIdOrder == 0) {
+            this.props.data.employees.sort(function(a, b) {return a.emp_id.localeCompare(b.emp_id)});
+            this.EmployeeIdOrder = 1;
+        }
+        else {
+            this.props.data.employees.sort(function(a, b) {return b.emp_id.localeCompare(a.emp_id)});
+            this.EmployeeIdOrder = 0;
+        }
+        this.forceUpdate();
     }
 
     handleLastNameClick() {
@@ -136,6 +150,7 @@ class EmployeeListTable extends Component {
         for (var i = 0; i < this.props.data.employees.length; i++) {
             this.props.data.employees[i].discipline = this.idToDiscMap[this.props.data.employees[i].disc_id];
             rows.push(<tr key={this.props.data.employees[i].emp_id}>
+                <td>{this.props.data.employees[i].emp_id}</td>
                 <td>{this.props.data.employees[i].last}</td>
                 <td>{this.props.data.employees[i].first}</td>
                 <td>{this.props.data.employees[i].discipline}</td>
@@ -152,6 +167,7 @@ class EmployeeListTable extends Component {
                 <table className="table table-hover table-bordered">
                     <thead>
                         <tr>
+                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleLastNameClick}>Employee ID</button></th>
                             <th><button type="button" className="btn btn-default sharp" onClick={this.handleLastNameClick}>Last Name</button></th>
                             <th><button type="button" className="btn btn-default sharp" onClick={this.handleFirstNameClick}>First Name</button></th>
                             <th><button type="button" className="btn btn-default sharp" onClick={this.handleDisciplineClick}>Discipline</button></th>
