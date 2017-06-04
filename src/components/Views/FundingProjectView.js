@@ -11,7 +11,8 @@ class FundingProjectView extends Component{
         super(props);
         this.state = {
             loading: true,
-            selected_type: -1
+            selected_type: -1,
+            title: "All"
         }
         this.handleDropDownChange = this.handleDropDownChange.bind(this);
     }
@@ -25,6 +26,18 @@ class FundingProjectView extends Component{
 
     handleDropDownChange(event) {
         this.setState({selected_type: event.target.value});
+        if (event.target.value == - 1){
+            this.setState({title: "All"});
+        }
+        else 
+        {
+            for (var i = 0; i < this.props.fundingViewData.type.length; i++) {
+                if (this.props.fundingViewData.type[i].id == event.target.value) {
+                    this.setState({title: this.props.fundingViewData.type[i].title});
+                    break;
+                }
+            }
+        }
     }
 
     renderDropdown(types){
@@ -58,7 +71,7 @@ class FundingProjectView extends Component{
                     <NavTabs/>
                     {this.renderDropdown(this.props.fundingViewData.type)}
                     <div className="chart-title">
-                        <h4><b>Funding Overview (By Project)</b></h4>
+                        <h4><b>{this.state.title} Funding (By Project)</b></h4>
                     </div>
                     {<FundingViewByProjectChart data={this.props.fundingViewData} selType={this.state.selected_type}/>}
                     {<FundingByProjectSummaryTable data={this.props.fundingViewData} selType={this.state.selected_type}/>}                       
