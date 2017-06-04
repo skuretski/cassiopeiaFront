@@ -45,11 +45,11 @@ class EmployeeListTable extends Component {
 
     handleEmployeeIdClick() {
         if (this.EmployeeIdOrder == 0) {
-            this.props.data.employees.sort(function(a, b) {return a.emp_id.localeCompare(b.emp_id)});
+            this.props.data.employees.sort(function(a, b) {return a.emp_id - b.emp_id});
             this.EmployeeIdOrder = 1;
         }
         else {
-            this.props.data.employees.sort(function(a, b) {return b.emp_id.localeCompare(a.emp_id)});
+            this.props.data.employees.sort(function(a, b) {return b.emp_id - a.emp_id});
             this.EmployeeIdOrder = 0;
         }
         this.forceUpdate();
@@ -167,7 +167,7 @@ class EmployeeListTable extends Component {
                 <table className="table table-hover table-bordered">
                     <thead>
                         <tr>
-                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleLastNameClick}>Employee ID</button></th>
+                            <th><button type="button" className="btn btn-default sharp" onClick={this.handleEmployeeIdClick}>Employee ID</button></th>
                             <th><button type="button" className="btn btn-default sharp" onClick={this.handleLastNameClick}>Last Name</button></th>
                             <th><button type="button" className="btn btn-default sharp" onClick={this.handleFirstNameClick}>First Name</button></th>
                             <th><button type="button" className="btn btn-default sharp" onClick={this.handleDisciplineClick}>Discipline</button></th>
