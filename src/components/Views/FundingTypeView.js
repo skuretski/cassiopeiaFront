@@ -58,8 +58,8 @@ class FundingTypeView extends Component{
                     <div className="chart-title">
                         <h4><b>Funding Overview (By Type)</b></h4>
                     </div>
-                    {<FundingViewByTypeChart data={this.props.fundingViewData}/>}
-                    {<FundingByTypeSummaryTable data={this.props.fundingViewData}/>}
+                    {<FundingViewByTypeChart data={this.props.fundingViewData} selProj={this.state.selected_project}/>}
+                    {<FundingByTypeSummaryTable data={this.props.fundingViewData} selProj={this.state.selected_project}/>}
                 </div>
             );
         }

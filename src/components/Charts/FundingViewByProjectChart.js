@@ -14,7 +14,7 @@ export default class FundingViewByProjectChart extends Component {
             Chart.defaults.global.defaultFontSize = 14;
             return (
                 <div>
-                    <Line data={fundingViewChartData(this.props.data)} options={fundingViewChartOptions(this.props.data)} />  
+                    <Line data={fundingViewChartData(this.props.data, this.props.selType)} options={fundingViewChartOptions()} />  
                 </div>
             );
         } else {
@@ -26,7 +26,7 @@ export default class FundingViewByProjectChart extends Component {
 // -----------------------------------------------------------------------------
 // Define Options For The Chart
 // -----------------------------------------------------------------------------
-function fundingViewChartOptions(apiData) {
+function fundingViewChartOptions() {
     var chartOptions = {
         responsive: true,
         title: {
@@ -69,7 +69,7 @@ function fundingViewChartOptions(apiData) {
 // -----------------------------------------------------------------------------
 // Define Data For The Chart
 // -----------------------------------------------------------------------------
-function fundingViewChartData(apiData) {
+function fundingViewChartData(apiData, selType) {
     var default_colors = ['#3366CC','#DC3912','#FF9900','#109618','#990099','#3B3EAC','#0099C6','#DD4477',
         '#66AA00','#B82E2E','#316395','#994499','#22AA99','#AAAA11','#6633CC','#E67300','#8B0707','#329262','#5574A6','#3B3EAC'];
     var chartData = {};
@@ -138,7 +138,9 @@ function fundingViewChartData(apiData) {
             //console.log('j = ' + j);
             j++;
         }
-        chartData.datasets[dsToProjMap[apiData.by_project[i].project_id]].data[j] += apiData.by_project[i].funding_amt;
+        if (selType == -1 || selType == apiData.by_project[i].fundingType_id) {
+            chartData.datasets[dsToProjMap[apiData.by_project[i].project_id]].data[j] += apiData.by_project[i].funding_amt;
+        }
     }
     dsToProjMap = null; // i'm going to unshift into the dataset below, which will break the map
     // -----------------------------------------------------------------------------
