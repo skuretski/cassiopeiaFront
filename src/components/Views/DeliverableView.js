@@ -41,7 +41,7 @@ class DeliverableView extends Component{
                 return deliverable;
             }        
         });
-        return projDelivs;
+        return _.mapKeys(projDelivs, 'id');
     }
     getDeliverableTasks(delivId, tasks){
         var delivTasks = [];
@@ -51,18 +51,34 @@ class DeliverableView extends Component{
                 return task;
             }
         });
-        return delivTasks;
+        return _.mapKeys(delivTasks, 'id');
     }
     render(){
+        const { projects, deliverables, tasks, history, deliverableViewData, disciplines } = this.props;
+        const { project_id, deliv_id, task_id } = this.props.match.params;
+        //If fetching deliverable view data
         if(this.state.loading === true){
             return(
                 <div className="text-center load-spinner" />
             );
+        //If project ID or deliverable ID do not exist, redirect to 404
+        } else if(!projects[project_id] || !deliverables[deliv_id]){
+            history.push("/404");
+            return(
+                <div></div>
+            );
+        //If project does not have that specified deliverable, redirect to 404
+        } else if(!(this.getProjectDeliverables(project_id, deliverables))[deliv_id]){
+            history.push("/404");
+            return (
+                <div></div>
+            );
+        //Else, render DeliverableView data
         } else{
             return(
                 <div>
                     <div className="container-fluid">
-                        <NavTabs type='project' tabList={this.props.projects}/>
+                        <NavTabs type='project' tabList={projects}/>
                     </div>
                     {/* START ADDPROJECTFORM MODAL */}
                     <div className="container-fluid">
@@ -84,8 +100,8 @@ class DeliverableView extends Component{
                             <div className="modal-dialog modal-lg" role="document">
                                 <div className="modal-content">
                                     <div className="container-fluid">
-                                    <h2>Add a Deliverable to {this.props.projects[this.props.match.params.project_id].title}</h2>
-                                    <AddDeliverableForm projectId={this.props.match.params.project_id} projects={this.props.projects}/>
+                                    <h2>Add a Deliverable to {projects[project_id].title}</h2>
+                                    <AddDeliverableForm projectId={project_id} projects={projects}/>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +115,7 @@ class DeliverableView extends Component{
                                 <div className="modal-content">
                                     <div className="container-fluid">
                                     <h2>Update Deliverable</h2>
-                                    <UpdateDeliverableForm id={this.props.match.params.deliv_id} />
+                                    <UpdateDeliverableForm id={deliv_id} />
                                     </div>
                                 </div>
                             </div>
@@ -112,8 +128,8 @@ class DeliverableView extends Component{
                             <div className="modal-dialog modal-lg" role="document">
                                 <div className="modal-content">
                                     <div className="container-fluid">
-                                    <h2>Add a Task to {this.props.deliverables[this.props.match.params.deliv_id].title}</h2>
-                                    <AddTaskForm deliverableId={this.props.match.params.deliv_id} deliverables={this.props.deliverables} disciplines={this.props.disciplines}/>
+                                    <h2>Add a Task to {deliverables[deliv_id].title}</h2>
+                                    <AddTaskForm deliverableId={deliv_id} deliverables={deliverables} disciplines={disciplines}/>
                                     </div>
                                 </div>
                             </div>
@@ -127,37 +143,37 @@ class DeliverableView extends Component{
                                     <div className="well">
                                         <NavTabs 
                                             type='deliverable' 
-                                            tabList={this.getProjectDeliverables(this.props.match.params.project_id, this.props.deliverables)}
-                                            projectId={this.props.match.params.project_id}
-                                            delivId={this.props.match.params.deliv_id}
-                                            isActive={this.props.match.params.deliv_id}
+                                            tabList={this.getProjectDeliverables(project_id, deliverables)}
+                                            projectId={project_id}
+                                            delivId={deliv_id}
+                                            isActive={deliv_id}
                                         />
                                     </div>
                                 </div>
                             </div>
                             <div className="col-md-8">
                                 <div className="chart-title">
-                                    <h4><b>Project: {this.props.deliverableViewData.project[0].title}</b></h4>
+                                    <h4><b>Project: {deliverableViewData.project[0].title}</b></h4>
                                     <h4>
-                                        <b>Deliverable: {this.props.deliverableViewData.deliverable[0].title}</b>
+                                        <b>Deliverable: {deliverableViewData.deliverable[0].title}</b>
                                         <a className="glyphicon glyphicon-pencil"
                                            onClick={() => $('.bs-update-deliverable-modal-md').modal('show')}
                                         />
                                     </h4>
                                 </div>
-                                <DeliverableViewChart data={this.props.deliverableViewData}/>
-                                <DeliverableSummaryTable data={this.props.deliverableViewData} url={this.props.match.url}/>
+                                <DeliverableViewChart data={deliverableViewData}/>
+                                <DeliverableSummaryTable data={deliverableViewData} url={this.props.match.url}/>
                             </div>
                             <div className="col-md-2">
                                 <div className="sidebar-nav pull-right">
                                     <div className="well">
                                         <NavTabs 
                                             type='task' 
-                                            tabList={this.getDeliverableTasks(this.props.match.params.deliv_id, this.props.tasks)}
-                                            projectId={this.props.match.params.project_id}
-                                            delivId={this.props.match.params.deliv_id}
-                                            taskId={this.props.match.params.task_id}
-                                            isActive={this.props.match.params.deliv_id}
+                                            tabList={this.getDeliverableTasks(deliv_id, tasks)}
+                                            projectId={project_id}
+                                            delivId={deliv_id}
+                                            taskId={task_id}
+                                            isActive={deliv_id}
                                         />
                                     </div>
                                 </div>
@@ -176,7 +192,7 @@ function mapStateToProps(state){
         deliverables: state.deliverables,
         deliverableViewData: state.deliverableViewData,
         tasks: state.tasks,
-        disciplines: state.disciplines
+        disciplines: state.disciplines,
     }
 }
 export default connect(mapStateToProps)(DeliverableView);
