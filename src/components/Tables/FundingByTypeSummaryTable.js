@@ -49,23 +49,23 @@ class FundingByTypeSummaryTable extends Component {
         types.map( t => {
             const id = t.id;
             const title = t.title;
-            var values = [typeFunding[id], typeFunding[id]/fundingTotal * 100];
-            values = values.map(v => _.round(v, 1));
-            tableRows.push(<TableRow key={id} id={id} type="type" title={title} values={values}/>)
+            const pctFunding = fundingTotal == 0 ? '--' : typeFunding[id]/fundingTotal * 100;
+            var values = [typeFunding[id], pctFunding];
+            values = values.map(v => isNaN(v) ? v : _.round(v, 1));
+            tableRows.push(<TableRow key={id} id={id} title={title} values={values}/>)
         })
 
-        // Last row shows the totals, last value is 100 since total is always 100% of total
-        tableRows.push(<TableRow key="totals" type="totals" title="TOTAL" values={[_.round(fundingTotal, 1), 100]}/>)
+        // Last row shows the totals
+        const pctTotal = fundingTotal == 0 ? '--' : 100;
+        tableRows.push(<TableRow key="totals" type="totals" title="TOTAL" values={[_.round(fundingTotal, 1), pctTotal]}/>)
         return tableRows;
     }
 
     render() {
         // Don't bother rendering the table if we don't have data
         if (!this.props.data) {
-            return <div></div>;
+            return <div></div>
         }
-
-        var totals = [];
 
         return (
             <table className="table table-hover table-bordered">
