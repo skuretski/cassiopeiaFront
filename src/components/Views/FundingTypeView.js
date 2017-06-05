@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FundingViewByTypeChart from '../Charts/FundingViewByTypeChart';
 import FundingByTypeSummaryTable from '../Tables/FundingByTypeSummaryTable';
+import ModifyFundingForm from '../Forms/ModifyFundingForm';
 import NavTabs from '../Navigation/NavTabs';
 import { getFundingViewData } from '../../actions';
 
@@ -73,6 +74,12 @@ class FundingTypeView extends Component{
                     </div>
                     {<FundingViewByTypeChart data={this.props.fundingViewData} selProj={this.state.selected_project}/>}
                     {<FundingByTypeSummaryTable data={this.props.fundingViewData} selProj={this.state.selected_project}/>}
+                    <div className="row">
+                        <div className="col-md-5">
+                            <h3 className="text-center">ADD/UPDATE FUNDING</h3>
+                            <ModifyFundingForm data={this.props.fundingViewData}/>
+                        </div>
+                    </div>
                 </div>
             );
         }
