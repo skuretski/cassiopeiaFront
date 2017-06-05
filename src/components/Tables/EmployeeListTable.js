@@ -143,7 +143,7 @@ class EmployeeListTable extends Component {
     render() {
         // Don't bother rendering the table if we don't have data
         if (!this.props.data) {
-            return <div></div>;
+            return <div></div>
         }
 
         var rows = [];

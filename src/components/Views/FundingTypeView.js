@@ -59,7 +59,7 @@ class FundingTypeView extends Component{
         if(this.state.loading === true){
             return(
                 <div className="container-fluid">
-                    <div className="text-center load-spinner" />;
+                    <div className="text-center load-spinner" />
                 </div>
             )
         }
