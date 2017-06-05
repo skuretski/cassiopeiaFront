@@ -31,14 +31,21 @@ class DeleteEmployeeForm extends Component{
         this.props.deleteEmployee(this.props.id).then(() => {
             if (this.props.deleteHasErrored) {
                 this.setState({message: 'Woops! Something went wrong. Try again.'})
+            } else if (this.props.affectedRows == 0) {
+                this.setState({message: 'Unable to delete. Ensure that employee does \
+                    not have any assignments.'})
             } else {
-                this.setState({message: ''})
-                this.props.reset();
+                this.resetForm();
                 // Re-fetch the employee view data, since we've changed it
                 this.props.dispatch(getEmployeeViewData);
                 $('.bs-delete-modal-md').modal('hide');
             }
         })
+    }
+
+    resetForm() {
+        this.props.reset();
+        this.setState({message: ''});
     }
 
     render() {
@@ -52,8 +59,8 @@ class DeleteEmployeeForm extends Component{
                     <button type="submit" className="btn btn-danger">
                     DELETE
                     </button>
-                    <button className="btn btn-primary" data-dismiss="modal" onClick={reset}>CANCEL</button>
-                    <p>{this.state.message}</p>
+                    <button className="btn btn-primary" data-dismiss="modal" onClick={this.resetForm.bind(this)}>CANCEL</button>
+                    <div className="danger-text">{this.state.message}</div>
                 </form>
             </div>
         );
@@ -76,7 +83,8 @@ const mapStateToProps = (state) => {
     return {
         employee: state.getEmployee,
         getHasErrored: state.getEmployeeHasErrored,
-        deleteHasErrored: state.deleteEmployeeHasErrored
+        deleteHasErrored: state.deleteEmployeeHasErrored,
+        affectedRows: state.deleteEmployeeAffectedRows
     }
 }
 

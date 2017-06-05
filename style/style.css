@@ -150,6 +150,11 @@ form select.padded-select {
     color: red !important;
 }
 
+.danger-text {
+    color: red;
+    margin-top: 10px;
+}
+
 .load-spinner {
     border: 5px solid #f3f3f3;
     border-top: 5px solid black;
