@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import TableRow from './TableComponents/TableRow';
 import _ from 'lodash';
+import uuid from 'uuid';
 import AddDisciplineForm from '../Forms/AddDisciplineForm';
-// import UpdateDisciplineForm from '../Forms/UpdateDisciplineForm';
-// import DeleteDisciplineForm from '../Forms/DeleteDisciplineForm';
+import UpdateDisciplineForm from '../Forms/UpdateDisciplineForm';
+import DeleteDisciplineForm from '../Forms/DeleteDisciplineForm';
 
 class DisciplineListTable extends Component {
     constructor(props) {
@@ -40,10 +41,10 @@ class DisciplineListTable extends Component {
 
         var rows = [];
         for (var i = 0; i < this.props.data.length; i++) {
-            rows.push(<tr key={this.props.data[i].id}>
+            rows.push(<tr key={uuid.v4()}>
                 <td>{this.props.data[i].title}</td>
-                <td><button className="btn btn-default sharp" id={this.props.data[i].id} onClick={this.handleUpdateDisciplineClick}>Update</button></td>
-                <td><button className="btn btn-default sharp btn-danger-text" id={this.props.data[i].id} onClick={this.handleDeleteDisciplineClick}>Delete</button></td>
+                <td><button className="btn btn-default sharp" key={uuid.v4()} id={this.props.data[i].id} onClick={this.handleUpdateDisciplineClick}>Update</button></td>
+                <td><button className="btn btn-default sharp btn-danger-text" key={uuid.v4()} id={this.props.data[i].id} onClick={this.handleDeleteDisciplineClick}>Delete</button></td>
                 </tr>);
         }
 
@@ -79,7 +80,7 @@ class DisciplineListTable extends Component {
                         <div className="modal-content">
                             <div className="container-fluid">
                                 <h2>Update Discipline</h2>
-                                {/*<UpdateDisciplineForm id={this.state.updateId}/>*/}
+                                <UpdateDisciplineForm id={this.state.updateId}/>
                             </div>
                         </div>
                     </div>
@@ -88,8 +89,7 @@ class DisciplineListTable extends Component {
                     <div className="modal-dialog modal-md" role="document">
                         <div className="modal-content">
                             <div className="container-fluid">
-                                <h2>Delete Discipline</h2>
-                                {/*<DeleteDisciplineForm id={this.state.deleteId}/>*/}
+                                <DeleteDisciplineForm id={this.state.deleteId}/>
                             </div>
                         </div>
                     </div>
