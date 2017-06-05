@@ -76,3 +76,34 @@ export function updateDisciplineSuccess(changedRows) {
         changedRows
     }
 }
+
+export function deleteDiscipline(discipline_id) {
+    return dispatch => {
+        dispatch(deleteDisciplineHasErrored(false));
+        const url = `${DISCIPLINES}/${discipline_id}`;
+        return axios.delete(url)
+            .then( response => {
+                if (response.status !== 200) {
+                    throw Error(response.statusText);
+                }
+                dispatch(deleteDisciplineSuccess(response.data.affectedRows));
+            }).catch( error => {
+                dispatch(deleteDisciplineHasErrored(true));
+                console.log(error);
+            });
+    };
+}
+
+export function deleteDisciplineHasErrored(bool) {
+    return {
+        type: 'DELETE_DISCIPLINE_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function deleteDisciplineSuccess(affectedRows) {
+    return {
+        type: 'DELETE_DISCIPLINE_SUCCESS',
+        affectedRows
+    }
+}

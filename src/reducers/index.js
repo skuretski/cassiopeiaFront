@@ -27,6 +27,8 @@ const rootReducer = combineReducers({
     createDisciplineID: DisciplinesReducer.createDisciplineSuccess,
     updateDisciplineHasErrored: DisciplinesReducer.updateDisciplineHasErrored,
     updateDisciplineChangedRows: DisciplinesReducer.updateDisciplineSuccess,
+    deleteDisciplineHasErrored: DisciplinesReducer.deleteDisciplineHasErrored,
+    deleteDisciplineAffectedRows: DisciplinesReducer.deleteDisciplineSuccess,
 
     // DELIVERABLES
     deliverables: DeliverablesReducer.defaultReducer, // refactor this one if we have time

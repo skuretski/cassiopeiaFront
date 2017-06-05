@@ -44,3 +44,21 @@ exports.updateDisciplineSuccess = function (state = [], action) {
             return state;
     }
 }
+
+exports.deleteDisciplineHasErrored = function (state = false, action) {
+    switch (action.type) {
+        case 'DELETE_DISCIPLINE_HAS_ERRORED':
+            return action.hasErrored;
+        default:
+            return state;
+    }
+}
+
+exports.deleteDisciplineSuccess = function (state = [], action) {
+    switch (action.type) {
+        case 'DELETE_DISCIPLINE_SUCCESS':
+            return action.affectedRows;
+        default:
+            return state;
+    }
+}
