@@ -1,15 +1,6 @@
 import axios from 'axios';
 import { FUNDING } from '../../api';
 
-export function getFunding(dispatch){
-    return axios.get(FUNDING)
-    .then((response) => {
-        dispatch(setFunding(response.data));
-    }).catch((error) => {
-        console.log(error);
-    });
-}
-
 export function createFunding(data, callback) {
     console.log(data);
     const request = axios.post(FUNDING, {
@@ -17,7 +8,8 @@ export function createFunding(data, callback) {
         end_date: data.end_date,
         amount: data.amount,
         project_id: data.project_id,
-        type_id: data.type_id
+        type_id: data.type_id,
+        acquired: data.acquired
     }).then( (value) => callback(value));
 
     return {
@@ -27,7 +19,7 @@ export function createFunding(data, callback) {
 }
 
 export function updateFunding(data, callback) {
-    const request = axios.put(`${FUNDING}/${data.id}`, { effort: data.amount })
+    const request = axios.put(`${FUNDING}/${data.id}`, { amount: data.amount, acquired: data.acquired })
         .then( (value) => callback(value));
 
     return {
@@ -36,7 +28,7 @@ export function updateFunding(data, callback) {
     }
 }
 
-export function deleteAssignment(data, callback) {
+export function deleteFunding(data, callback) {
     const request = axios.delete(`${FUNDING}/${data.id}`)
         .then( (value) => callback(value));
 
@@ -62,11 +54,3 @@ export function searchFunding(data, callback) {
         payload: request
     }
 }
-
-export const setFunding = (funding) => {
-    return{
-        type: 'GET_FUNDING',
-        funding
-    }
-}
-

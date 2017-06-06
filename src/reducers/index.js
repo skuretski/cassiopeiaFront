@@ -5,6 +5,7 @@ import * as DeliverablesReducer from './reducer_deliverables';
 import * as TasksReducer from './reducer_tasks';
 import * as EmployeeReducer from './reducer_employees';
 import AssignmentsReducer from './reducer_assignments';
+import FundingReducer from './reducer_funding';
 import EmployeeViewReducer from './reducer_employeeview';
 import FundingViewReducer from './reducer_fundingview';
 import IndexViewReducer from './reducer_indexview';

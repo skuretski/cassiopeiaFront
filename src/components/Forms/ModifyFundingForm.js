@@ -6,7 +6,7 @@ import { createFunding,
          updateFunding,
          deleteFunding,
          searchFunding,
-         getFunding } from '../../actions';
+         getFundingViewData } from '../../actions';
 
 class ModifyFundingForm extends Component {
     constructor(props) {
@@ -71,7 +71,7 @@ class ModifyFundingForm extends Component {
             if (response.status === 200) {
                 if (last_entry) {
                     // Refresh chart data
-                    this.props.getFunding(this.props.task_id);
+                    this.props.getFundingViewData();
                 }
             } else {
                 this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
@@ -79,12 +79,30 @@ class ModifyFundingForm extends Component {
         });
     }
 
-    // TODO
     updateFundingHelper(data, id, last_entry) {
+        this.props.updateFunding({ amount: data.amount, acquired: data.acquired, id }, (response) => {
+            if (response.status === 200) {
+                if (last_entry) {
+                    // Refresh chart data
+                    this.props.getFundingViewData();
+                }
+            } else {
+                this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
+            }
+        });
     }
 
-    // TODO
     deleteFundingHelper(id, last_entry) {
+        this.props.deleteFunding({ id }, (response) => {
+            if (response.status === 200) {
+                if (last_entry) {
+                    // Refresh chart data
+                    this.props.getFundingViewData();
+                }
+            } else {
+                this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
+            }
+        });
     }
 
     numDaysInMonth(month, year) {
@@ -106,8 +124,22 @@ class ModifyFundingForm extends Component {
         return days;
     }
 
-    // TODO
     submitFunding(data_out, last_entry) {
+        // See if there is an existing funding entry for this project/type/date
+        this.props.searchFunding(data_out, (response, data_ret) => {
+            if (response.data.length !== 0) { // Existing record
+                const funding_id = response.data[0].id;
+                if (data_ret.amount !== 0) { // UPDATE
+                    this.updateFundingHelper(data_ret, funding_id, last_entry);
+                } else { // DELETE
+                    this.deleteFundingHelper(funding_id, last_entry);
+                }
+            } else { // No existing record
+                if (data_ret.amount !== 0) { // CREATE
+                    this.createFundingHelper(data_ret, last_entry);
+                }
+            }
+        });
     }
 
     onSubmit(values) {
@@ -117,7 +149,8 @@ class ModifyFundingForm extends Component {
             endYear = parseInt(values.fundingEndYear),
             project_id = parseInt(values.fundingProject),
             type_id = parseInt(values.fundingType),
-            amount = parseFloat(values.fundingAmount);
+            amount = parseFloat(values.fundingAmount),
+            acquired = 1;
 
         var year = startYear;
         var month = startMonth;
@@ -135,7 +168,7 @@ class ModifyFundingForm extends Component {
             }
 
             // Create object containing table entry data
-            data.acquired = 1; // default value for now
+            data.acquired = acquired; // default value for now
             data.amount = amount;
             data.project_id = project_id;
             data.type_id = type_id;
@@ -310,7 +343,7 @@ function validate(values) {
     const endYear = parseInt(values.fundingEndYear);
     const project_id = parseInt(values.fundingProject);
     const type_id = parseInt(values.fundingType);
-    const amount = parseFloat(values.fundingAmount);
+    const amount = values.fundingAmount;
 
     if (!project_id) {
         errors.fundingProject = "Select a project.";
@@ -362,18 +395,20 @@ ModifyFundingForm = reduxForm({
     form: 'ModifyFundingForm',
 })(ModifyFundingForm)
 
-// TODO
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        getFunding }, dispatch);
+        createFunding,
+        updateFunding,
+        deleteFunding,
+        searchFunding,
+        getFundingViewData }, dispatch);
 }
 
-// TODO
 function mapStateToProps(state) {
     return {
-        employees: state.getEmployee,
-        isLoading: state.getEmployeeIsSending,
-        result: state.assignments
+        funding: state.getFunding,
+        isLoading: state.getFundingIsSending,
+        result: state.funding
     }
 }
 
