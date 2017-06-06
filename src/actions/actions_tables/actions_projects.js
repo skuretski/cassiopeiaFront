@@ -11,7 +11,7 @@ export function getProjects(dispatch){
     });
 }
 
-export function addProject(project){
+export function addProject(project, callback){
     return function(dispatch){
         if(project.title == "" || project.description == "" || project.title == null || project.description == null){
             dispatch(addAlert("Error. Fields must be filled out."));

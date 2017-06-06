@@ -7,6 +7,7 @@ import { getProjectViewData } from '../../actions';
 import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import UpdateProjectForm from '../Forms/UpdateProjectForm';
+import _ from 'lodash';
 
 class ProjectView extends Component{
     constructor(props){
@@ -39,15 +40,22 @@ class ProjectView extends Component{
                 return deliverable;
             }        
         });
-        return projDelivs;
+        return _.mapKeys(projDelivs, 'id');
     }
     render(){
+        const { projects, deliverables, projectViewData } = this.props;
+        const { project_id, deliv_id } = this.props.match.params;
+        //If still fetching data
         if(this.state.loading === true){
             return(
                 <div className="container-fluid">
                     <div className="text-center load-spinner" />
                 </div>
             )
+        //If project doesn't exist, redirect to 404
+        } else if(!this.props.projects[this.props.match.params.project_id]){
+            this.props.history.push("/404");
+        //Render ProjectView  
         } else {
             return(
                 <div>
