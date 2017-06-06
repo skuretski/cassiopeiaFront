@@ -1,13 +1,14 @@
-exports.addAlert = (text) => {
+export function addAlert(text){
+    console.log(text);
     return {
         type: 'ADD_ALERT',
         text
     }
 }
 
-exports.deleteAlert = (id) => {
+export function deleteAlert(id){
     return{
-        type: 'REMOVE_ALERT',
+        type: 'DELETE_ALERT',
         id
     }
 } 

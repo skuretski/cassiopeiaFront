@@ -7,7 +7,7 @@ export default function(state = [], action){
                 ...state,
                 {
                     text: action.text,
-                    id: uuid.v4(),
+                    id: uuid.v4()
                 }
             ]
         case 'DELETE_ALERT':

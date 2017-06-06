@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
-import { addProject, addAlert, deleteAlert } from '../../actions';
-import Alert from '../Alerts/Alert';
+import { addProject } from '../../actions';
+import AlertsContainer from '../Alerts/AlertsContainer';
 import _ from 'lodash';
 
 class AddProjectForm extends Component{
     constructor(props){
         super(props);
         this.state = {
-            added: false
+            alert: false
         }
-    }
-    componentWillUnmount(){
-        this.props.reset();
     }
     renderField(field){
         const { meta: { touched, error} } = field;
@@ -31,23 +28,22 @@ class AddProjectForm extends Component{
             </div>
         );
     }
+    resetForm(){
+        this.props.change('title', '');
+        this.props.change('description', '');
+        this.props.untouch('title', 'description');
+    }
     onSubmit(project){
-        if(!_.isEmpty(project)){
-            if(project.title != '' || project.description != '' || project.title != null || project.description != null){
-                this.props.dispatch(addProject(project))
-                    .then((project) => {
-                        this.setState({added: true});
-                        this.props.reset();
-                        $('.bs-project-modal-lg').modal('hide');
-                    })
-                    .catch((error) => {
-                        this.props.dispatch(addAlert(error));
-                    });                     
-            }
-        } else{
-            // console.log(this.props);
-            // validate(project);
-        }
+        // if(!_.isEmpty(project)){
+        //     if(project.title != '' || project.description != '' || project.title != null || project.description != null){
+                project.description = '';
+                project.title = '';
+                this.props.dispatch(addProject(project)).then(() => {
+                    // this.resetForm();
+                    // $('.bs-project-modal-lg').modal('hide');
+                });                    
+        //     }
+        // }
     }
     render(){
         const { handleSubmit, reset } = this.props;
@@ -67,21 +63,22 @@ class AddProjectForm extends Component{
                     Add New Project
                 </button>
                 <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <AlertsContainer/>
             </form>  
         );
     }
 }
 
-function validate(formProps){
-    const errors = {};
-    if(!formProps.title){
-        errors.title = "Project title is required.";
-    }
-    if(!formProps.description){
-        errors.description = "Project description is required.";
-    }
-    return errors;
-}
+// function validate(formProps){
+//     const errors = {};
+//     if(!formProps.title){
+//         errors.title = "Project title is required.";
+//     }
+//     if(!formProps.description){
+//         errors.description = "Project description is required.";
+//     }
+//     return errors;
+// }
 function mapStateToProps(state){
     return{
         projects: state.projects,
@@ -92,6 +89,6 @@ function mapStateToProps(state){
 
 export default reduxForm({
     form: 'AddProjectForm',
-    validate: validate
+ //   validate: validate
 
 }, mapStateToProps)(AddProjectForm);

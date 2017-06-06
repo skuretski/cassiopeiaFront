@@ -11,6 +11,7 @@ import IndexViewReducer from './reducer_indexview';
 import ProjectViewReducer from './reducer_projectview';
 import DeliverableViewReducer from './reducer_deliverableview';
 import TaskViewReducer from './reducer_taskview';
+import AlertsReducer from './reducer_alerts';
 import { reducer as formReducer } from 'redux-form';
 
 const rootReducer = combineReducers({
@@ -71,6 +72,11 @@ const rootReducer = combineReducers({
 
     // REDUX-FORM
     form: formReducer,
+
+
+
+    // ALERTS
+    alerts: AlertsReducer
 });
 
 export default rootReducer;

@@ -13,21 +13,25 @@ export function getProjects(dispatch){
 
 export function addProject(project, callback){
     return function(dispatch){
-        if(project.title == "" || project.description == "" || project.title == null || project.description == null){
-            dispatch(addAlert("Error. Fields must be filled out."));
-        }
-        else{
+        // if(project.title == "" || project.description == "" || project.title == null || project.description == null){
+        //     dispatch(addAlert("Error. Fields must be filled out."));
+        // }
+        // else{
             return axios.post(PROJECTS, {
                 title: project.title,
                 description: project.description
             }).then((response) => {
-                return dispatch(createProject(response.data[0]));
+                console.log("Success");
+                dispatch(createProject(response.data[0]));
             }).catch((error) => {
-                console.log(error);
-                dispatch(addAlert(error.data));
+                if(error.response.status == 400){
+                    dispatch(addAlert(error.response.data.error));
+                } else{
+                    dispatch(addAlert("Error: could not add new project"));
+                }
             });
          }
-    }
+   // }
 }
 
 export function updateProject(data) {
