@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { getFundingViewData } from '../../actions';
+import { createFunding,
+         updateFunding,
+         deleteFunding,
+         searchFunding,
+         getFunding } from '../../actions';
 
 class ModifyFundingForm extends Component {
     constructor(props) {
@@ -11,9 +15,11 @@ class ModifyFundingForm extends Component {
         this.state = { message: '' };
     }
 
+    // TODO
     componentDidMount() {
     }
 
+    // TODO
     componentWillUpdate(nextProps) {
     }
 
@@ -61,11 +67,23 @@ class ModifyFundingForm extends Component {
     }
 
     createFundingHelper(data, last_entry) {
+        this.props.createFunding(data, (response) => {
+            if (response.status === 200) {
+                if (last_entry) {
+                    // Refresh chart data
+                    this.props.getFunding(this.props.task_id);
+                }
+            } else {
+                this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
+            }
+        });
     }
 
+    // TODO
     updateFundingHelper(data, id, last_entry) {
     }
 
+    // TODO
     deleteFundingHelper(id, last_entry) {
     }
 
@@ -88,17 +106,18 @@ class ModifyFundingForm extends Component {
         return days;
     }
 
+    // TODO
     submitFunding(data_out, last_entry) {
     }
 
     onSubmit(values) {
-        var startMonth = parseInt(values.assignmentStartMonth),
-            startYear = parseInt(values.assignmentStartYear),
-            endMonth = parseInt(values.assignmentEndMonth),
-            endYear = parseInt(values.assignmentEndYear),
-            effort = parseFloat(values.assignmentEffort),
-            employee_id = parseInt(values.assignmentEmployee),
-            task_id = parseInt(this.props.task_id);
+        var startMonth = parseInt(values.fundingStartMonth),
+            startYear = parseInt(values.fundingStartYear),
+            endMonth = parseInt(values.fundingEndMonth),
+            endYear = parseInt(values.fundingEndYear),
+            project_id = parseInt(values.fundingProject),
+            type_id = parseInt(values.fundingType),
+            amount = parseFloat(values.fundingAmount);
 
         var year = startYear;
         var month = startMonth;
@@ -116,9 +135,10 @@ class ModifyFundingForm extends Component {
             }
 
             // Create object containing table entry data
-            data.effort = effort;
-            data.employee_id = employee_id;
-            data.task_id = task_id;
+            data.acquired = 1; // default value for now
+            data.amount = amount;
+            data.project_id = project_id;
+            data.type_id = type_id;
             if (month < 10) {
                 data.start_date = year + '-0' + month + '-01';
                 data.end_date = year + '-0' + month + '-' + this.numDaysInMonth(month);
@@ -184,7 +204,7 @@ class ModifyFundingForm extends Component {
 
     render() {
         const { handleSubmit } = this.props;
-        if (!this.props.employees) {
+        if (!this.props.data) {
             return <div className="text-center load-spinner" />
         }
         return (
@@ -195,7 +215,7 @@ class ModifyFundingForm extends Component {
                         {/* Project Field */}
                         <Field
                             label="Project"
-                            name="assignmentProject"
+                            name="fundingProject"
                             type="select"
                             selectOptions={this.renderProjectOptions()}
                             component={this.renderField}
@@ -205,7 +225,7 @@ class ModifyFundingForm extends Component {
                         {/* Type Field */}
                         <Field
                             label="Funding Type"
-                            name="assignmentType"
+                            name="fundingType"
                             type="select"
                             selectOptions={this.renderTypeOptions()}
                             component={this.renderField}
@@ -218,7 +238,7 @@ class ModifyFundingForm extends Component {
                     <div className="col-md-6">
                         <Field
                             label="Start Month"
-                            name="assignmentStartMonth"
+                            name="fundingStartMonth"
                             type="select"
                             selectOptions={this.renderMonthOptions()}
                             component={this.renderField}
@@ -227,7 +247,7 @@ class ModifyFundingForm extends Component {
                     <div className="col-md-6">
                         <Field
                             label="Start Year"
-                            name="assignmentStartYear"
+                            name="fundingStartYear"
                             type="select"
                             selectOptions={this.renderYearOptions()}
                             component={this.renderField}
@@ -240,7 +260,7 @@ class ModifyFundingForm extends Component {
                     <div className="col-md-6">
                         <Field
                             label="End Month"
-                            name="assignmentEndMonth"
+                            name="fundingEndMonth"
                             type="select"
                             selectOptions={this.renderMonthOptions()}
                             component={this.renderField}
@@ -249,26 +269,29 @@ class ModifyFundingForm extends Component {
                     <div className="col-md-6">
                         <Field
                             label="End Year"
-                            name="assignmentEndYear"
+                            name="fundingEndYear"
                             type="select"
                             selectOptions={this.renderYearOptions()}
                             component={this.renderField}
                         />
                     </div>
-                    <div className="col-md-6">
+                </div>
+                    
+                <div className="row">
+                    <div className="col-md-12">
                         {/* Funding Field */}
                         <Field
-                            label="Funding"
-                            name="assignmentFunding"
+                            label="Funding Amount"
+                            name="fundingAmount"
                             type="number"
                             min="0.0"
                             step="0.1"
-                            max="1.0"
+                            max="100.0"
                             component={this.renderField}
                         />
                     </div>
                 </div>
-                    
+
                 <button type="submit" className="btn btn-primary">Submit</button>
                 <div>{this.state.message}</div>
 
@@ -280,52 +303,53 @@ class ModifyFundingForm extends Component {
 
 function validate(values) {
     const errors = {};
-    //TODO:
-    // * Validate that input start date is in today's month/year or later
-    // * Validate that end date is after start date
-    // * Validate that effort is in range [0, 1]
-    // Validate the inputs from 'values'
-    const employee = parseInt(values.assignmentEmployee);
-    const effort = values.assignmentEffort;
-    const startMonth = parseInt(values.assignmentStartMonth);
-    const startYear = parseInt(values.assignmentStartYear);
-    const endMonth = parseInt(values.assignmentEndMonth);
-    const endYear = parseInt(values.assignmentEndYear);
 
-    if (!employee) {
-        errors.assignmentEmployee = "Select an employee.";
+    const startMonth = parseInt(values.fundingStartMonth);
+    const startYear = parseInt(values.fundingStartYear);
+    const endMonth = parseInt(values.fundingEndMonth);
+    const endYear = parseInt(values.fundingEndYear);
+    const project_id = parseInt(values.fundingProject);
+    const type_id = parseInt(values.fundingType);
+    const amount = parseFloat(values.fundingAmount);
+
+    if (!project_id) {
+        errors.fundingProject = "Select a project.";
     }
 
-    if (!effort) {
-        errors.assignmentEffort = "Enter an effort amount.";
-    } else if (effort < 0.0 || effort > 1.0) {
-        errors.assignmentEffort = "Must be between 0 and 1."
+    if (!type_id) {
+        errors.fundingType = "Select a funding type.";
+    }
+
+    if (!amount) {
+        errors.fundingAmount = "Enter an funding amount.";
+    } else if (amount < 0.0 || amount > 100.0) {
+        errors.fundingAmount = "Must be between 0 and 100."
     }
 
     if (!startMonth) {
-        errors.assignmentStartMonth = "Select a start month.";
+        errors.fundingStartMonth = "Select a start month.";
     }
 
     if (!startYear) {
-        errors.assignmentStartYear = "Select a start year.";
+        errors.fundingStartYear = "Select a start year.";
     }
 
     if (!endMonth) {
-        errors.assignmentEndMonth = "Select an end month.";
+        errors.fundingEndMonth = "Select an end month.";
     }
 
     if (!endYear) {
-        errors.assignmentEndYear = "Select an end year.";
+        errors.fundingEndYear = "Select an end year.";
     }
 
     if (startMonth && startYear && endMonth && endYear) {
         if (startYear > endYear) {
-            errors.assignmentStartYear = "Start year must be before end year.";
-            errors.assignmentEndYear = "End year must be after start year.";
+            errors.fundingStartYear = "Start year must be before end year.";
+            errors.fundingEndYear = "End year must be after start year.";
         } else if (startYear == endYear) {
             if (startMonth > endMonth) {
-                errors.assignmentStartMonth = "Start month must be before end month.";
-                errors.assignmentEndMonth = "End month must be after start month.";
+                errors.fundingStartMonth = "Start month must be before end month.";
+                errors.fundingEndMonth = "End month must be after start month.";
             }
         }
     }
@@ -338,11 +362,13 @@ ModifyFundingForm = reduxForm({
     form: 'ModifyFundingForm',
 })(ModifyFundingForm)
 
+// TODO
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
-        getFundingViewData }, dispatch);
+        getFunding }, dispatch);
 }
 
+// TODO
 function mapStateToProps(state) {
     return {
         employees: state.getEmployee,
