@@ -5,8 +5,7 @@ import { Field, reduxForm } from 'redux-form';
 import { createFunding,
          updateFunding,
          deleteFunding,
-         searchFunding,
-         getFundingViewData } from '../../actions';
+         searchFunding } from '../../actions';
 
 class ModifyFundingForm extends Component {
     constructor(props) {
@@ -71,7 +70,9 @@ class ModifyFundingForm extends Component {
             if (response.status === 200) {
                 if (last_entry) {
                     // Refresh chart data
-                    this.props.getFundingViewData();
+                    /*
+                    TODO: how do I do this? - Cash
+                    */
                 }
             } else {
                 this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
@@ -84,7 +85,9 @@ class ModifyFundingForm extends Component {
             if (response.status === 200) {
                 if (last_entry) {
                     // Refresh chart data
-                    this.props.getFundingViewData();
+                    /*
+                    TODO: how do I do this? - Cash
+                    */
                 }
             } else {
                 this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
@@ -97,7 +100,9 @@ class ModifyFundingForm extends Component {
             if (response.status === 200) {
                 if (last_entry) {
                     // Refresh chart data
-                    this.props.getFundingViewData();
+                    /*
+                    TODO: how do I do this? - Cash
+                    */
                 }
             } else {
                 this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
@@ -400,8 +405,7 @@ function mapDispatchToProps(dispatch) {
         createFunding,
         updateFunding,
         deleteFunding,
-        searchFunding,
-        getFundingViewData }, dispatch);
+        searchFunding }, dispatch);
 }
 
 function mapStateToProps(state) {
