@@ -35,7 +35,7 @@ class DeleteTaskForm extends Component{
         this.props.deleteTask(this.props.id).then(() => {
             if (this.props.deleteHasErrored) {
                 this.setState({message: 'Unable to delete. Ensure that task \
-                 does not have associated employees or tasks.'});
+                 does not have associated employees or statement of work.'});
             } else {
                 this.resetForm();
                 // Re-fetch tasks and task view data, since we've changed it
