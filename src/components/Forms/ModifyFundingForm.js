@@ -5,21 +5,14 @@ import { Field, reduxForm } from 'redux-form';
 import { createFunding,
          updateFunding,
          deleteFunding,
-         searchFunding } from '../../actions';
+         searchFunding,
+         getFundingViewData } from '../../actions';
 
 class ModifyFundingForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = { message: '' };
-    }
-
-    // TODO
-    componentDidMount() {
-    }
-
-    // TODO
-    componentWillUpdate(nextProps) {
     }
 
     renderField(field) {
@@ -69,10 +62,7 @@ class ModifyFundingForm extends Component {
         this.props.createFunding(data, (response) => {
             if (response.status === 200) {
                 if (last_entry) {
-                    // Refresh chart data
-                    /*
-                    TODO: how do I do this? - Cash
-                    */
+                    this.refreshViewData();
                 }
             } else {
                 this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
@@ -84,10 +74,7 @@ class ModifyFundingForm extends Component {
         this.props.updateFunding({ amount: data.amount, acquired: data.acquired, id }, (response) => {
             if (response.status === 200) {
                 if (last_entry) {
-                    // Refresh chart data
-                    /*
-                    TODO: how do I do this? - Cash
-                    */
+                    this.refreshViewData();
                 }
             } else {
                 this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
@@ -99,10 +86,7 @@ class ModifyFundingForm extends Component {
         this.props.deleteFunding({ id }, (response) => {
             if (response.status === 200) {
                 if (last_entry) {
-                    // Refresh chart data
-                    /*
-                    TODO: how do I do this? - Cash
-                    */
+                    this.refreshViewData();
                 }
             } else {
                 this.setState( {message: 'Something went wrong. STATUS ' + this.response.status});
@@ -129,6 +113,10 @@ class ModifyFundingForm extends Component {
         return days;
     }
 
+    refreshViewData() {
+        this.props.dispatch(getFundingViewData);
+    }
+
     submitFunding(data_out, last_entry) {
         // See if there is an existing funding entry for this project/type/date
         this.props.searchFunding(data_out, (response, data_ret) => {
@@ -142,6 +130,9 @@ class ModifyFundingForm extends Component {
             } else { // No existing record
                 if (data_ret.amount !== 0) { // CREATE
                     this.createFundingHelper(data_ret, last_entry);
+                } else if (last_entry) { // Simply refresh on last entry
+                    // This line beats the other requests back, so it re-renders too early
+                    //this.refreshViewData();
                 }
             }
         });

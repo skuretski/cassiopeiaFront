@@ -2,7 +2,6 @@ import axios from 'axios';
 import { FUNDING } from '../../api';
 
 export function createFunding(data, callback) {
-    console.log(data);
     const request = axios.post(FUNDING, {
         start_date: data.start_date,
         end_date: data.end_date,
