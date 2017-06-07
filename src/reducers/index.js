@@ -21,6 +21,8 @@ const rootReducer = combineReducers({
     getProject: ProjectsReducer.getProjectSuccess,
     updateProjectHasErrored: ProjectsReducer.updateProjectHasErrored,
     updateProjectChangedRows: ProjectsReducer.updateProjectSuccess,
+    deleteProjectHasErrored: ProjectsReducer.deleteProjectHasErrored,
+    deleteProjectChangedRows: ProjectsReducer.deleteProjectSuccess,
 
     // DISCIPLINES
     disciplines: DisciplinesReducer.getDisciplines,
