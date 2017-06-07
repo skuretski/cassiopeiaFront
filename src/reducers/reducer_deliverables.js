@@ -5,7 +5,6 @@ exports.defaultReducer = function(state = {}, action){
         case 'GET_DELIVERABLES':
             return _.mapKeys(action.deliverables, 'id');
         case 'ADD_DELIVERABLE':
-            console.log(action.deliverable);
             return {
                 ...state,
                 [action.deliverable.id]: {
@@ -56,3 +55,22 @@ exports.updateDeliverableHasErrored = function (state = false, action) {
             return state;
     }
 }
+
+exports.deleteDeliverableHasErrored = function (state = false, action) {
+    switch (action.type) {
+        case 'DELETE_DELIVERABLE_HAS_ERRORED':
+            return action.hasErrored;
+        default:
+            return state;
+    }
+}
+
+exports.deleteDeliverableSuccess = function (state = [], action) {
+    switch (action.type) {
+        case 'DELETE_DELIVERABLE_SUCCESS':
+            return action.affectedRows;
+        default:
+            return state;
+    }
+}
+

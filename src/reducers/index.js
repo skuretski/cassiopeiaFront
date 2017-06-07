@@ -37,6 +37,8 @@ const rootReducer = combineReducers({
     getDeliverable: DeliverablesReducer.getDeliverableSuccess,
     updateDeliverableHasErrored: DeliverablesReducer.updateDeliverableHasErrored,
     updateDeliverableChangedRows: DeliverablesReducer.updateDeliverableSuccess,
+    deleteDeliverableHasErrored: DeliverablesReducer.deleteDeliverableHasErrored,
+    deleteDeliverableChangedRows: DeliverablesReducer.deleteDeliverableSuccess,
 
     // TASKS
     tasks: TasksReducer.defaultReducer, // refactor this one if we have time

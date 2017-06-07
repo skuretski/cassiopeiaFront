@@ -8,6 +8,7 @@ import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import AddTaskForm from '../Forms/AddTaskForm';
 import DeliverableSummaryTable from '../Tables/DeliverableSummaryTable';
 import UpdateDeliverableForm from '../Forms/UpdateDeliverableForm';
+import DeleteDeliverableForm from '../Forms/DeleteDeliverableForm';
 import _ from 'lodash';
 
 class DeliverableView extends Component{
@@ -122,6 +123,19 @@ class DeliverableView extends Component{
                         </div> 
                     </div>
                     {/* END UPDATE_DELIV_FORM MODAL */}
+                    {/* START DELETE_DELIV_FORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-delete-deliverable-modal-md" role="dialog">
+                            <div className="modal-dialog modal-md" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <DeleteDeliverableForm id={this.props.match.params.deliv_id} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END DELETE_DELIV_FORM MODAL */}
                     {/* START ADD_TASK_FORM MODAL */}
                     <div className="container-fluid">
                         <div className="modal fade bs-task-modal-lg" tabIndex="-1" role="dialog">
@@ -158,6 +172,9 @@ class DeliverableView extends Component{
                                         <b>Deliverable: {deliverableViewData.deliverable[0].title}</b>
                                         <a className="glyphicon glyphicon-pencil"
                                            onClick={() => $('.bs-update-deliverable-modal-md').modal('show')}
+                                        />
+                                        <a className="glyphicon glyphicon-remove"
+                                        onClick={() => $('.bs-delete-deliverable-modal-md').modal('show')}
                                         />
                                     </h4>
                                 </div>
