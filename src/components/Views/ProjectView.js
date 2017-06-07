@@ -7,6 +7,7 @@ import { getProjectViewData } from '../../actions';
 import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import UpdateProjectForm from '../Forms/UpdateProjectForm';
+import DeleteProjectForm from '../Forms/DeleteProjectForm';
 import _ from 'lodash';
 
 class ProjectView extends Component{
@@ -90,6 +91,19 @@ class ProjectView extends Component{
                         </div> 
                     </div>
                     {/* END ADDPROJECTFORM MODAL */}
+                    {/* START DELETE_PROJECT_FORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-delete-project-modal-md" role="dialog">
+                            <div className="modal-dialog modal-md" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <DeleteProjectForm id={this.props.match.params.project_id} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END DELETE_PROJECT_FORM MODAL */}
                     {/* START ADD_DELIV_FORM MODAL */}
                     <div className="container-fluid">
                         <div className="modal fade bs-deliverable-modal-lg" tabIndex="-1" role="dialog">
@@ -123,6 +137,9 @@ class ProjectView extends Component{
                                         <b>Project: {this.props.projectViewData.project[0].title}</b>
                                         <a className="glyphicon glyphicon-pencil"
                                            onClick={() => $('.bs-update-project-modal-md').modal('show')}
+                                        />
+                                        <a className="glyphicon glyphicon-remove"
+                                        onClick={() => $('.bs-delete-project-modal-md').modal('show')}
                                         />
                                     </h4>
                                 </div>

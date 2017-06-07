@@ -67,6 +67,40 @@ export function getProjectById(project_id) {
     };
 }
 
+export function deleteProject(project_id) {
+    return dispatch => {
+        dispatch(deleteProjectHasErrored(false));
+        const url = `${PROJECTS}/${project_id}`;
+        return axios.delete(url)
+            .then( response => {
+                if (response.status !== 200 || response.data.error) {
+                    if (response.data.error) {
+                        throw Error(response.data.error);
+                    } else {
+                        throw Error(response.statusText);
+                    }
+                }
+                dispatch(deleteProjectSuccess(response.data.affectedRows));
+            }).catch( error => {
+                dispatch(deleteProjectHasErrored(true));
+            });
+    };
+}
+
+export function deleteProjectHasErrored(bool) {
+    return {
+        type: 'DELETE_PROJECT_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function deleteProjectSuccess(affectedRows) {
+    return {
+        type: 'DELETE_PROJECT_SUCCESS',
+        affectedRows
+    }
+}
+
 export function getProjectHasErrored(bool) {
     return {
         type: 'GET_PROJECT_HAS_ERRORED',

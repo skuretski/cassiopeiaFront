@@ -53,3 +53,21 @@ exports.updateTaskHasErrored = function (state = false, action) {
             return state;
     }
 }
+
+exports.deleteTaskHasErrored = function (state = false, action) {
+    switch (action.type) {
+        case 'DELETE_TASK_HAS_ERRORED':
+            return action.hasErrored;
+        default:
+            return state;
+    }
+}
+
+exports.deleteTaskSuccess = function (state = [], action) {
+    switch (action.type) {
+        case 'DELETE_TASK_SUCCESS':
+            return action.affectedRows;
+        default:
+            return state;
+    }
+}

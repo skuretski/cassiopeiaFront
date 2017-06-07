@@ -10,6 +10,7 @@ import AddProjectForm from '../Forms/AddProjectForm';
 import AddDeliverableForm from '../Forms/AddDeliverableForm';
 import AddTaskForm from '../Forms/AddTaskForm';
 import UpdateTaskForm from '../Forms/UpdateTaskForm';
+import DeleteTaskForm from '../Forms/DeleteTaskForm';
 import _ from 'lodash';
 
 class TaskView extends Component{
@@ -142,6 +143,19 @@ class TaskView extends Component{
                         </div> 
                     </div>
                     {/* END UPDATE_TASK_FORM MODAL */}
+                    {/* START DELETE_TASK_FORM MODAL */}
+                    <div className="container-fluid">
+                        <div className="modal fade bs-delete-task-modal-md" role="dialog">
+                            <div className="modal-dialog modal-md" role="document">
+                                <div className="modal-content">
+                                    <div className="container-fluid">
+                                    <DeleteTaskForm id={this.props.match.params.task_id} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                    {/* END DELETE_TASK_FORM MODAL */}
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-md-2">
@@ -165,6 +179,9 @@ class TaskView extends Component{
                                         <b>Task: {taskViewData.task[0].title}</b>
                                         <a className="glyphicon glyphicon-pencil"
                                         onClick={() => $('.bs-update-task-modal-md').modal('show')}
+                                        />
+                                        <a className="glyphicon glyphicon-remove"
+                                        onClick={() => $('.bs-delete-task-modal-md').modal('show')}
                                         />
                                     </h4>
                                     <h4><b>Responsible Discipline: {taskViewData.task[0].discipline}</b></h4>

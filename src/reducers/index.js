@@ -22,6 +22,8 @@ const rootReducer = combineReducers({
     getProject: ProjectsReducer.getProjectSuccess,
     updateProjectHasErrored: ProjectsReducer.updateProjectHasErrored,
     updateProjectChangedRows: ProjectsReducer.updateProjectSuccess,
+    deleteProjectHasErrored: ProjectsReducer.deleteProjectHasErrored,
+    deleteProjectChangedRows: ProjectsReducer.deleteProjectSuccess,
 
     // DISCIPLINES
     disciplines: DisciplinesReducer.getDisciplines,
@@ -38,6 +40,8 @@ const rootReducer = combineReducers({
     getDeliverable: DeliverablesReducer.getDeliverableSuccess,
     updateDeliverableHasErrored: DeliverablesReducer.updateDeliverableHasErrored,
     updateDeliverableChangedRows: DeliverablesReducer.updateDeliverableSuccess,
+    deleteDeliverableHasErrored: DeliverablesReducer.deleteDeliverableHasErrored,
+    deleteDeliverableChangedRows: DeliverablesReducer.deleteDeliverableSuccess,
 
     // TASKS
     tasks: TasksReducer.defaultReducer, // refactor this one if we have time
@@ -45,6 +49,8 @@ const rootReducer = combineReducers({
     getTask: TasksReducer.getTaskSuccess,
     updateTaskHasErrored: TasksReducer.updateTaskHasErrored,
     updateTaskChangedRows: TasksReducer.updateTaskSuccess,
+    deleteTaskHasErrored: TasksReducer.deleteTaskHasErrored,
+    deleteTaskChangedRows: TasksReducer.deleteTaskSuccess,
 
     // EMPLOYEES
     createEmployeeHasErrored: EmployeeReducer.createEmployeeHasErrored,

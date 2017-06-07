@@ -68,6 +68,40 @@ export function getDeliverableById(deliverable_id) {
     };
 }
 
+export function deleteDeliverable(deliverable_id) {
+    return dispatch => {
+        dispatch(deleteDeliverableHasErrored(false));
+        const url = `${DELIVERABLES}/${deliverable_id}`;
+        return axios.delete(url)
+            .then( response => {
+                if (response.status !== 200 || response.data.error) {
+                    if (response.data.error) {
+                        throw Error(response.data.error);
+                    } else {
+                        throw Error(response.statusText);
+                    }
+                }
+                dispatch(deleteDeliverableSuccess(response.data.affectedRows));
+            }).catch( error => {
+                dispatch(deleteDeliverableHasErrored(true));
+            });
+    };
+}
+
+export function deleteDeliverableHasErrored(bool) {
+    return {
+        type: 'DELETE_DELIVERABLE_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function deleteDeliverableSuccess(affectedRows) {
+    return {
+        type: 'DELETE_DELIVERABLE_SUCCESS',
+        affectedRows
+    }
+}
+
 export function getDeliverableHasErrored(bool) {
     return {
         type: 'GET_DELIVERABLE_HAS_ERRORED',

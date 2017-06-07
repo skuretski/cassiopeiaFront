@@ -55,3 +55,23 @@ exports.updateProjectHasErrored = function (state = false, action) {
             return state;
     }
 }
+
+exports.deleteProjectHasErrored = function (state = false, action) {
+    switch (action.type) {
+        case 'DELETE_PROJECT_HAS_ERRORED':
+            return action.hasErrored;
+        default:
+            return state;
+    }
+}
+
+exports.deleteProjectSuccess = function (state = [], action) {
+    switch (action.type) {
+        case 'DELETE_PROJECT_SUCCESS':
+            return action.affectedRows;
+        default:
+            return state;
+    }
+}
+
+

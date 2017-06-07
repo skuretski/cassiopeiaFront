@@ -70,6 +70,40 @@ export function getTaskById(task_id) {
     };
 }
 
+export function deleteTask(task_id) {
+    return dispatch => {
+        dispatch(deleteTaskHasErrored(false));
+        const url = `${TASKS}/${task_id}`;
+        return axios.delete(url)
+            .then( response => {
+                if (response.status !== 200 || response.data.error) {
+                    if (response.data.error) {
+                        throw Error(response.data.error);
+                    } else {
+                        throw Error(response.statusText);
+                    }
+                }
+                dispatch(deleteTaskSuccess(response.data.affectedRows));
+            }).catch( error => {
+                dispatch(deleteTaskHasErrored(true));
+            });
+    };
+}
+
+export function deleteTaskHasErrored(bool) {
+    return {
+        type: 'DELETE_TASK_HAS_ERRORED',
+        hasErrored: bool
+    };
+}
+
+export function deleteTaskSuccess(affectedRows) {
+    return {
+        type: 'DELETE_TASK_SUCCESS',
+        affectedRows
+    }
+}
+
 export function getTaskHasErrored(bool) {
     return {
         type: 'GET_TASK_HAS_ERRORED',

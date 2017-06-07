@@ -182,6 +182,11 @@ a.glyphicon-pencil {
     font-size: 0.8em;
 }
 
+a.glyphicon-remove {
+    color: red;
+    margin-left: 10px;
+    font-size: 0.8em;
+}
 textarea {
     resize: none;
 }
