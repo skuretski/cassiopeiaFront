@@ -44,6 +44,8 @@ const rootReducer = combineReducers({
     getTask: TasksReducer.getTaskSuccess,
     updateTaskHasErrored: TasksReducer.updateTaskHasErrored,
     updateTaskChangedRows: TasksReducer.updateTaskSuccess,
+    deleteTaskHasErrored: TasksReducer.deleteTaskHasErrored,
+    deleteTaskChangedRows: TasksReducer.deleteTaskSuccess,
 
     // EMPLOYEES
     createEmployeeHasErrored: EmployeeReducer.createEmployeeHasErrored,
