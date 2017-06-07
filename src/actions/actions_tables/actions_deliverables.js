@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { DELIVERABLES } from '../../api';
+import { addAlert } from '../../actions';
 
 export function getDeliverables(dispatch){
     return axios.get(DELIVERABLES)
@@ -12,8 +13,8 @@ export function getDeliverables(dispatch){
 
 export function addDeliverable(deliverable){
     return function(dispatch){
-        if(deliverable.title === '' || deliverable.description === '' || deliverable.project_id === ''){
-            console.log("Error. Fields must be filled out.");
+        if(deliverable.title == '' || deliverable.description == '' || deliverable.project_id == ''){
+            dispatch(addAlert("Error. Fields must be filled out."));
         }
         else{
             return axios.post(DELIVERABLES,{
@@ -22,8 +23,13 @@ export function addDeliverable(deliverable){
                 project_id: deliverable.project_id
             }).then((response) => {
                 dispatch(createDeliverable(response.data[0]));
+                return response.data[0].id;
             }).catch((error) => {
-                console.log(error);
+                if(error.response.status && error.response.status == 400){
+                    dispatch(addAlert(error.response.data.error));
+                } else{
+                    dispatch(addAlert("Error: could not add deliverable."));
+                }
             });
         }
     }

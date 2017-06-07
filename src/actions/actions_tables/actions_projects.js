@@ -11,27 +11,27 @@ export function getProjects(dispatch){
     });
 }
 
-export function addProject(project, callback){
+export function addProject(project){
     return function(dispatch){
-        // if(project.title == "" || project.description == "" || project.title == null || project.description == null){
-        //     dispatch(addAlert("Error. Fields must be filled out."));
-        // }
-        // else{
+        if(project.title == "" || project.description == "" || project.title == null || project.description == null){
+            dispatch(addAlert("Error. Fields must be filled out."));
+        }
+        else{
             return axios.post(PROJECTS, {
                 title: project.title,
                 description: project.description
             }).then((response) => {
-                console.log("Success");
                 dispatch(createProject(response.data[0]));
+                return response.data[0].id;
             }).catch((error) => {
-                if(error.response.status == 400){
+                if(error.response.status && error.response.status == 400){
                     dispatch(addAlert(error.response.data.error));
                 } else{
                     dispatch(addAlert("Error: could not add new project"));
                 }
             });
          }
-   // }
+    }
 }
 
 export function updateProject(data) {

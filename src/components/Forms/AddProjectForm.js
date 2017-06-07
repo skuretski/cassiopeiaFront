@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
-import { addProject } from '../../actions';
+import { addProject, addAlert, removeAllAlerts } from '../../actions';
 import AlertsContainer from '../Alerts/AlertsContainer';
 import _ from 'lodash';
+import { withRouter } from 'react-router-dom';
 
 class AddProjectForm extends Component{
     constructor(props){
@@ -28,22 +29,24 @@ class AddProjectForm extends Component{
             </div>
         );
     }
-    resetForm(){
-        this.props.change('title', '');
-        this.props.change('description', '');
-        this.props.untouch('title', 'description');
-    }
     onSubmit(project){
-        // if(!_.isEmpty(project)){
-        //     if(project.title != '' || project.description != '' || project.title != null || project.description != null){
-                project.description = '';
-                project.title = '';
-                this.props.dispatch(addProject(project)).then(() => {
-                    // this.resetForm();
-                    // $('.bs-project-modal-lg').modal('hide');
+         if(!_.isEmpty(project)){
+             if(project.title != '' || project.description != '' || project.title != null || project.description != null){
+                this.props.dispatch(addProject(project)).then((id) => {
+                    $('.bs-project-modal-lg').modal('hide');
+                    this.props.reset();
+                    this.props.history.push("/projects/" + id);
+                }).catch((error) => {
+                    this.props.dispatch(addAlert("Something went wrong...")).then(() =>{
+                        this.setState({ alert: true });
+                    });
                 });                    
-        //     }
-        // }
+             }
+         } else{
+             this.props.dispatch(addAlert("The form must be filled out.")).then(() => {
+                 this.setState({ alert : true });
+             })
+         }
     }
     render(){
         const { handleSubmit, reset } = this.props;
@@ -62,23 +65,24 @@ class AddProjectForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add New Project
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
                 <AlertsContainer/>
             </form>  
         );
     }
 }
 
-// function validate(formProps){
-//     const errors = {};
-//     if(!formProps.title){
-//         errors.title = "Project title is required.";
-//     }
-//     if(!formProps.description){
-//         errors.description = "Project description is required.";
-//     }
-//     return errors;
-// }
+function validate(formProps){
+    const errors = {};
+    if(!formProps.title){
+        errors.title = "Project title is required.";
+    }
+    if(!formProps.description){
+        errors.description = "Project description is required.";
+    }
+    return errors;
+}
+
 function mapStateToProps(state){
     return{
         projects: state.projects,
@@ -87,8 +91,8 @@ function mapStateToProps(state){
     }  
 }
 
-export default reduxForm({
+export default withRouter(reduxForm({
     form: 'AddProjectForm',
- //   validate: validate
+    validate: validate
 
-}, mapStateToProps)(AddProjectForm);
+}, mapStateToProps)(AddProjectForm));

@@ -1,6 +1,7 @@
 import uuid from 'uuid';
 
-export default function(state = [], action){
+const initialState = [];
+export default function(state = initialState, action){
     switch(action.type){
         case 'ADD_ALERT':
             return [

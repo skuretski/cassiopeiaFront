@@ -19,7 +19,6 @@ class AlertsContainer extends Component {
         if(_.isEmpty(this.props.alerts) || !this.props.alerts){
             return(
                 <div>
-                    Alert Container!
                 </div>
             )
         } else {

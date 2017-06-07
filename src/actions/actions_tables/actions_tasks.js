@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { TASKS } from '../../api';
+import { addAlert } from '../../actions';
 
 export function getTasks(dispatch){
     return axios.get(TASKS)
@@ -13,7 +14,7 @@ export function getTasks(dispatch){
 export function addTask(task){
     return function(dispatch){
         if(task.title === '' || task.description === '' || task.committed === '' || task.discipline_id === ''){
-            console.log("Error. Fields must be filled out.");
+            dispatch(addAlert("Error. Fields must be filled out."));
         }
         else{
             return axios.post(TASKS, {
@@ -24,8 +25,13 @@ export function addTask(task){
                 deliverable_id: task.deliverable_id
             }).then((response) => {
                 dispatch(createTask(response.data[0]));
+                return response.data[0].id;
             }).catch((error) => {
-                console.log(error);
+                if(error.response.status && error.response.status == 400){
+                    dispatch(addAlert(error.response.data.error));
+                } else{
+                    dispatch(addAlert("Error: could not add task."));
+                }
             });
         }
     }

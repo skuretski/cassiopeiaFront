@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
-import { addTask } from '../../actions';
-import Alert from '../Alerts/Alert';
+import { addTask, addAlert } from '../../actions';
+import AlertsContainer from '../Alerts/AlertsContainer';
 import _ from 'lodash';
+import { withRouter } from 'react-router-dom';
 
 class AddTaskForm extends Component{
     constructor(props){
@@ -43,15 +44,24 @@ class AddTaskForm extends Component{
         );
     }
     onSubmit(task){
-        if(task.title != '' && task.description != ''){
-            task.deliverable_id = this.props.deliverableId;
-            task.committed = 0;
-            this.props.dispatch(addTask(task)).then(() => {
-                this.setState({added: true});
-                this.props.reset();
-                $('.bs-task-modal-lg').modal('hide');
-           });
+        if(!_.isEmpty(task)){
+            if(task.title != '' && task.description != ''){
+                task.deliverable_id = this.props.deliverableId;
+                task.committed = 0;
+                this.props.dispatch(addTask(task)).then((id) => {
+                    this.setState({added: true});
+                    this.props.reset();
+                    $('.bs-task-modal-lg').modal('hide');
+                }).catch((error) => {
+                    this.props.dispatch(addAlert("Something went wrong...")).then(() => {
+                        this.setState({ added: false});
+                    });
+                });
+            }
+        } else{
+            this.props.dispatch(addAlert("The form must be filled out."));
         }
+
     }
     render(){
         const { handleSubmit, reset } = this.props; 
@@ -76,7 +86,8 @@ class AddTaskForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add New Task
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
+                <AlertsContainer />
             </form>
         )
     }
@@ -95,12 +106,13 @@ function validate(formProps){
 function mapStateToProps(state){
     return{
         tasks: state.tasks,
-        disciplines: state.disciplines
+        disciplines: state.disciplines,
+        alerts: state.alerts
     }  
 }
 
-export default reduxForm({
+export default withRouter(reduxForm({
     form: 'AddTaskForm',
     validate: validate
 
-}, mapStateToProps, null)(AddTaskForm);
+}, mapStateToProps, null)(AddTaskForm));

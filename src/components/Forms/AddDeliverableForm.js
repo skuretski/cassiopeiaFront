@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, reset } from 'redux-form';
-import { addDeliverable } from '../../actions';
+import { addDeliverable, addAlert } from '../../actions';
+import _ from 'lodash';
+import AlertsContainer from '../Alerts/AlertsContainer';
+import { withRouter } from 'react-router-dom';
 
 class AddDeliverableForm extends Component{
     constructor(props){
         super(props);
-        this.state = {
-            added: false
-        }
     }
     renderField(field){
         const { meta: { touched, error} } = field;
@@ -27,14 +27,20 @@ class AddDeliverableForm extends Component{
         );
     }
     onSubmit(deliverable){
-        if(deliverable.title != '' && deliverable.description != ''){
-            deliverable.project_id = this.props.projectId;
-            this.props.dispatch(addDeliverable(deliverable)).then(() => {
-                this.setState({added: true});
-                this.props.reset();
-                $('.bs-deliverable-modal-lg').modal('hide');
-           });          
-       }
+        if(!_.isEmpty(deliverable)){
+            if(deliverable.title != '' || deliverable.description != ''|| deliverable.title != null || deliverable.description != null){
+                deliverable.project_id = this.props.projectId;
+                this.props.dispatch(addDeliverable(deliverable)).then((id) => {
+                    this.props.reset();
+                    $('.bs-deliverable-modal-lg').modal('hide');
+                    this.props.history.push("/projects/" + this.props.projectId + "/deliverables/" + id);
+                }).catch((error) => {
+                    this.props.dispatch(addAlert("Something went wrong..."));              
+                });
+            }
+        } else {
+            this.props.dispatch(addAlert("The form must be filled out."));
+        }
     }
     render(){
         const { handleSubmit, reset, projectId, projects } = this.props;
@@ -53,7 +59,8 @@ class AddDeliverableForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add Deliverable to {projects[projectId].title}
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal">Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
+                <AlertsContainer/>
             </form>
         )
     }
@@ -72,12 +79,13 @@ var validateDelivs = (formProps) => {
 function mapStateToProps(state){
     return{
         deliverables: state.deliverables,
-        projects: state.projects
+        projects: state.projects,
+        alerts: state.alerts
     }
 }
 
-export default reduxForm({
+export default withRouter(reduxForm({
     form: 'AddDeliverableForm',
     validate: validateDelivs
 
-}, mapStateToProps, null)(AddDeliverableForm);
+}, mapStateToProps, null)(AddDeliverableForm));
