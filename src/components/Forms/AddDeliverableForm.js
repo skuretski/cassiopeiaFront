@@ -26,6 +26,11 @@ class AddDeliverableForm extends Component{
             </div>
         );
     }
+    resetForm(){
+        this.props.change('title', '');
+        this.props.change('description', '');
+        this.props.untouch('title', 'description');
+    }
     onSubmit(deliverable){
         if(!_.isEmpty(deliverable)){
             if(deliverable.title != '' || deliverable.description != ''|| deliverable.title != null || deliverable.description != null){
@@ -59,7 +64,7 @@ class AddDeliverableForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add Deliverable to {projects[projectId].title}
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal" onClick={() => this.resetForm()}>Cancel</button>
                 <AlertsContainer/>
             </form>
         )

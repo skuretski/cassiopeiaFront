@@ -27,6 +27,12 @@ class AddTaskForm extends Component{
             </div>
         )
     }
+    resetForm(){
+        this.props.change('title', '');
+        this.props.change('description', '');
+        this.props.change('discipline', '');
+        this.props.untouch('title', 'description', 'discipline');
+    }
     renderField(field){
         const { meta: { touched, error} } = field;
         const customClass = `form-group ${touched && error ? 'has-danger' : ''}`;
@@ -86,7 +92,7 @@ class AddTaskForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add New Task
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal" onClick={() => this.resetForm()}>Cancel</button>
                 <AlertsContainer />
             </form>
         )

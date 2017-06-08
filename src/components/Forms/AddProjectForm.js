@@ -29,6 +29,11 @@ class AddProjectForm extends Component{
             </div>
         );
     }
+    resetForm(){
+        this.props.change('title', '');
+        this.props.change('description', '');
+        this.props.untouch('title', 'description');
+    }
     onSubmit(project){
          if(!_.isEmpty(project)){
              if(project.title != '' || project.description != '' || project.title != null || project.description != null){
@@ -37,15 +42,11 @@ class AddProjectForm extends Component{
                     this.props.reset();
                     this.props.history.push("/projects/" + id);
                 }).catch((error) => {
-                    this.props.dispatch(addAlert("Something went wrong...")).then(() =>{
-                        this.setState({ alert: true });
-                    });
+                    this.props.dispatch(addAlert("Something went wrong..."));
                 });                    
              }
          } else{
-             this.props.dispatch(addAlert("The form must be filled out.")).then(() => {
-                 this.setState({ alert : true });
-             })
+             this.props.dispatch(addAlert("The form must be filled out."));
          }
     }
     render(){
@@ -65,7 +66,7 @@ class AddProjectForm extends Component{
                 <button type="submit" className="btn btn-primary">
                     Add New Project
                 </button>
-                <button className="btn btn-danger" data-dismiss="modal" onClick={reset}>Cancel</button>
+                <button className="btn btn-danger" data-dismiss="modal" onClick={() => this.resetForm()}>Cancel</button>
                 <AlertsContainer/>
             </form>  
         );
