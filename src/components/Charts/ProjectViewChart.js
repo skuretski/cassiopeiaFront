@@ -52,7 +52,7 @@ function projectViewChartOptions(apiData) {
                     display: true,
                     labelString: '2nd axis that will not normally be displayed'
                     },
-                display: false // show 2nd y-axis (only on for visual debugging)
+                display: true // show 2nd y-axis (only on for visual debugging)
             }]
         },
         legend: {
@@ -224,11 +224,13 @@ function projectViewChartData(apiData) {
         maxYValue = Math.ceil(maxYValue / 10) * 10; // TODO: make this a little smarter -> round to an appropriate max based on the value
     }
     // console.log('maxYValue:' + maxYValue);
+    /*
     Chart.scaleService.updateScaleDefaults('linear', {
         ticks: {
             max: maxYValue
         }
     })    
+    */
 
     return chartData;
 }
