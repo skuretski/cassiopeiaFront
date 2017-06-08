@@ -9,7 +9,7 @@
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch",
     "start": "node server.js",
-    "postinstall": "webpack -p"
+    "build-production": "webpack -p --progress --colors"
   },
   "author": "Kyle Guthrie, Susan Kuretski, Cash Stramel",
   "license": "ISC",
