@@ -20,7 +20,7 @@ export default class FundingViewByTypeChart extends Component {
                     </div>
                 );
             } else {
-                return <div></div>;
+                return <div><br/><h3>No data available to provide plot.</h3><br/></div>;
             }
         } else {
             return <div></div>;
